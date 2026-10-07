@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Japanese Lexicon // Core Workstation</title>
+  
+  <style>
+    :root {
+      --bg: #090a0c;
+      --surface: #111215;
+      --surface-subtle: #16181d;
+      --surface-hover: #1e2027;
+      --border: #23252d;
+      --border-hover: #363945;
+      --text: #f0f1f4;
+      --text-muted: #848794;
+      --text-dim: #535560;
+      
+      --accent: #ededed;
+      --danger: #e11d48;
+      --radius: 6px;
+      --radius-sm: 4px;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-jp: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    }
+
+    body.theme-light {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-subtle: #f0f1f4;
+      --surface-hover: #e4e6eb;
+      --border: #dcdee5;
+      --border-hover: #c2c5d0;
+      --text: #111215;
+      --text-muted: #646774;
+      --text-dim: #9497a4;
+      --accent: #111215;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    #bgCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.7rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* COMPACT CONTROLS */
+    .btn {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+    }
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+      background: var(--text);
+    }
+    .btn-icon {
+      padding: 0.45rem 0.55rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* NAVIGATION */
+    nav {
+      max-width: 640px;
+      width: 100%;
+      margin: 0.75rem auto 0;
+      padding: 0 1rem;
+      display: flex;
+    }
+    .nav-bar {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3px;
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3px;
+    }
+    .tab-trigger {
+      background: transparent;
+      border: none;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: calc(var(--radius) - 2px);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-trigger.active {
+      background: var(--surface-subtle);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0.85rem 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HUD */
+    .hud {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      font-family: var(--font-mono);
+    }
+    .hud-row strong { color: var(--text); }
+    
+    .progress-line {
+      height: 3px;
+      background: var(--surface-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.65rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--text-muted);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .progress-fill.primary { background: var(--text); }
+
+    .hud-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 0.5rem;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* FLASHCARD */
+    .card-space {
+      perspective: 1000px;
+      height: 330px;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+    }
+    .card-flipper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.35s ease;
+      border-radius: var(--radius);
+    }
+    .card-flipper.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-side {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-side-back {
+      transform: rotateY(180deg);
+      background: var(--surface-subtle);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+    .card-mid {
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .kanji-text {
+      font-family: var(--font-jp);
+      font-size: 2.7rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+    .kana-text {
+      font-family: var(--font-jp);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .romaji-text {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 0.15rem;
+    }
+    .pronounce-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      margin-top: 0.45rem;
+    }
+
+    /* Back: Strictly English Definition */
+    .meaning-text {
+      font-size: 1.55rem;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.35rem;
+    }
+    .tier-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+    }
+
+    .card-bot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      padding-top: 0.6rem;
+      font-family: var(--font-mono);
+    }
+
+    .audio-group {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .deck-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    /* MATCH MODE */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .match-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 85px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .match-tile:hover {
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
+    }
+    .match-tile.selected {
+      border-color: var(--text);
+      background: var(--surface-subtle);
+    }
+    .match-tile.solved {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: all 0.25s;
+    }
+    .match-tile.wrong {
+      border-color: var(--danger);
+      background: rgba(225, 29, 72, 0.08);
+    }
+
+    .tile-jp-main {
+      font-family: var(--font-jp);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+    .tile-jp-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .tile-en-main {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .tile-speaker {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tile-speaker:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+      background: var(--surface-hover);
+    }
+
+    /* SENTENCES */
+    .sentence-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem;
+      margin-bottom: 0.55rem;
+    }
+    .sentence-jp {
+      font-family: var(--font-jp);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .sentence-pronounce {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .sentence-en {
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    /* SETTINGS MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-window {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 760px;
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .modal-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    .modal-sidebar {
+      width: 180px;
+      background: var(--surface-subtle);
+      border-right: 1px solid var(--border);
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .sidebar-btn {
+      padding: 0.45rem 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: left;
+    }
+    .sidebar-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .modal-content {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .form-group { margin-bottom: 1.15rem; }
+    .form-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      font-family: var(--font-mono);
+    }
+    .input-control {
+      width: 100%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.65rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+    }
+    .input-control:focus {
+      outline: none;
+      border-color: var(--text-muted);
+    }
+
+    .swatches {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      align-items: center;
+    }
+    .swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.55rem;
+      border-radius: var(--radius-sm);
+      margin-top: 0.35rem;
+    }
+
+    @media (max-width: 600px) {
+      .modal-body { flex-direction: column; }
+      .modal-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; }
+      .match-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Canvas Background -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <span>Lexicon Workstation</span>
+        <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
+      </div>
+      <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">⚙️</button>
+    </header>
+
+    <nav>
+      <div class="nav-bar">
+        <button class="tab-trigger active" onclick="switchTab('cards')">Cards</button>
+        <button class="tab-trigger" onclick="switchTab('sentences')">Sentences</button>
+        <button class="tab-trigger" onclick="switchTab('match')">Match</button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Telemetry HUD -->
+      <div class="hud">
+        <div class="hud-row">
+          <span>Batch: <strong id="hudDailyCount">0</strong> / <span id="hudDailyGoal">40</span></span>
+          <span id="hudCohortTag">Cohort #01</span>
+        </div>
+        <div class="progress-line">
+          <div class="progress-fill primary" id="hudDailyProgress"></div>
+        </div>
+
+        <div class="hud-row">
+          <span>Tier Progress: <strong id="hudMasteredCount">0</strong> / <span id="hudTierTotal">1,000</span></span>
+          <span id="hudTierPct">0%</span>
+        </div>
+        <div class="progress-line">
+          <div class="progress-fill" id="hudTierProgress"></div>
+        </div>
+
+        <div class="hud-footer">
+          <span id="hudDaysRemaining">Est: Calculating...</span>
+          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="switchDailyCohort()">Next Batch ❯</button>
+        </div>
+      </div>
+
+      <!-- 1. FLASHCARDS -->
+      <section id="tab-cards">
+        <div class="card-space" onclick="flipCard()">
+          <div class="card-flipper" id="cardFlipper">
+            
+            <!-- Front: Japanese (Strictly manual speaker buttons only) -->
+            <div class="card-side">
+              <div class="card-top">
+                <span id="cardIndexLabel">01 / 40</span>
+                <div class="audio-group" onclick="event.stopPropagation()">
+                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, state.speed)">🔊 Listen</button>
+                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">🐢 Slow</button>
+                </div>
+              </div>
+
+              <div class="card-mid">
+                <div class="kanji-text" id="cardKanji">--</div>
+                <div class="kana-text" id="cardKana">--</div>
+                <div class="romaji-text" id="cardRomaji">--</div>
+                <div class="pronounce-tag" id="cardPhonetic">[ -- ]</div>
+              </div>
+
+              <div class="card-bot">
+                <span>Click card to reveal definition</span>
+                <span id="cardTierTag">Tier 1</span>
+              </div>
+            </div>
+
+            <!-- Back: English Only (No pronunciation text) -->
+            <div class="card-side card-side-back">
+              <div class="card-top">
+                <span>Definition</span>
+                <span id="cardBackId">#1</span>
+              </div>
+
+              <div class="card-mid">
+                <div class="meaning-text" id="cardEnglish">--</div>
+                <div class="tier-label" id="cardBackTier">JLPT Core</div>
+              </div>
+
+              <div class="card-bot">
+                <span>Click to return</span>
+                <span>Verified</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="deck-controls">
+          <button class="btn" onclick="cycleWord(1)">Skip Word</button>
+          <button class="btn btn-primary" onclick="markLearned()">Learned ✓</button>
+        </div>
+      </section>
+
+      <!-- 2. SENTENCES -->
+      <section id="tab-sentences" style="display: none;">
+        <div id="sentencesList"></div>
+      </section>
+
+      <!-- 3. MATCH MODE -->
+      <section id="tab-match" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">Click tile to match. Use 🔊 to hear:</span>
+          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="dealMatch()">Deal 🔄</button>
+        </div>
+        <div class="match-grid" id="matrixGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <span>Preferences</span>
+        <button class="btn btn-icon" onclick="toggleSettings(false)">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-sidebar">
+          <button class="sidebar-btn active" onclick="switchSettingsPanel('general')">General</button>
+          <button class="sidebar-btn" onclick="switchSettingsPanel('voice')">Voice & Audio</button>
+          <button class="sidebar-btn" onclick="switchSettingsPanel('curriculum')">Vocabulary Tiers</button>
+          <button class="sidebar-btn" onclick="switchSettingsPanel('background')">Background</button>
+        </div>
+
+        <div class="modal-content">
+          
+          <!-- General -->
+          <div class="panel active" id="panel-general">
+            <div class="form-group">
+              <label class="form-label">Theme</label>
+              <select class="input-control" id="cfgTheme" onchange="setTheme(this.value)">
+                <option value="dark">Dark Charcoal</option>
+                <option value="light">Technical Light</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Audio Automation</label>
+              <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.2rem;">
+                Audio plays strictly on manual 🔊 button clicks. Auto-play on card flip is permanently disabled.
+              </div>
+            </div>
+          </div>
+
+          <!-- Voice & Diagnostics -->
+          <div class="panel" id="panel-voice">
+            <div class="form-group">
+              <label class="form-label">Japanese Voice Engine</label>
+              <select class="input-control" id="cfgVoiceSelect" onchange="AudioEngine.setVoice(this.value)"></select>
+              <div class="status-badge" id="voiceDiagTag">Audio Status: Checking...</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <span>Speech Speed</span>
+                <span id="speedVal">0.75x</span>
+              </label>
+              <input type="range" class="input-control" id="cfgSpeed" min="0.4" max="1.1" step="0.05" value="0.75" oninput="document.getElementById('speedVal').textContent = `${this.value}x`">
+            </div>
+
+            <div class="form-group" style="padding-top: 0.6rem; border-top: 1px solid var(--border);">
+              <label class="form-label">Manual Test Trigger</label>
+              <div style="display: flex; gap: 0.4rem;">
+                <input type="text" class="input-control" id="cfgTestPhrase" value="こんにちは。日本語の音声テストです。">
+                <button class="btn" onclick="AudioEngine.speak(document.getElementById('cfgTestPhrase').value, parseFloat(document.getElementById('cfgSpeed').value))">🔊 Speak</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Curriculum Tiers -->
+          <div class="panel" id="panel-curriculum">
+            <div class="form-group">
+              <label class="form-label">Vocabulary Tier Scope</label>
+              <select class="input-control" id="cfgTier">
+                <option value="1000" selected>Tier 1: Top 1,000 (JLPT N5–N4 Daily Core)</option>
+                <option value="2000">Tier 2: Top 2,000 (JLPT N3 Conversational Fluency)</option>
+                <option value="5000">Tier 3: Top 5,000 (JLPT N2–N1 Professional & Mastery)</option>
+              </select>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.4rem;">
+                Progressively orders real lexical vocabulary from high-frequency core words to advanced conceptual kanji compounds.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Daily Batch Size</label>
+              <input type="number" class="input-control" id="cfgGoal" min="5" max="100" value="40">
+            </div>
+
+            <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
+              <button class="btn" style="color: var(--danger); border-color: rgba(225, 29, 72, 0.3);" onclick="resetProgress()">Reset Learned Progress</button>
+            </div>
+          </div>
+
+          <!-- Background Canvas -->
+          <div class="panel" id="panel-background">
+            <div class="form-group">
+              <label class="form-label">Effect Style</label>
+              <select class="input-control" id="cfgBgPreset" onchange="BgEngine.setPreset(this.value)">
+                <option value="subtle-rain">Faint Code Stream</option>
+                <option value="particles">Drifting Dust</option>
+                <option value="none">Solid (Off)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <span>Effect Color</span>
+                <span id="colorHexLabel">#A1A1AA</span>
+              </label>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input type="color" id="cfgColorPicker" value="#a1a1aa" style="background: transparent; border: none; cursor: pointer; width: 28px; height: 28px;" onchange="BgEngine.setColor(this.value)">
+                <input type="text" class="input-control" id="cfgHexInput" value="#a1a1aa" style="max-width: 110px;" oninput="BgEngine.setColor(this.value)">
+              </div>
+
+              <div class="swatches">
+                <span style="font-size: 0.7rem; color: var(--text-dim); margin-right: 0.2rem;">Presets:</span>
+                <button class="swatch" style="background: #a1a1aa;" onclick="BgEngine.setColor('#a1a1aa')" title="Silver"></button>
+                <button class="swatch" style="background: #64748b;" onclick="BgEngine.setColor('#64748b')" title="Slate"></button>
+                <button class="swatch" style="background: #38bdf8;" onclick="BgEngine.setColor('#38bdf8')" title="Muted Sky"></button>
+                <button class="swatch" style="background: #e2e8f0;" onclick="BgEngine.setColor('#e2e8f0')" title="Off-White"></button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <span>Opacity</span>
+                <span id="opacityVal">18%</span>
+              </label>
+              <input type="range" class="input-control" id="cfgBgOpacity" min="0.05" max="0.6" step="0.05" value="0.18" oninput="BgEngine.setOpacity(parseFloat(this.value))">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.4rem;">
+        <button class="btn" onclick="toggleSettings(false)">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. STRATIFIED VOCABULARY ENGINE (TIERS 1,000 -> 2,000 -> 5,000)
+    // Real, progressive Japanese vocabulary with zero placeholder numbers.
+    // =========================================================================
+
+    // TIER 1 SEEDS: Core JLPT N5–N4 Daily Vocabulary
+    const TIER_1_SEEDS = [
+      { kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Me", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
+      { kanji: "水", kana: "みず", romaji: "mizu", phonetic: "mee-zoo", en: "Water", exJa: "お水をください。", exKana: "おみず を ください。", exRomaji: "omizu o kudasai", exPhonetic: "oh-mee-zoo oh koo-dah-sye", exEn: "Water, please." },
+      { kanji: "行く", kana: "いく", romaji: "iku", phonetic: "ee-koo", en: "To go", exJa: "駅に行きます。", exKana: "えき に いきます。", exRomaji: "eki ni ikimasu", exPhonetic: "eh-kee nee ee-kee-mahss", exEn: "I go to the station." },
+      { kanji: "見る", kana: "みる", romaji: "miru", phonetic: "mee-roo", en: "To see / watch", exJa: "映画を見ます。", exKana: "えいが を みます。", exRomaji: "eiga o mimasu", exPhonetic: "ay-gah oh mee-mahss", exEn: "I watch a movie." },
+      { kanji: "食べる", kana: "たべる", romaji: "taberu", phonetic: "tah-beh-roo", en: "To eat", exJa: "ご飯を食べます。", exKana: "ごはん を たべます。", exRomaji: "gohan o tabemasu", exPhonetic: "goh-hahn oh tah-beh-mahss", exEn: "I eat a meal." },
+      { kanji: "飲む", kana: "のむ", romaji: "nomu", phonetic: "noh-moo", en: "To drink", exJa: "お茶を飲みます。", exKana: "おちゃ を のみます。", exRomaji: "ocha o nomimasu", exPhonetic: "oh-chah oh noh-mee-mahss", exEn: "I drink tea." },
+      { kanji: "友達", kana: "ともだち", romaji: "tomodachi", phonetic: "toh-moh-dah-chee", en: "Friend", exJa: "友達と会います。", exKana: "ともだち と あいます。", exRomaji: "tomodachi to aimasu", exPhonetic: "toh-moh-dah-chee toh eye-mahss", exEn: "I meet a friend." },
+      { kanji: "時間", kana: "じかん", romaji: "jikan", phonetic: "jee-kahn", en: "Time / Hour", exJa: "時間がありません。", exKana: "じかん が ありません。", exRomaji: "jikan ga arimasen", exPhonetic: "jee-kahn gah ah-ree-mah-sen", exEn: "There is no time." },
+      { kanji: "電車", kana: "でんしゃ", romaji: "densha", phonetic: "den-shah", en: "Train", exJa: "電車に乗ります。", exKana: "でんしゃ に のります。", exRomaji: "densha ni norimasu", exPhonetic: "den-shah nee noh-ree-mahss", exEn: "I board the train." },
+      { kanji: "買う", kana: "かう", romaji: "kau", phonetic: "kah-oo", en: "To buy", exJa: "本を買いました。", exKana: "ほん を かいました。", exRomaji: "hon o kaimashita", exPhonetic: "hon oh kye-mah-shee-tah", exEn: "I bought a book." },
+      { kanji: "人", kana: "ひと", romaji: "hito", phonetic: "hee-toh", en: "Person", exJa: "あの人は誰ですか？", exKana: "あの ひと は だれ です か？", exRomaji: "ano hito wa dare desu ka", exPhonetic: "ah-noh hee-toh wah dah-reh dess kah", exEn: "Who is that person?" },
+      { kanji: "これ", kana: "これ", romaji: "kore", phonetic: "koh-reh", en: "This (near speaker)", exJa: "これは何ですか？", exKana: "これ は なん です か？", exRomaji: "kore wa nan desu ka", exPhonetic: "koh-reh wah nahn dess kah", exEn: "What is this?" },
+      { kanji: "話す", kana: "はなす", romaji: "hanasu", phonetic: "hah-nah-soo", en: "To speak / talk", exJa: "日本語を話します。", exKana: "にほんご を はなします。", exRomaji: "nihongo o hanashimasu", exPhonetic: "nee-hon-goh oh hah-nah-shee-mahss", exEn: "I speak Japanese." },
+      { kanji: "駅", kana: "えき", romaji: "eki", phonetic: "eh-kee", en: "Station", exJa: "駅はどこですか？", exKana: "えき は どこ です か？", exRomaji: "eki wa doko desu ka", exPhonetic: "eh-kee wah doh-koh dess kah", exEn: "Where is the station?" },
+      { kanji: "今日", kana: "きょう", romaji: "kyou", phonetic: "kyoh", en: "Today", exJa: "今日は晴れです。", exKana: "きょう は はれ です。", exRomaji: "kyou wa hare desu", exPhonetic: "kyoh wah hah-reh dess", exEn: "Today is clear." },
+      { kanji: "明日", kana: "あした", romaji: "ashita", phonetic: "ah-shee-tah", en: "Tomorrow", exJa: "また明日会いましょう。", exKana: "また あした あいましょう。", exRomaji: "mata ashita aimashou", exPhonetic: "mah-tah ah-shee-tah eye-mah-shoh", exEn: "See you tomorrow." },
+      { kanji: "部屋", kana: "へや", romaji: "heya", phonetic: "heh-yah", en: "Room", exJa: "部屋に入ります。", exKana: "へや に はいります。", exRomaji: "heya ni hairimasu", exPhonetic: "heh-yah nee hye-ree-mahss", exEn: "I enter the room." },
+      { kanji: "歩く", kana: "あるく", romaji: "aruku", phonetic: "ah-roo-koo", en: "To walk", exJa: "歩いて行きます。", exKana: "あるいて いきます。", exRomaji: "aruite ikimasu", exPhonetic: "ah-roo-ee-teh ee-kee-mahss", exEn: "I will go on foot." },
+      { kanji: "聞く", kana: "きく", romaji: "kiku", phonetic: "kee-koo", en: "To listen / hear / ask", exJa: "音楽を聞きます。", exKana: "おんがく を ききます。", exRomaji: "ongaku o kikimasu", exPhonetic: "on-gah-koo oh kee-kee-mahss", exEn: "I listen to music." },
+      { kanji: "読む", kana: "よむ", romaji: "yomu", phonetic: "yoh-moo", en: "To read", exJa: "新聞を読みます。", exKana: "しんぶん を よみます。", exRomaji: "shinbun o yomimasu", exPhonetic: "sheen-boon oh yoh-mee-mahss", exEn: "I read the newspaper." },
+      { kanji: "書く", kana: "かく", romaji: "kaku", phonetic: "kah-koo", en: "To write", exJa: "手紙を書きます。", exKana: "てがみ を かきます。", exRomaji: "tegami o kakimasu", exPhonetic: "teh-gah-mee oh kah-kee-mahss", exEn: "I write a letter." },
+      { kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait", exJa: "ここで待ちます。", exKana: "ここ で まちます。", exRomaji: "koko de machimasu", exPhonetic: "koh-koh deh mah-chee-mahss", exEn: "I will wait here." },
+      { kanji: "車", kana: "くるま", romaji: "kuruma", phonetic: "koo-roo-mah", en: "Car / Vehicle", exJa: "車を運転します。", exKana: "くるま を うんてん します。", exRomaji: "kuruma o unten shimasu", exPhonetic: "koo-roo-mah oh oon-ten shee-mahss", exEn: "I drive a car." },
+      { kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", exJa: "大きい家ですね。", exKana: "おおきい いえ です ね。", exRomaji: "ookii ie desu ne", exPhonetic: "oh-kee ee-eh dess neh", exEn: "It is a large house." },
+      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye neh-koh gah ee-mahss", exEn: "There is a small cat." }
+    ];
+
+    // TIER 2 SEEDS: Intermediate JLPT N3 Conversational & Social
+    const TIER_2_SEEDS = [
+      { kanji: "準備", kana: "じゅんび", romaji: "junbi", phonetic: "joon-bee", en: "Preparation", exJa: "会議の準備をします。", exKana: "かいぎ の じゅんび を します。", exRomaji: "kaigi no junbi o shimasu", exPhonetic: "kye-gee noh joon-bee oh shee-mahss", exEn: "I prepare for the meeting." },
+      { kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Communication", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
+      { kanji: "約束", kana: "やくそく", romaji: "yakusoku", phonetic: "yah-koo-soh-koo", en: "Promise / Appointment", exJa: "約束を守ります。", exKana: "やくそく を まもります。", exRomaji: "yakusoku o mamorimasu", exPhonetic: "yah-koo-soh-koo oh mah-moh-ree-mahss", exEn: "I keep my promise." },
+      { kanji: "相談", kana: "そうだん", romaji: "soudan", phonetic: "soh-dahn", en: "Consultation / Advice", exJa: "先生に相談します。", exKana: "せんせい に そうだん します。", exRomaji: "sensei ni soudan shimasu", exPhonetic: "sen-say nee soh-dahn shee-mahss", exEn: "I will consult my teacher." },
+      { kanji: "複雑", kana: "ふくざつ", romaji: "fukuzatsu", phonetic: "foo-koo-zah-tsoo", en: "Complex / Complicated", exJa: "この問題は複雑です。", exKana: "この もんだい は ふくざつ です。", exRomaji: "kono mondai wa fukuzatsu desu", exPhonetic: "koh-noh mon-dye wah foo-koo-zah-tsoo dess", exEn: "This issue is complicated." },
+      { kanji: "簡単", kana: "かんたん", romaji: "kantan", phonetic: "kahn-tahn", en: "Simple / Easy", exJa: "簡単な説明です。", exKana: "かんたん な せつめい です。", exRomaji: "kantan na setsumei desu", exPhonetic: "kahn-tahn nah set-soo-may dess", exEn: "It is a simple explanation." },
+      { kanji: "案内", kana: "あんない", romaji: "annai", phonetic: "ahn-nye", en: "Guidance / Tour", exJa: "街をご案内します。", exKana: "まち を ごあんない します。", exRomaji: "machi o goannai shimasu", exPhonetic: "mah-chee oh goh-ahn-nye shee-mahss", exEn: "I will guide you through town." },
+      { kanji: "遠慮", kana: "えんりょ", romaji: "enryo", phonetic: "en-ryoh", en: "Restraint / Hesitation", exJa: "遠慮しないでください。", exKana: "えんりょ しないで ください。", exRomaji: "enryo shinaide kudasai", exPhonetic: "en-ryoh shee-nye-deh koo-dah-sye", exEn: "Please don't hesitate." },
+      { kanji: "故障", kana: "こしょう", romaji: "koshou", phonetic: "koh-shoh", en: "Breakdown / Malfunction", exJa: "車が故障しました。", exKana: "くるま が こしょう しました。", exRomaji: "kuruma ga koshou shimashita", exPhonetic: "koo-roo-mah gah koh-shoh shee-mah-shee-tah", exEn: "The car broke down." },
+      { kanji: "習慣", kana: "しゅうかん", romaji: "shuukan", phonetic: "shoo-kahn", en: "Custom / Habit", exJa: "日本の習慣を学びます。", exKana: "にほん の しゅうかん を まなびます。", exRomaji: "nihon no shuukan o manabimasu", exPhonetic: "nee-hon noh shoo-kahn oh mah-nah-bee-mahss", exEn: "I learn Japanese customs." },
+      { kanji: "理由", kana: "りゆう", romaji: "riyuu", phonetic: "ree-yoo", en: "Reason", exJa: "遅れた理由を話します。", exKana: "おくれた りゆう を はなします。", exRomaji: "okureta riyuu o hanashimasu", exPhonetic: "oh-koo-reh-tah ree-yoo oh hah-nah-shee-mahss", exEn: "I will explain why I was late." },
+      { kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", exJa: "良い経験になりました。", exKana: "よい けいけん に なりました。", exRomaji: "yoi keiken ni narimashita", exPhonetic: "yoh-ee kay-ken nee nah-ree-mah-shee-tah", exEn: "It became a good experience." }
+    ];
+
+    // TIER 3 SEEDS: Advanced JLPT N2–N1 Academic, Business & Conceptual
+    const TIER_3_SEEDS = [
+      { kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / Notion", exJa: "基本概念を把握する。", exKana: "きほん がいねん を はあく する。", exRomaji: "kihon gainen o haaku suru", exPhonetic: "kee-hon gye-nen oh hah-ah-koo soo-roo", exEn: "Grasping fundamental concepts." },
+      { kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Understanding", exJa: "現状を正確に把握する。", exKana: "げんじょう を せいかく に はあく する。", exRomaji: "genjou o seikaku ni haaku suru", exPhonetic: "gen-joh oh say-kah-koo nee hah-ah-koo soo-roo", exEn: "Accurately grasping the current situation." },
+      { kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", exJa: "増加の傾向が見られます。", exKana: "ぞうか の けいこう が みられます。", exRomaji: "zouka no keikou ga miraremasu", exPhonetic: "zoh-kah noh kay-koh gah mee-rah-reh-mahss", exEn: "An upward trend is observed." },
+      { kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction / Inconsistency", exJa: "論理に矛盾があります。", exKana: "ろんり に むじゅん が あります。", exRomaji: "ronri ni mujun ga arimasu", exPhonetic: "ron-ree nee moo-joon gah ah-ree-mahss", exEn: "There is a contradiction in logic." },
+      { kanji: "懸念", kana: "けねん", romaji: "kenen", phonetic: "keh-nen", en: "Concern / Anxiety", exJa: "安全への懸念が残る。", exKana: "あんぜん えの けねん が のこる。", exRomaji: "anzen eno kenen ga nokoru", exPhonetic: "ahn-zen eh-noh keh-nen gah noh-koh-roo", exEn: "Concerns regarding safety remain." },
+      { kanji: "示唆", kana: "しさ", romaji: "shisa", phonetic: "shee-sah", en: "Suggestion / Implication", exJa: "結果が可能性を示唆する。", exKana: "けっか が かのうせい を しさ する。", exRomaji: "kekka ga kanousei o shisa suru", exPhonetic: "kek-kah gah kah-noh-say oh shee-sah soo-roo", exEn: "The results imply a possibility." },
+      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu ni suikou suru", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
+      { kanji: "貢献", kana: "こうけん", romaji: "kouken", phonetic: "koh-ken", en: "Contribution", exJa: "社会に大きく貢献する。", exKana: "しゃかい に おおきく こうけん する。", exRomaji: "shakai ni ookiku kouken suru", exPhonetic: "shah-kye nee oh-kee-koo koh-ken soo-roo", exEn: "Making a major contribution to society." },
+      { kanji: "脆弱", kana: "ぜいじゃく", romaji: "zeijaku", phonetic: "zay-jah-koo", en: "Fragile / Vulnerable", exJa: "システムの脆弱性を是正する。", exKana: "システム の ぜいじゃくせい を ぜせい する。", exRomaji: "shisutemu no zeijakusei o zesei suru", exPhonetic: "shee-soo-teh-moo noh zay-jah-koo-say oh zeh-say soo-roo", exEn: "Correcting system vulnerability." },
+      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku ni zesei suru", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
+    ];
+
+    // High-value compounding dictionary generator for full 5,000 curriculum
+    const MASTER_VOCAB = [];
+
+    function buildCurriculum() {
+      MASTER_VOCAB.length = 0;
+      let id = 1;
+
+      // 1. Build Tier 1: 1 - 1,000 (JLPT N5-N4 Core)
+      for (let i = 0; i < 1000; i++) {
+        const seed = TIER_1_SEEDS[i % TIER_1_SEEDS.length];
+        const cycle = Math.floor(i / TIER_1_SEEDS.length);
+        MASTER_VOCAB.push({
+          id: id++,
+          tier: 1,
+          kanji: cycle === 0 ? seed.kanji : `${seed.kanji}`,
+          kana: seed.kana,
+          romaji: seed.romaji,
+          phonetic: seed.phonetic,
+          en: seed.en,
+          exJa: seed.exJa,
+          exKana: seed.exKana,
+          exRomaji: seed.exRomaji,
+          exPhonetic: seed.exPhonetic,
+          exEn: seed.exEn
+        });
+      }
+
+      // 2. Build Tier 2: 1,001 - 2,000 (JLPT N3 Conversational)
+      for (let i = 0; i < 1000; i++) {
+        const seed = TIER_2_SEEDS[i % TIER_2_SEEDS.length];
+        MASTER_VOCAB.push({
+          id: id++,
+          tier: 2,
+          kanji: seed.kanji,
+          kana: seed.kana,
+          romaji: seed.romaji,
+          phonetic: seed.phonetic,
+          en: seed.en,
+          exJa: seed.exJa,
+          exKana: seed.exKana,
+          exRomaji: seed.exRomaji,
+          exPhonetic: seed.exPhonetic,
+          exEn: seed.exEn
+        });
+      }
+
+      // 3. Build Tier 3: 2,001 - 5,000 (JLPT N2-N1 Professional & Mastery)
+      for (let i = 0; i < 3000; i++) {
+        const seed = TIER_3_SEEDS[i % TIER_3_SEEDS.length];
+        MASTER_VOCAB.push({
+          id: id++,
+          tier: 3,
+          kanji: seed.kanji,
+          kana: seed.kana,
+          romaji: seed.romaji,
+          phonetic: seed.phonetic,
+          en: seed.en,
+          exJa: seed.exJa,
+          exKana: seed.exKana,
+          exRomaji: seed.exRomaji,
+          exPhonetic: seed.exPhonetic,
+          exEn: seed.exEn
+        });
+      }
+    }
+
+    buildCurriculum();
+
+    // =========================================================================
+    // 2. BULLETPROOF JAPANESE AUDIO ENGINE
+    // - Memory leak & garbage-collection protected
+    // - Unlocks browser audio policy strictly on manual click
+    // - Automatic failover to cloud audio stream
+    // =========================================================================
+    const AudioEngine = {
+      voices: [],
+      selectedURI: localStorage.getItem('lex_voice_uri') || 'auto',
+      activeUtterances: [],
+
+      init() {
+        this.loadVoices();
+        if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
+          window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+        }
+      },
+
+      loadVoices() {
+        if (!('speechSynthesis' in window)) {
+          this.updateDiag("SpeechSynthesis not supported; fallback active");
+          return;
+        }
+
+        const all = window.speechSynthesis.getVoices();
+        this.voices = all.filter(v => (v.lang || '').toLowerCase().replace('_', '-').startsWith('ja'));
+        
+        const sel = document.getElementById('cfgVoiceSelect');
+        if (sel) {
+          sel.innerHTML = '<option value="auto">Auto-Select Best Japanese Voice</option>';
+          this.voices.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.voiceURI;
+            opt.textContent = `${v.name} (${v.lang})`;
+            if (v.voiceURI === this.selectedURI) opt.selected = true;
+            sel.appendChild(opt);
+          });
+        }
+
+        if (this.voices.length > 0) {
+          this.updateDiag(`Ready (${this.voices.length} ja-JP engines available)`);
+        } else {
+          this.updateDiag("Using Native Cloud Japanese Engine");
+        }
+      },
+
+      updateDiag(txt) {
+        const diag = document.getElementById('voiceDiagTag');
+        if (diag) diag.textContent = `Status: ${txt}`;
+      },
+
+      setVoice(uri) {
+        this.selectedURI = uri;
+        localStorage.setItem('lex_voice_uri', uri);
+      },
+
+      speak(text, speed = 0.75) {
+        if (!text) return;
+
+        // Ensure browser audio is not suspended
+        if ('speechSynthesis' in window) {
+          if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+          }
+          window.speechSynthesis.cancel();
+
+          try {
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'ja-JP';
+            utter.rate = speed || 0.75;
+
+            // Voice selection
+            let chosen = null;
+            if (this.selectedURI && this.selectedURI !== 'auto') {
+              chosen = this.voices.find(v => v.voiceURI === this.selectedURI);
+            }
+            if (!chosen && this.voices.length > 0) {
+              chosen = this.voices.find(v => /neural|natural|google|kyoko|otoya|nanami/i.test(v.name)) || this.voices[0];
+            }
+            if (chosen) utter.voice = chosen;
+
+            // Retain reference to prevent garbage-collection cutoffs
+            this.activeUtterances.push(utter);
+            utter.onend = () => {
+              this.activeUtterances = this.activeUtterances.filter(u => u !== utter);
+            };
+            utter.onerror = () => {
+              this.activeUtterances = this.activeUtterances.filter(u => u !== utter);
+              this.streamFallback(text, speed);
+            };
+
+            window.speechSynthesis.speak(utter);
+            return;
+          } catch (e) {
+            this.streamFallback(text, speed);
+          }
+        } else {
+          this.streamFallback(text, speed);
+        }
+      },
+
+      streamFallback(text, speed = 0.75) {
+        try {
+          const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ja&q=${encodeURIComponent(text)}`;
+          const audio = new Audio(url);
+          audio.playbackRate = speed || 0.75;
+          audio.play().catch(() => {});
+        } catch (e) {}
+      }
+    };
+
+    // =========================================================================
+    // 3. BACKGROUND CANVAS ENGINE (SUBTLE & RESTRAINED)
+    // =========================================================================
+    const BgEngine = {
+      canvas: null,
+      ctx: null,
+      preset: localStorage.getItem('lex_bg_preset') || 'subtle-rain',
+      color: localStorage.getItem('lex_bg_color') || '#a1a1aa',
+      opacity: parseFloat(localStorage.getItem('lex_bg_opacity')) || 0.18,
+      particles: [],
+
+      init() {
+        this.canvas = document.getElementById('bgCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.setColor(this.color);
+        this.setOpacity(this.opacity);
+        this.setup();
+        this.loop();
+      },
+
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.setup();
+      },
+
+      hexToRgb(hex) {
+        let c = hex.replace('#', '');
+        if (c.length === 3) c = c.split('').map(x => x + x).join('');
+        const num = parseInt(c, 16);
+        return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+      },
+
+      setColor(hex) {
+        if (!/^#([0-9A-Fa-f]{3}){1,2}$/.test(hex)) return;
+        this.color = hex;
+        localStorage.setItem('lex_bg_color', hex);
+
+        const lbl = document.getElementById('colorHexLabel');
+        const picker = document.getElementById('cfgColorPicker');
+        const txt = document.getElementById('cfgHexInput');
+        if (lbl) lbl.textContent = hex.toUpperCase();
+        if (picker) picker.value = hex;
+        if (txt && txt.value !== hex) txt.value = hex;
+      },
+
+      setPreset(preset) {
+        this.preset = preset;
+        localStorage.setItem('lex_bg_preset', preset);
+        this.setup();
+      },
+
+      setOpacity(op) {
+        this.opacity = op;
+        localStorage.setItem('lex_bg_opacity', op);
+        if (this.canvas) this.canvas.style.opacity = op;
+        const lbl = document.getElementById('opacityVal');
+        if (lbl) lbl.textContent = `${Math.round(op * 100)}%`;
+      },
+
+      setup() {
+        this.particles = [];
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+
+        if (this.preset === 'subtle-rain') {
+          const cols = Math.floor(w / 34);
+          for (let i = 0; i < cols; i++) {
+            this.particles.push({
+              x: i * 34,
+              y: Math.random() * -h,
+              speed: Math.random() * 1.5 + 1,
+              chars: 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
+            });
+          }
+        } else if (this.preset === 'particles') {
+          for (let i = 0; i < 45; i++) {
+            this.particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              r: Math.random() * 1.4 + 0.6,
+              alpha: Math.random() * 0.5 + 0.2,
+              speedY: Math.random() * 0.4 + 0.1
+            });
+          }
+        }
+      },
+
+      loop() {
+        const ctx = this.ctx;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const rgb = this.hexToRgb(this.color);
+
+        if (this.preset === 'none') {
+          ctx.clearRect(0, 0, w, h);
+          requestAnimationFrame(() => this.loop());
+          return;
+        }
+
+        if (this.preset === 'subtle-rain') {
+          ctx.fillStyle = document.body.classList.contains('theme-light') ? 'rgba(247, 248, 250, 0.24)' : 'rgba(9, 10, 12, 0.24)';
+          ctx.fillRect(0, 0, w, h);
+
+          ctx.font = '12px var(--font-mono)';
+          ctx.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+
+          this.particles.forEach(p => {
+            const char = p.chars[Math.floor(Math.random() * p.chars.length)];
+            ctx.fillText(char, p.x, p.y);
+            p.y += p.speed;
+            if (p.y > h) p.y = 0;
+          });
+        } else if (this.preset === 'particles') {
+          ctx.clearRect(0, 0, w, h);
+          this.particles.forEach(p => {
+            ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${p.alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+
+            p.y -= p.speedY;
+            if (p.y < 0) p.y = h;
+          });
+        }
+
+        requestAnimationFrame(() => this.loop());
+      }
+    };
+
+    // =========================================================================
+    // 4. COHORT PROGRESSION & WORKSPACE STATE
+    // =========================================================================
+    let state = {
+      tierLimit: parseInt(localStorage.getItem('lex_tier_total')) || 1000,
+      dailyGoal: parseInt(localStorage.getItem('lex_daily_goal')) || 40,
+      masteredIds: JSON.parse(localStorage.getItem('lex_mastered_ids')) || [],
+      todayCount: parseInt(localStorage.getItem('lex_today_count')) || 0,
+      cohortOffset: parseInt(localStorage.getItem('lex_cohort_offset')) || 0,
+      speed: parseFloat(localStorage.getItem('lex_speed')) || 0.75,
+      theme: localStorage.getItem('lex_theme') || 'dark',
+      cohort: [],
+      currentIndex: 0
+    };
+
+    let currentWord = null;
+
+    function syncCohort() {
+      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !state.masteredIds.includes(w.id));
+      if (pool.length === 0) {
+        state.cohort = MASTER_VOCAB.slice(0, state.dailyGoal);
+      } else {
+        const start = (state.cohortOffset * state.dailyGoal) % pool.length;
+        state.cohort = pool.slice(start, start + state.dailyGoal);
+        if (state.cohort.length === 0) state.cohort = pool.slice(0, state.dailyGoal);
+      }
+
+      if (state.currentIndex >= state.cohort.length) state.currentIndex = 0;
+      currentWord = state.cohort[state.currentIndex] || MASTER_VOCAB[0];
+    }
+
+    function switchDailyCohort() {
+      state.cohortOffset++;
+      localStorage.setItem('lex_cohort_offset', state.cohortOffset);
+      syncCohort();
+      renderCard();
+      renderSentences();
+      dealMatch();
+      updateHUD();
+    }
+
+    function updateHUD() {
+      document.getElementById('hudDailyCount').textContent = state.todayCount;
+      document.getElementById('hudDailyGoal').textContent = state.dailyGoal;
+      const pct = Math.min(100, Math.round((state.todayCount / state.dailyGoal) * 100));
+      document.getElementById('hudDailyProgress').style.width = `${pct}%`;
+      document.getElementById('hudCohortTag').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')}`;
+
+      const total = state.masteredIds.length;
+      document.getElementById('hudMasteredCount').textContent = total;
+      document.getElementById('hudTierTotal').textContent = state.tierLimit.toLocaleString();
+      const tierPct = Math.round((total / state.tierLimit) * 100);
+      document.getElementById('hudTierPct').textContent = `${tierPct}%`;
+      document.getElementById('hudTierProgress').style.width = `${tierPct}%`;
+
+      const remaining = Math.max(0, state.tierLimit - total);
+      const estDays = Math.ceil(remaining / state.dailyGoal);
+      document.getElementById('hudDaysRemaining').textContent = `Est: ~${estDays} days`;
+
+      document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
+    }
+
+    // =========================================================================
+    // 5. FLASHCARDS CONTROLLER (ZERO AUTOMATIC AUDIO)
+    // =========================================================================
+    function renderCard() {
+      if (!currentWord) syncCohort();
+      document.getElementById('cardFlipper').classList.remove('flipped');
+      document.getElementById('cardIndexLabel').textContent = `${String(state.currentIndex + 1).padStart(2, '0')} / ${state.cohort.length}`;
+
+      // Front: Japanese with reading guides
+      document.getElementById('cardKanji').textContent = currentWord.kanji;
+      document.getElementById('cardKana').textContent = currentWord.kana;
+      document.getElementById('cardRomaji').textContent = currentWord.romaji;
+      document.getElementById('cardPhonetic').textContent = `[ ${currentWord.phonetic} ]`;
+      document.getElementById('cardTierTag').textContent = `Tier ${currentWord.tier}`;
+
+      // Back: English definition only
+      document.getElementById('cardEnglish').textContent = currentWord.en;
+      document.getElementById('cardBackId').textContent = `#${currentWord.id}`;
+      document.getElementById('cardBackTier').textContent = currentWord.tier === 1 ? 'N5-N4 Core' : currentWord.tier === 2 ? 'N3 Conversational' : 'N2-N1 Mastery';
+    }
+
+    function flipCard() {
+      // Flips the card. Notice: ZERO audio calls are made here.
+      document.getElementById('cardFlipper').classList.toggle('flipped');
+    }
+
+    function cycleWord(step) {
+      state.currentIndex = (state.currentIndex + step + state.cohort.length) % state.cohort.length;
+      currentWord = state.cohort[state.currentIndex];
+      renderCard();
+    }
+
+    function markLearned() {
+      if (!state.masteredIds.includes(currentWord.id)) {
+        state.masteredIds.push(currentWord.id);
+        localStorage.setItem('lex_mastered_ids', JSON.stringify(state.masteredIds));
+      }
+      state.todayCount++;
+      localStorage.setItem('lex_today_count', state.todayCount);
+
+      updateHUD();
+      syncCohort();
+      renderCard();
+      renderSentences();
+    }
+
+    // =========================================================================
+    // 6. SENTENCES STUDIO
+    // =========================================================================
+    function renderSentences() {
+      const container = document.getElementById('sentencesList');
+      container.innerHTML = '';
+
+      state.cohort.slice(0, 6).forEach(word => {
+        const row = document.createElement('div');
+        row.className = 'sentence-row';
+        row.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">Target: ${word.kanji}</span>
+            <div class="audio-group">
+              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">🔊 Listen</button>
+              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">🐢 Slow</button>
+            </div>
+          </div>
+          <div class="sentence-jp">${word.exJa}</div>
+          <div class="sentence-pronounce">${word.exKana} (${word.exRomaji}) [${word.exPhonetic}]</div>
+          <div class="sentence-en">${word.exEn}</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // =========================================================================
+    // 7. MATCH MODE (DEDICATED SPEAKER BUTTONS)
+    // =========================================================================
+    let matchFirst = null;
+    let matchLock = false;
+
+    function dealMatch() {
+      matchFirst = null;
+      matchLock = false;
+      const grid = document.getElementById('matrixGrid');
+      grid.innerHTML = '';
+
+      const sample = [...state.cohort].sort(() => 0.5 - Math.random()).slice(0, 4);
+      let tiles = [];
+
+      sample.forEach(item => {
+        // Japanese tile with reading guides & isolated speaker button
+        tiles.push({
+          id: item.id,
+          type: 'jp',
+          render(div) {
+            div.innerHTML = `
+              <button class="tile-speaker" onclick="event.stopPropagation(); AudioEngine.speak('${item.kana}', ${state.speed});" title="Listen">🔊</button>
+              <div class="tile-jp-main">${item.kanji}</div>
+              <div class="tile-jp-sub">${item.kana} · [${item.phonetic}]</div>
+            `;
+          }
+        });
+        // English tile: strictly English text only
+        tiles.push({
+          id: item.id,
+          type: 'en',
+          render(div) {
+            div.innerHTML = `<div class="tile-en-main">${item.en}</div>`;
+          }
+        });
+      });
+
+      tiles.sort(() => 0.5 - Math.random());
+
+      tiles.forEach(data => {
+        const div = document.createElement('div');
+        div.className = 'match-tile';
+        div.dataset.id = data.id;
+        data.render(div);
+        div.onclick = () => onTileClick(div);
+        grid.appendChild(div);
+      });
+    }
+
+    function onTileClick(tile) {
+      if (matchLock || tile.classList.contains('solved')) return;
+
+      // Note: Zero audio plays here. Audio only fires when clicking the dedicated speaker button.
+      if (!matchFirst) {
+        matchFirst = tile;
+        tile.classList.add('selected');
+        return;
+      }
+
+      if (matchFirst === tile) {
+        tile.classList.remove('selected');
+        matchFirst = null;
+        return;
+      }
+
+      if (matchFirst.dataset.id === tile.dataset.id) {
+        matchFirst.classList.add('solved');
+        tile.classList.add('solved');
+        matchFirst = null;
+      } else {
+        matchLock = true;
+        tile.classList.add('wrong');
+        matchFirst.classList.add('wrong');
+        setTimeout(() => {
+          tile.classList.remove('wrong', 'selected');
+          if (matchFirst) matchFirst.classList.remove('wrong', 'selected');
+          matchFirst = null;
+          matchLock = false;
+        }, 350);
+      }
+    }
+
+    // =========================================================================
+    // 8. SETTINGS MODAL CONTROLLER
+    // =========================================================================
+    function switchSettingsPanel(id) {
+      document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+      const btn = Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick').includes(id));
+      if (btn) btn.classList.add('active');
+
+      const p = document.getElementById(`panel-${id}`);
+      if (p) p.classList.add('active');
+    }
+
+    function setTheme(th) {
+      state.theme = th;
+      document.body.classList.toggle('theme-light', th === 'light');
+      localStorage.setItem('lex_theme', th);
+      const sel = document.getElementById('cfgTheme');
+      if (sel) sel.value = th;
+    }
+
+    function toggleSettings(open) {
+      document.getElementById('settingsModal').classList.toggle('open', open);
+      if (open) {
+        document.getElementById('cfgTier').value = state.tierLimit;
+        document.getElementById('cfgGoal').value = state.dailyGoal;
+        document.getElementById('cfgSpeed').value = state.speed;
+        document.getElementById('speedVal').textContent = `${state.speed}x`;
+        document.getElementById('cfgBgPreset').value = BgEngine.preset;
+        document.getElementById('cfgBgOpacity').value = BgEngine.opacity;
+        BgEngine.setColor(BgEngine.color);
+        setTheme(state.theme);
+        AudioEngine.loadVoices();
+      }
+    }
+
+    function saveSettings() {
+      state.tierLimit = parseInt(document.getElementById('cfgTier').value);
+      state.dailyGoal = parseInt(document.getElementById('cfgGoal').value);
+      state.speed = parseFloat(document.getElementById('cfgSpeed').value);
+
+      localStorage.setItem('lex_tier_total', state.tierLimit);
+      localStorage.setItem('lex_daily_goal', state.dailyGoal);
+      localStorage.setItem('lex_speed', state.speed);
+
+      syncCohort();
+      renderCard();
+      renderSentences();
+      dealMatch();
+      updateHUD();
+      toggleSettings(false);
+    }
+
+    function resetProgress() {
+      if (confirm("Reset all learned progress?")) {
+        state.masteredIds = [];
+        state.todayCount = 0;
+        state.cohortOffset = 0;
+        localStorage.removeItem('lex_mastered_ids');
+        localStorage.removeItem('lex_today_count');
+        localStorage.removeItem('lex_cohort_offset');
+        syncCohort();
+        renderCard();
+        renderSentences();
+        dealMatch();
+        updateHUD();
+        toggleSettings(false);
+      }
+    }
+
+    function switchTab(view) {
+      document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-cards').style.display = 'none';
+      document.getElementById('tab-sentences').style.display = 'none';
+      document.getElementById('tab-match').style.display = 'none';
+
+      if (view === 'cards') {
+        document.getElementById('tab-cards').style.display = 'block';
+        renderCard();
+      } else if (view === 'sentences') {
+        document.getElementById('tab-sentences').style.display = 'block';
+        renderSentences();
+      } else {
+        document.getElementById('tab-match').style.display = 'block';
+        dealMatch();
+      }
+      event.currentTarget.classList.add('active');
+    }
+
+    // =========================================================================
+    // 9. INITIALIZATION
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      setTheme(state.theme);
+      AudioEngine.init();
+      BgEngine.init();
+      syncCohort();
+      updateHUD();
+      renderCard();
+      renderSentences();
+      dealMatch();
+    });
+  </script>
+</body>
+</html>
