@@ -2,9 +2,18 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Japanese Lexicon // Core Workstation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Japanese Core // Lexicon</title>
   
+  <!-- PWA & Mobile Configuration -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#111215" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lexicon" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+
   <style>
     :root {
       --bg: #090a0c;
@@ -51,6 +60,7 @@
       background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -72,6 +82,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      min-height: 100dvh;
     }
 
     /* HEADER */
@@ -103,7 +114,13 @@
       border-radius: var(--radius-sm);
     }
 
-    /* COMPACT CONTROLS */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* COMPACT BUTTONS */
     .btn {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -338,10 +355,7 @@
       font-family: var(--font-mono);
     }
 
-    .audio-group {
-      display: flex;
-      gap: 0.35rem;
-    }
+    .audio-group { display: flex; gap: 0.35rem; }
 
     .deck-controls {
       display: grid;
@@ -587,16 +601,18 @@
 </head>
 <body>
 
-  <!-- Minimal Canvas Background -->
   <canvas id="bgCanvas"></canvas>
 
   <div class="app-shell">
     <header>
       <div class="brand">
-        <span>Lexicon Workstation</span>
+        <span>Lexicon</span>
         <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
       </div>
-      <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">⚙️</button>
+      <div class="header-controls">
+        <button class="btn" id="btnPwaInstall" style="display: none; padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="triggerPwaInstall()">📥 Install</button>
+        <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">⚙️</button>
+      </div>
     </header>
 
     <nav>
@@ -637,7 +653,7 @@
         <div class="card-space" onclick="flipCard()">
           <div class="card-flipper" id="cardFlipper">
             
-            <!-- Front: Japanese (Strictly manual speaker buttons only) -->
+            <!-- Front: Japanese (Manual audio only) -->
             <div class="card-side">
               <div class="card-top">
                 <span id="cardIndexLabel">01 / 40</span>
@@ -720,7 +736,6 @@
         </div>
 
         <div class="modal-content">
-          
           <!-- General -->
           <div class="panel active" id="panel-general">
             <div class="form-group">
@@ -731,9 +746,9 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Audio Automation</label>
+              <label class="form-label">Audio Configuration</label>
               <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.2rem;">
-                Audio plays strictly on manual 🔊 button clicks. Auto-play on card flip is permanently disabled.
+                Audio plays strictly on manual 🔊 button clicks. Auto-play on card flip is disabled.
               </div>
             </div>
           </div>
@@ -772,9 +787,6 @@
                 <option value="2000">Tier 2: Top 2,000 (JLPT N3 Conversational Fluency)</option>
                 <option value="5000">Tier 3: Top 5,000 (JLPT N2–N1 Professional & Mastery)</option>
               </select>
-              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.4rem;">
-                Progressively orders real lexical vocabulary from high-frequency core words to advanced conceptual kanji compounds.
-              </div>
             </div>
 
             <div class="form-group">
@@ -825,7 +837,6 @@
               <input type="range" class="input-control" id="cfgBgOpacity" min="0.05" max="0.6" step="0.05" value="0.18" oninput="BgEngine.setOpacity(parseFloat(this.value))">
             </div>
           </div>
-
         </div>
       </div>
 
@@ -838,11 +849,50 @@
 
   <script>
     // =========================================================================
-    // 1. STRATIFIED VOCABULARY ENGINE (TIERS 1,000 -> 2,000 -> 5,000)
-    // Real, progressive Japanese vocabulary with zero placeholder numbers.
+    // AUTOMATIC FULLSCREEN ENGINE & PWA
     // =========================================================================
+    function triggerAutoFullscreen() {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      // Detach listeners immediately after the first interaction
+      window.removeEventListener('click', triggerAutoFullscreen);
+      window.removeEventListener('touchstart', triggerAutoFullscreen);
+    }
 
-    // TIER 1 SEEDS: Core JLPT N5–N4 Daily Vocabulary
+    // Automatically enters fullscreen on the user's first click or touch
+    window.addEventListener('click', triggerAutoFullscreen, { passive: true });
+    window.addEventListener('touchstart', triggerAutoFullscreen, { passive: true });
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('btnPwaInstall');
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('btnPwaInstall').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // =========================================================================
+    // 1. STRATIFIED VOCABULARY ENGINE (TIERS 1,000 -> 2,000 -> 5,000)
+    // =========================================================================
     const TIER_1_SEEDS = [
       { kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Me", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
       { kanji: "水", kana: "みず", romaji: "mizu", phonetic: "mee-zoo", en: "Water", exJa: "お水をください。", exKana: "おみず を ください。", exRomaji: "omizu o kudasai", exPhonetic: "oh-mee-zoo oh koo-dah-sye", exEn: "Water, please." },
@@ -871,7 +921,6 @@
       { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye neh-koh gah ee-mahss", exEn: "There is a small cat." }
     ];
 
-    // TIER 2 SEEDS: Intermediate JLPT N3 Conversational & Social
     const TIER_2_SEEDS = [
       { kanji: "準備", kana: "じゅんび", romaji: "junbi", phonetic: "joon-bee", en: "Preparation", exJa: "会議の準備をします。", exKana: "かいぎ の じゅんび を します。", exRomaji: "kaigi no junbi o shimasu", exPhonetic: "kye-gee noh joon-bee oh shee-mahss", exEn: "I prepare for the meeting." },
       { kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Communication", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
@@ -887,7 +936,6 @@
       { kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", exJa: "良い経験になりました。", exKana: "よい けいけん に なりました。", exRomaji: "yoi keiken ni narimashita", exPhonetic: "yoh-ee kay-ken nee nah-ree-mah-shee-tah", exEn: "It became a good experience." }
     ];
 
-    // TIER 3 SEEDS: Advanced JLPT N2–N1 Academic, Business & Conceptual
     const TIER_3_SEEDS = [
       { kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / Notion", exJa: "基本概念を把握する。", exKana: "きほん がいねん を はあく する。", exRomaji: "kihon gainen o haaku suru", exPhonetic: "kee-hon gye-nen oh hah-ah-koo soo-roo", exEn: "Grasping fundamental concepts." },
       { kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Understanding", exJa: "現状を正確に把握する。", exKana: "げんじょう を せいかく に はあく する。", exRomaji: "genjou o seikaku ni haaku suru", exPhonetic: "gen-joh oh say-kah-koo nee hah-ah-koo soo-roo", exEn: "Accurately grasping the current situation." },
@@ -901,21 +949,18 @@
       { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku ni zesei suru", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
     ];
 
-    // High-value compounding dictionary generator for full 5,000 curriculum
     const MASTER_VOCAB = [];
 
     function buildCurriculum() {
       MASTER_VOCAB.length = 0;
       let id = 1;
 
-      // 1. Build Tier 1: 1 - 1,000 (JLPT N5-N4 Core)
       for (let i = 0; i < 1000; i++) {
         const seed = TIER_1_SEEDS[i % TIER_1_SEEDS.length];
-        const cycle = Math.floor(i / TIER_1_SEEDS.length);
         MASTER_VOCAB.push({
           id: id++,
           tier: 1,
-          kanji: cycle === 0 ? seed.kanji : `${seed.kanji}`,
+          kanji: seed.kanji,
           kana: seed.kana,
           romaji: seed.romaji,
           phonetic: seed.phonetic,
@@ -928,7 +973,6 @@
         });
       }
 
-      // 2. Build Tier 2: 1,001 - 2,000 (JLPT N3 Conversational)
       for (let i = 0; i < 1000; i++) {
         const seed = TIER_2_SEEDS[i % TIER_2_SEEDS.length];
         MASTER_VOCAB.push({
@@ -947,7 +991,6 @@
         });
       }
 
-      // 3. Build Tier 3: 2,001 - 5,000 (JLPT N2-N1 Professional & Mastery)
       for (let i = 0; i < 3000; i++) {
         const seed = TIER_3_SEEDS[i % TIER_3_SEEDS.length];
         MASTER_VOCAB.push({
@@ -970,10 +1013,7 @@
     buildCurriculum();
 
     // =========================================================================
-    // 2. BULLETPROOF JAPANESE AUDIO ENGINE
-    // - Memory leak & garbage-collection protected
-    // - Unlocks browser audio policy strictly on manual click
-    // - Automatic failover to cloud audio stream
+    // 2. AUDIO ENGINE (MANUAL ONLY)
     // =========================================================================
     const AudioEngine = {
       voices: [],
@@ -1028,7 +1068,6 @@
       speak(text, speed = 0.75) {
         if (!text) return;
 
-        // Ensure browser audio is not suspended
         if ('speechSynthesis' in window) {
           if (window.speechSynthesis.paused) {
             window.speechSynthesis.resume();
@@ -1040,7 +1079,6 @@
             utter.lang = 'ja-JP';
             utter.rate = speed || 0.75;
 
-            // Voice selection
             let chosen = null;
             if (this.selectedURI && this.selectedURI !== 'auto') {
               chosen = this.voices.find(v => v.voiceURI === this.selectedURI);
@@ -1050,7 +1088,6 @@
             }
             if (chosen) utter.voice = chosen;
 
-            // Retain reference to prevent garbage-collection cutoffs
             this.activeUtterances.push(utter);
             utter.onend = () => {
               this.activeUtterances = this.activeUtterances.filter(u => u !== utter);
@@ -1081,7 +1118,7 @@
     };
 
     // =========================================================================
-    // 3. BACKGROUND CANVAS ENGINE (SUBTLE & RESTRAINED)
+    // 3. BACKGROUND CANVAS ENGINE
     // =========================================================================
     const BgEngine = {
       canvas: null,
@@ -1213,7 +1250,7 @@
     };
 
     // =========================================================================
-    // 4. COHORT PROGRESSION & WORKSPACE STATE
+    // 4. WORKSPACE STATE & COHORT LOGIC
     // =========================================================================
     let state = {
       tierLimit: parseInt(localStorage.getItem('lex_tier_total')) || 1000,
@@ -1282,21 +1319,20 @@
       document.getElementById('cardFlipper').classList.remove('flipped');
       document.getElementById('cardIndexLabel').textContent = `${String(state.currentIndex + 1).padStart(2, '0')} / ${state.cohort.length}`;
 
-      // Front: Japanese with reading guides
+      // Front: Japanese
       document.getElementById('cardKanji').textContent = currentWord.kanji;
       document.getElementById('cardKana').textContent = currentWord.kana;
       document.getElementById('cardRomaji').textContent = currentWord.romaji;
       document.getElementById('cardPhonetic').textContent = `[ ${currentWord.phonetic} ]`;
       document.getElementById('cardTierTag').textContent = `Tier ${currentWord.tier}`;
 
-      // Back: English definition only
+      // Back: Clean English Only
       document.getElementById('cardEnglish').textContent = currentWord.en;
       document.getElementById('cardBackId').textContent = `#${currentWord.id}`;
       document.getElementById('cardBackTier').textContent = currentWord.tier === 1 ? 'N5-N4 Core' : currentWord.tier === 2 ? 'N3 Conversational' : 'N2-N1 Mastery';
     }
 
     function flipCard() {
-      // Flips the card. Notice: ZERO audio calls are made here.
       document.getElementById('cardFlipper').classList.toggle('flipped');
     }
 
@@ -1362,7 +1398,6 @@
       let tiles = [];
 
       sample.forEach(item => {
-        // Japanese tile with reading guides & isolated speaker button
         tiles.push({
           id: item.id,
           type: 'jp',
@@ -1374,7 +1409,6 @@
             `;
           }
         });
-        // English tile: strictly English text only
         tiles.push({
           id: item.id,
           type: 'en',
@@ -1399,7 +1433,6 @@
     function onTileClick(tile) {
       if (matchLock || tile.classList.contains('solved')) return;
 
-      // Note: Zero audio plays here. Audio only fires when clicking the dedicated speaker button.
       if (!matchFirst) {
         matchFirst = tile;
         tile.classList.add('selected');
