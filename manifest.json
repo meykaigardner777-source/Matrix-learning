@@ -1,14 +1,12 @@
 {
-  "name": "Lexicon // Japanese Core",
+  "name": "Japanese Core Lexicon",
   "short_name": "Lexicon",
-  "description": "Progressive Japanese Vocabulary Workstation",
+  "description": "Stratified Japanese vocabulary retention and spaced testing engine",
   "start_url": "./index.html",
-  "scope": "./",
-  "display": "fullscreen",
-  "display_override": ["fullscreen", "standalone"],
+  "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#090a0c",
-  "theme_color": "#111215",
-  "orientation": "portrait-primary",
+  "theme_color": "#090a0c",
   "icons": [
     {
       "src": "icon.svg",
