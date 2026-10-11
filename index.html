@@ -7,7 +7,7 @@
   
   <!-- PWA & Mobile Configuration -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#111215" />
+  <meta name="theme-color" content="#090a0c" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -101,43 +101,8 @@
       flex-shrink: 0;
     }
     .icon-lg {
-      width: 28px;
-      height: 28px;
-    }
-
-    /* HEADER */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0.7rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 40;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-    .brand-badge {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-      padding: 1px 5px;
-      border-radius: var(--radius-sm);
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      width: 26px;
+      height: 26px;
     }
 
     /* BUTTONS */
@@ -145,15 +110,15 @@
       background: var(--surface-subtle);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.45rem 0.85rem;
+      padding: 0.4rem 0.75rem;
       border-radius: var(--radius);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
     .btn:hover {
@@ -180,27 +145,34 @@
       border-color: var(--danger);
     }
     .btn-icon {
-      padding: 0.45rem 0.55rem;
-      font-size: 0.85rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
-    /* NAVIGATION */
-    nav {
+    /* COMPACT UNIFIED TOP NAVIGATION */
+    nav.app-nav {
       max-width: 640px;
       width: 100%;
-      margin: 0.75rem auto 0;
-      padding: 0 1rem;
+      margin: 0.5rem auto 0;
+      padding: 0 0.65rem;
       display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: linear-gradient(180deg, var(--bg) 85%, transparent 100%);
+      padding-bottom: 0.25rem;
     }
     .nav-bar {
-      width: 100%;
+      flex: 1;
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 3px;
+      padding: 2px;
       border-radius: var(--radius);
       display: flex;
-      gap: 3px;
+      gap: 2px;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -211,8 +183,8 @@
       min-width: fit-content;
       background: transparent;
       border: none;
-      padding: 0.45rem 0.65rem;
-      font-size: 0.75rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.72rem;
       font-weight: 500;
       color: var(--text-muted);
       border-radius: calc(var(--radius) - 2px);
@@ -223,7 +195,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem;
+      gap: 0.25rem;
     }
     .tab-trigger.active {
       background: var(--surface-subtle);
@@ -232,7 +204,7 @@
     }
     .tab-badge {
       display: inline-block;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       padding: 1px 4px;
       border-radius: 9px;
       background: rgba(245, 158, 11, 0.2);
@@ -240,13 +212,20 @@
       font-family: var(--font-mono);
     }
 
-    /* MAIN */
+    .nav-tools {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* MAIN CONTENT */
     main {
       flex: 1;
       max-width: 640px;
       width: 100%;
       margin: 0 auto;
-      padding: 0.85rem 1rem 3rem;
+      padding: 0.5rem 0.75rem 2.5rem;
       display: flex;
       flex-direction: column;
     }
@@ -255,10 +234,10 @@
       background: rgba(225, 29, 72, 0.1);
       border: 1px solid var(--danger);
       border-radius: var(--radius);
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 0.8rem;
       color: var(--text);
-      font-size: 0.8rem;
-      margin-bottom: 0.8rem;
+      font-size: 0.75rem;
+      margin-bottom: 0.6rem;
       display: none;
       animation: fadeIn 0.2s ease;
     }
@@ -272,69 +251,90 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.1rem;
-      margin-bottom: 0.85rem;
+      padding: 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+    .dash-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.35rem;
+    }
+    .brand-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 0 4px;
+      border-radius: var(--radius-sm);
     }
     .dash-hero-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 0.75rem;
+      gap: 0.5rem;
     }
     .dash-course-title {
-      font-size: 1.05rem;
+      font-size: clamp(0.9rem, 4vw, 1.05rem);
       font-weight: 700;
       letter-spacing: -0.01em;
-      margin-bottom: 0.2rem;
+      line-height: 1.2;
     }
     .dash-course-desc {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
+      margin-top: 0.15rem;
     }
     
     .dash-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.65rem;
-      margin-bottom: 0.85rem;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
     }
     .dash-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.9rem;
+      padding: 0.75rem 0.7rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
     .dash-card-label {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-family: var(--font-mono);
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .dash-card-num {
-      font-size: 1.45rem;
+      font-size: clamp(1.15rem, 4.5vw, 1.45rem);
       font-weight: 700;
       font-family: var(--font-mono);
       line-height: 1.1;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.25rem;
     }
     .dash-card-sub {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
+      line-height: 1.25;
     }
 
     .progress-bar {
-      height: 4px;
+      height: 3px;
       background: var(--surface-subtle);
       border-radius: 2px;
       overflow: hidden;
-      margin-top: 0.5rem;
+      margin-top: 0.45rem;
     }
     .progress-bar-fill {
       height: 100%;
@@ -343,34 +343,33 @@
       transition: width 0.3s ease;
     }
     .progress-bar-fill.green { background: var(--accent-green); }
-    .progress-bar-fill.warning { background: var(--warning); }
 
     .dash-section-title {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
       color: var(--text-dim);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin: 0.75rem 0 0.45rem;
+      margin: 0.65rem 0 0.35rem;
     }
 
     .tier-stat-row {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.75rem 0.9rem;
-      margin-bottom: 0.45rem;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.35rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
-    /* FLASHCARD */
+    /* FLASHCARD OPTIMIZED FOR SMALL SCREENS */
     .card-space {
       perspective: 1000px;
-      height: 330px;
-      margin-bottom: 0.75rem;
+      height: clamp(245px, 39vh, 310px);
+      margin-bottom: 0.6rem;
       cursor: pointer;
     }
     .card-flipper {
@@ -392,7 +391,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 0.9rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -406,7 +405,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
       font-family: var(--font-mono);
     }
@@ -417,48 +416,48 @@
 
     .kanji-text {
       font-family: var(--font-jp);
-      font-size: 2.7rem;
+      font-size: clamp(2.1rem, 7.5vw, 2.7rem);
       font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 0.3rem;
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
       letter-spacing: -0.02em;
     }
     .kana-text {
       font-family: var(--font-jp);
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 3.8vw, 1.1rem);
       font-weight: 500;
       color: var(--text-muted);
     }
     .romaji-text {
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-dim);
-      margin-top: 0.15rem;
+      margin-top: 0.1rem;
     }
     .pronounce-tag {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       border: 1px solid var(--border);
-      padding: 2px 7px;
+      padding: 1px 6px;
       border-radius: var(--radius-sm);
-      margin-top: 0.45rem;
+      margin-top: 0.35rem;
     }
 
     .meaning-text {
-      font-size: 1.55rem;
+      font-size: clamp(1.25rem, 5.2vw, 1.55rem);
       font-weight: 600;
       line-height: 1.25;
       letter-spacing: -0.01em;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.3rem;
     }
     .tier-label {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
       border: 1px solid var(--border);
-      padding: 2px 6px;
+      padding: 1px 5px;
       border-radius: var(--radius-sm);
       display: inline-block;
     }
@@ -467,29 +466,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
       border-top: 1px solid var(--border);
-      padding-top: 0.6rem;
+      padding-top: 0.45rem;
       font-family: var(--font-mono);
     }
 
-    .audio-group { display: flex; gap: 0.35rem; }
+    .audio-group { display: flex; gap: 0.3rem; }
 
     .deck-controls {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
-    /* MATCH MODE */
+    /* MATCH MODE RESPONSIVENESS */
     .match-header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.55rem;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.35rem;
     }
     .match-size-selector {
       display: inline-flex;
@@ -504,8 +503,8 @@
       border: none;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 0.25rem 0.5rem;
+      font-size: 0.68rem;
+      padding: 0.2rem 0.45rem;
       border-radius: var(--radius-sm);
       cursor: pointer;
     }
@@ -518,7 +517,7 @@
 
     .match-grid {
       display: grid;
-      gap: 0.5rem;
+      gap: 0.45rem;
     }
     .match-grid.count-8 {
       grid-template-columns: 1fr 1fr;
@@ -528,15 +527,15 @@
     }
     .match-grid.count-32 {
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.35rem;
+      gap: 0.3rem;
     }
 
     .match-tile {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      min-height: 80px;
-      padding: 0.65rem;
+      min-height: 72px;
+      padding: 0.55rem 0.45rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -568,28 +567,28 @@
 
     .tile-jp-main {
       font-family: var(--font-jp);
-      font-size: 1.3rem;
+      font-size: clamp(1.1rem, 3.8vw, 1.25rem);
       font-weight: 700;
       margin-bottom: 0.1rem;
       line-height: 1.15;
     }
     .tile-jp-sub {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
     .tile-en-main {
-      font-size: 0.9rem;
+      font-size: clamp(0.78rem, 2.8vw, 0.88rem);
       font-weight: 600;
       line-height: 1.2;
     }
 
     .tile-speaker {
       position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 24px;
-      height: 24px;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: var(--surface-subtle);
@@ -606,29 +605,29 @@
       background: var(--surface-hover);
     }
 
-    /* 32 CARDS COMPACT */
+    /* 32 CARDS COMPACT ADAPTATION */
     .match-grid.count-32 .match-tile {
-      min-height: 58px;
-      padding: 0.35rem 0.25rem;
+      min-height: 52px;
+      padding: 0.3rem 0.2rem;
     }
     .match-grid.count-32 .tile-jp-main {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
     }
     .match-grid.count-32 .tile-jp-sub {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
     }
     .match-grid.count-32 .tile-en-main {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
     }
     .match-grid.count-32 .tile-speaker {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       top: 2px;
       right: 2px;
     }
     .match-grid.count-32 .tile-speaker .icon {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
     }
 
     /* SENTENCES */
@@ -636,40 +635,40 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.85rem;
-      margin-bottom: 0.55rem;
+      padding: 0.75rem;
+      margin-bottom: 0.45rem;
     }
     .sentence-jp {
       font-family: var(--font-jp);
-      font-size: 1.05rem;
+      font-size: clamp(0.92rem, 3.5vw, 1.02rem);
       font-weight: 600;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
     .sentence-pronounce {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
     .sentence-en {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text);
     }
 
     /* REVIEW DIRECTORY */
     .review-filter-box {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
     }
     .review-search {
       flex: 1;
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.5rem 0.75rem;
+      padding: 0.45rem 0.65rem;
       border-radius: var(--radius);
-      font-size: 0.8rem;
+      font-size: 0.76rem;
     }
     .review-search:focus { outline: none; border-color: var(--text-muted); }
     
@@ -677,39 +676,40 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.8rem 1rem;
-      margin-bottom: 0.5rem;
+      padding: 0.65rem 0.8rem;
+      margin-bottom: 0.4rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.5rem;
     }
     .review-meta-kanji {
       font-family: var(--font-jp);
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 700;
       line-height: 1.1;
     }
     .review-meta-sub {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
     }
     .review-meta-en {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text);
-      margin-top: 0.25rem;
+      margin-top: 0.2rem;
     }
     .review-date-badge {
       display: inline-block;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-family: var(--font-mono);
       color: var(--text-dim);
       border: 1px solid var(--border);
       padding: 1px 4px;
       border-radius: var(--radius-sm);
-      margin-left: 0.4rem;
+      margin-left: 0.35rem;
     }
 
     /* TEST PAGE */
@@ -717,45 +717,45 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
     }
     .test-word-jp {
       font-family: var(--font-jp);
-      font-size: 2.8rem;
+      font-size: clamp(2.2rem, 8vw, 2.7rem);
       font-weight: 700;
-      margin: 0.5rem 0 0.2rem;
+      margin: 0.4rem 0 0.15rem;
     }
     .test-word-reading {
       font-family: var(--font-jp);
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.25rem;
     }
     .test-word-phonetic {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-dim);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
     .test-options-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: 0.45rem;
       width: 100%;
     }
     .test-btn-option {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.85rem;
       border-radius: var(--radius);
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 500;
       cursor: pointer;
       text-align: left;
@@ -786,7 +786,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 0.65rem;
     }
     .modal-overlay.open { display: flex; }
 
@@ -795,19 +795,19 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       width: 100%;
-      max-width: 760px;
-      height: 520px;
+      max-width: 720px;
+      height: min(520px, 94vh);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
     .modal-header {
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.9rem;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
     }
     .modal-body {
@@ -816,17 +816,17 @@
       overflow: hidden;
     }
     .modal-sidebar {
-      width: 185px;
+      width: 165px;
       background: var(--surface-subtle);
       border-right: 1px solid var(--border);
-      padding: 0.5rem;
+      padding: 0.4rem;
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
     }
     .sidebar-btn {
-      padding: 0.45rem 0.65rem;
-      font-size: 0.8rem;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.76rem;
       font-weight: 500;
       border-radius: var(--radius-sm);
       border: none;
@@ -842,20 +842,20 @@
     }
     .modal-content {
       flex: 1;
-      padding: 1.25rem;
+      padding: 1rem;
       overflow-y: auto;
     }
     .panel { display: none; }
     .panel.active { display: block; }
 
-    .form-group { margin-bottom: 1.15rem; }
+    .form-group { margin-bottom: 1rem; }
     .form-label {
       display: flex;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.3rem;
       font-family: var(--font-mono);
     }
     .input-control {
@@ -863,27 +863,13 @@
       background: var(--surface-subtle);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.5rem 0.65rem;
+      padding: 0.45rem 0.6rem;
       border-radius: var(--radius-sm);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
     }
     .input-control:focus {
       outline: none;
       border-color: var(--text-muted);
-    }
-
-    .swatches {
-      display: flex;
-      gap: 0.4rem;
-      margin-top: 0.4rem;
-      align-items: center;
-    }
-    .swatch {
-      width: 20px;
-      height: 20px;
-      border-radius: 3px;
-      border: 1px solid var(--border);
-      cursor: pointer;
     }
 
     .status-badge {
@@ -891,43 +877,42 @@
       align-items: center;
       gap: 0.35rem;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       background: var(--surface-subtle);
       border: 1px solid var(--border);
-      padding: 0.3rem 0.55rem;
+      padding: 0.25rem 0.5rem;
       border-radius: var(--radius-sm);
-      margin-top: 0.35rem;
+      margin-top: 0.3rem;
     }
 
-    /* LEGAL & CITATION STYLING */
     .legal-card {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.85rem;
-      margin-bottom: 0.85rem;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
     }
     .legal-title {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.25rem;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
     }
     .legal-body {
-      font-size: 0.73rem;
-      line-height: 1.5;
+      font-size: 0.7rem;
+      line-height: 1.45;
       color: var(--text-muted);
     }
     .legal-mono {
       font-family: var(--font-mono);
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       background: rgba(0, 0, 0, 0.2);
-      padding: 0.5rem;
+      padding: 0.45rem;
       border-radius: var(--radius-sm);
-      margin-top: 0.45rem;
+      margin-top: 0.4rem;
       border: 1px solid var(--border);
       white-space: pre-wrap;
       word-break: break-word;
@@ -950,23 +935,8 @@
   <canvas id="bgCanvas"></canvas>
 
   <div class="app-shell">
-    <header>
-      <div class="brand">
-        <span>Lexicon</span>
-        <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
-      </div>
-      <div class="header-controls">
-        <button class="btn" id="btnPwaInstall" style="display: none; padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="triggerPwaInstall()">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Install
-        </button>
-        <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        </button>
-      </div>
-    </header>
-
-    <nav>
+    <!-- COMPACT STICKY NAVIGATION -->
+    <nav class="app-nav">
       <div class="nav-bar">
         <button class="tab-trigger active" onclick="switchTab('dashboard')">
           <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -993,6 +963,15 @@
           Match
         </button>
       </div>
+
+      <div class="nav-tools">
+        <button class="btn btn-icon" id="btnPwaInstall" style="display: none;" onclick="triggerPwaInstall()" title="Install App">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </div>
     </nav>
 
     <main>
@@ -1003,26 +982,30 @@
         <div class="dash-hero">
           <div class="dash-hero-top">
             <div>
+              <div class="dash-brand-row">
+                <span class="brand-name">Lexicon</span>
+                <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
+              </div>
               <div class="dash-course-title" id="dashCourseTitle">JLPT N5–N4 Daily Core</div>
               <div class="dash-course-desc" id="dashCourseDesc">Curriculum Scope: Top 1,000 High-Frequency Words</div>
             </div>
-            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="switchDailyCohort()">
+            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.7rem;" onclick="switchDailyCohort()">
               Next Batch
               <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
           </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.45rem; border-top: 1px solid var(--border); padding-top: 0.4rem;">
             <span id="dashCohortLabel">Cohort #01 Active</span>
             <span id="dashEstCompletion">Est: ~25 days</span>
           </div>
         </div>
 
         <div class="dash-grid">
-          <!-- Today's Intake -->
+          <!-- 1. Today's Word Intake -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
-                <span>TODAY'S INTAKE</span>
+                <span>TODAY'S WORDS</span>
                 <span id="dashTodayPct">0%</span>
               </div>
               <div class="dash-card-num"><span id="dashTodayNum">0</span> / <span id="dashTodayGoal">40</span></div>
@@ -1033,7 +1016,53 @@
             </div>
           </div>
 
-          <!-- Total Lexicon Mastered -->
+          <!-- 2. Today's Study Time -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>TODAY'S TIME</span>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="dash-card-num" id="dashTodayTime">0m 00s</div>
+              <div class="dash-card-sub">Active session timer</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill green" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- 3. Yesterday's Words & Test Queue -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>YESTERDAY'S WORDS</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+              </div>
+              <div class="dash-card-num" id="dashYesterdayNum">0</div>
+              <div class="dash-card-sub">Learned yesterday</div>
+            </div>
+            <button class="btn" style="width: 100%; padding: 0.25rem 0.4rem; font-size: 0.68rem; margin-top: 0.35rem;" onclick="switchTab('test')">
+              Test Queue (<span id="dashYesterdayDue">0</span>)
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+
+          <!-- 4. Yesterday's Study Time -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>YESTERDAY'S TIME</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              </div>
+              <div class="dash-card-num" id="dashYesterdayTime">0m 00s</div>
+              <div class="dash-card-sub">Time logged yesterday</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" style="width: 100%; opacity: 0.35;"></div>
+            </div>
+          </div>
+
+          <!-- 5. Total Mastered Words -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1048,38 +1077,20 @@
             </div>
           </div>
 
-          <!-- Yesterday's Progress -->
+          <!-- 6. Study Launcher -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
-                <span>YESTERDAY'S WORDS</span>
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              </div>
-              <div class="dash-card-num" id="dashYesterdayNum">0</div>
-              <div class="dash-card-sub">Words recorded yesterday</div>
-            </div>
-            <div style="margin-top: 0.5rem;">
-              <button class="btn" style="width: 100%; padding: 0.3rem 0.5rem; font-size: 0.72rem;" onclick="switchTab('test')">
-                Test Queue (<span id="dashYesterdayDue">0</span>)
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Quick Action Hub -->
-          <div class="dash-card">
-            <div>
-              <div class="dash-card-label">
-                <span>QUICK ACTIONS</span>
+                <span>CONTINUE</span>
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               </div>
-              <div style="display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.25rem;">
-                <button class="btn btn-primary" style="padding: 0.35rem 0.6rem; font-size: 0.72rem;" onclick="switchTab('cards')">
-                  Continue Study
+              <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.2rem;">
+                <button class="btn btn-primary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="switchTab('cards')">
+                  Flashcards
                   <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
-                <button class="btn" style="padding: 0.35rem 0.6rem; font-size: 0.72rem;" onclick="switchTab('review')">
-                  Open Review
+                <button class="btn" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="switchTab('match')">
+                  Match Mode
                   <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
               </div>
@@ -1111,11 +1122,11 @@
               <div class="card-top">
                 <span id="cardIndexLabel">01 / 40</span>
                 <div class="audio-group" onclick="event.stopPropagation()">
-                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, state.speed)">
-                    <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                  <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(currentWord.kana, state.speed)">
+                    <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     Listen
                   </button>
-                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">
+                  <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">
                     <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     Slow
                   </button>
@@ -1130,7 +1141,7 @@
               </div>
 
               <div class="card-bot">
-                <span>Click card to reveal definition</span>
+                <span>Tap card to flip</span>
                 <span id="cardTierTag">Tier 1</span>
               </div>
             </div>
@@ -1147,7 +1158,7 @@
               </div>
 
               <div class="card-bot">
-                <span>Click to return</span>
+                <span>Tap to return</span>
                 <span>Verified</span>
               </div>
             </div>
@@ -1157,7 +1168,7 @@
 
         <div class="deck-controls">
           <button class="btn" onclick="cycleWord(1)">
-            Skip Word
+            Skip
             <svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
           </button>
           <button class="btn btn-primary" onclick="markLearned()">
@@ -1170,9 +1181,9 @@
       <!-- 3. REVIEW DIRECTORY -->
       <section id="tab-review" style="display: none;">
         <div class="review-filter-box">
-          <input type="text" class="review-search" id="reviewSearchInput" placeholder="Filter mastered words (kanji, kana, english)..." oninput="renderReviewList()">
+          <input type="text" class="review-search" id="reviewSearchInput" placeholder="Filter mastered words..." oninput="renderReviewList()">
         </div>
-        <div style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); margin-bottom: 0.6rem;" id="reviewCountLabel">
+        <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono); margin-bottom: 0.55rem;" id="reviewCountLabel">
           Showing 0 learned words
         </div>
         <div id="reviewListContainer"></div>
@@ -1183,8 +1194,8 @@
         <div id="testArea">
           <div class="test-box">
             <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);" id="testProgressLabel">Queue: 0 / 0</span>
-              <button class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="AudioEngine.speak(currentTestWord ? currentTestWord.kana : '', state.speed)">
+              <span style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);" id="testProgressLabel">Queue: 0 / 0</span>
+              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(currentTestWord ? currentTestWord.kana : '', state.speed)">
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 Audio
               </button>
@@ -1194,22 +1205,22 @@
             <div class="test-word-reading" id="testKana">--</div>
             <div class="test-word-phonetic" id="testPhonetic">[ -- ]</div>
 
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              Select the correct English definition. Getting it wrong unlearns this word.
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.65rem;">
+              Choose the correct definition. Wrong answers unlearn the word.
             </div>
 
             <div class="test-options-grid" id="testOptionsGrid"></div>
           </div>
         </div>
-        <div id="testEmptyMessage" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.85rem;">
-          <div style="margin-bottom: 0.6rem; color: var(--accent-green);">
+        <div id="testEmptyMessage" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.8rem;">
+          <div style="margin-bottom: 0.5rem; color: var(--accent-green);">
             <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
           </div>
           <div>All clear! No words due for review from yesterday.</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">Learn new cards today or run a practice trial on existing words.</div>
-          <button class="btn" style="margin-top: 1rem;" onclick="startCustomReviewTest()">
+          <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem;">Practice new cards or test mastered vocabulary.</div>
+          <button class="btn" style="margin-top: 0.85rem;" onclick="startCustomReviewTest()">
             <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            Test Random Mastered Words
+            Test Mastered Words
           </button>
         </div>
       </section>
@@ -1227,7 +1238,7 @@
             <button class="size-btn" id="btnMatch16" onclick="setMatchSize(16)">16 Cards</button>
             <button class="size-btn" id="btnMatch32" onclick="setMatchSize(32)">32 Cards</button>
           </div>
-          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="dealMatch()">
+          <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="dealMatch()">
             <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
             Deal
           </button>
@@ -1268,8 +1279,8 @@
             </div>
             <div class="form-group">
               <label class="form-label">Audio Configuration</label>
-              <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.2rem;">
-                Audio triggers exclusively on manual speaker button clicks. Zero automatic playback.
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem;">
+                Audio triggers strictly upon manual speaker button clicks.
               </div>
             </div>
           </div>
@@ -1290,9 +1301,9 @@
               <input type="range" class="input-control" id="cfgSpeed" min="0.4" max="1.1" step="0.05" value="0.75" oninput="document.getElementById('speedVal').textContent = `${this.value}x`">
             </div>
 
-            <div class="form-group" style="padding-top: 0.6rem; border-top: 1px solid var(--border);">
-              <label class="form-label">Manual Test Trigger</label>
-              <div style="display: flex; gap: 0.4rem;">
+            <div class="form-group" style="padding-top: 0.5rem; border-top: 1px solid var(--border);">
+              <label class="form-label">Manual Voice Test</label>
+              <div style="display: flex; gap: 0.35rem;">
                 <input type="text" class="input-control" id="cfgTestPhrase" value="こんにちは。日本語の音声テストです。">
                 <button class="btn" onclick="AudioEngine.speak(document.getElementById('cfgTestPhrase').value, parseFloat(document.getElementById('cfgSpeed').value))">
                   <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
@@ -1318,7 +1329,7 @@
               <input type="number" class="input-control" id="cfgGoal" min="5" max="100" value="40">
             </div>
 
-            <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
+            <div class="form-group" style="padding-top: 0.8rem; border-top: 1px solid var(--border);">
               <button class="btn btn-danger" onclick="resetProgress()">Reset All Learned Records</button>
             </div>
           </div>
@@ -1339,17 +1350,9 @@
                 <span>Effect Color</span>
                 <span id="colorHexLabel">#A1A1AA</span>
               </label>
-              <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input type="color" id="cfgColorPicker" value="#a1a1aa" style="background: transparent; border: none; cursor: pointer; width: 28px; height: 28px;" onchange="BgEngine.setColor(this.value)">
-                <input type="text" class="input-control" id="cfgHexInput" value="#a1a1aa" style="max-width: 110px;" oninput="BgEngine.setColor(this.value)">
-              </div>
-
-              <div class="swatches">
-                <span style="font-size: 0.7rem; color: var(--text-dim); margin-right: 0.2rem;">Presets:</span>
-                <button class="swatch" style="background: #a1a1aa;" onclick="BgEngine.setColor('#a1a1aa')" title="Silver"></button>
-                <button class="swatch" style="background: #64748b;" onclick="BgEngine.setColor('#64748b')" title="Slate"></button>
-                <button class="swatch" style="background: #38bdf8;" onclick="BgEngine.setColor('#38bdf8')" title="Muted Sky"></button>
-                <button class="swatch" style="background: #e2e8f0;" onclick="BgEngine.setColor('#e2e8f0')" title="Off-White"></button>
+              <div style="display: flex; gap: 0.45rem; align-items: center;">
+                <input type="color" id="cfgColorPicker" value="#a1a1aa" style="background: transparent; border: none; cursor: pointer; width: 26px; height: 26px;" onchange="BgEngine.setColor(this.value)">
+                <input type="text" class="input-control" id="cfgHexInput" value="#a1a1aa" style="max-width: 100px;" oninput="BgEngine.setColor(this.value)">
               </div>
             </div>
 
@@ -1370,13 +1373,13 @@
                 Software License & Warranty Disclaimer
               </div>
               <div class="legal-body">
-                This application is provided under standard open-source terms. You are free to run, study, and distribute this software for educational purposes.
+                This software is distributed under standard open-source terms.
               </div>
               <div class="legal-mono">MIT License & Limitation of Liability:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.
 
-IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE.</div>
             </div>
 
             <div class="legal-card">
@@ -1385,11 +1388,10 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
                 Linguistic Citations & Data Sources
               </div>
               <div class="legal-body">
-                Linguistic entries, meanings, readings, and example sentences utilized in this curriculum are derived from and cross-referenced with public and open pedagogical archives:
+                Linguistic entries, meanings, and sentence pairings are referenced from open pedagogical archives:
                 <br><br>
-                • <strong>JMdict / KANJIDIC:</strong> Property of the Electronic Dictionary Research and Development Group (EDRDG), used in conformance with the EDRDG open evaluation license (CC BY-SA 3.0).<br>
-                • <strong>Tanaka Corpus / Tatoeba Project:</strong> Sentence examples and English contextual pairings are adapted under Creative Commons Attribution (CC BY 2.0 FR).<br>
-                • <strong>Lexical Frequency Alignments:</strong> Word-frequency groupings and kana phonetics are curated from public-domain word counts and open language corpora.
+                • <strong>JMdict / KANJIDIC:</strong> Property of EDRDG, used under Creative Commons Attribution-ShareAlike 3.0.<br>
+                • <strong>Tanaka Corpus / Tatoeba:</strong> Example sentences adapted under Creative Commons Attribution (CC BY 2.0 FR).
               </div>
             </div>
 
@@ -1399,26 +1401,14 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
                 Trademark Non-Affiliation Disclaimer
               </div>
               <div class="legal-body">
-                "JLPT" and "Japanese-Language Proficiency Test" are registered trademarks of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. 
-                <br><br>
-                This application is an independent educational tool designed to assist self-directed language learners. It is not affiliated with, endorsed by, certified by, or officially associated with JEES, The Japan Foundation, or any official examination board.
-              </div>
-            </div>
-
-            <div class="legal-card">
-              <div class="legal-title">
-                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                Audio Speech Synthesis Notice
-              </div>
-              <div class="legal-body">
-                Audio pronunciation relies on your browser’s client-side implementation of the W3C Web Speech API (synthesizing speech via native device speech engines provided by Apple, Google, Microsoft, or your local OS). Secondary network speech playback utilizes standard public text-to-speech demonstration endpoints strictly for user-prompted pedagogical reference.
+                "JLPT" is a registered trademark of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. This product is an independent study tool and is not endorsed or certified by JEES or The Japan Foundation.
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div style="padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.4rem;">
+      <div style="padding: 0.6rem 0.9rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.35rem;">
         <button class="btn" onclick="toggleSettings(false)">Cancel</button>
         <button class="btn btn-primary" onclick="saveSettings()">Save</button>
       </div>
@@ -1466,7 +1456,75 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
     }
 
     // =========================================================================
-    // VOCABULARY SEEDS
+    // STUDY TIME ENGINE (TODAY & YESTERDAY)
+    // =========================================================================
+    function getTodayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getYesterdayKey() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    const TimeEngine = {
+      lastTick: Date.now(),
+
+      init() {
+        this.lastTick = Date.now();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            this.lastTick = Date.now();
+          }
+        });
+        setInterval(() => this.tick(), 1000);
+      },
+
+      tick() {
+        if (document.visibilityState !== 'visible') return;
+        const now = Date.now();
+        const delta = Math.floor((now - this.lastTick) / 1000);
+        if (delta >= 1) {
+          const today = getTodayKey();
+          state.timeMap[today] = (state.timeMap[today] || 0) + delta;
+          this.lastTick = now;
+          this.save();
+          this.updateDisplay();
+        }
+      },
+
+      save() {
+        localStorage.setItem('lex_study_time_map', JSON.stringify(state.timeMap));
+      },
+
+      format(totalSeconds) {
+        if (!totalSeconds || totalSeconds < 0) return '0m 00s';
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+        if (hrs > 0) {
+          return `${hrs}h ${mins}m`;
+        }
+        return `${mins}m ${String(secs).padStart(2, '0')}s`;
+      },
+
+      updateDisplay() {
+        const todayKey = getTodayKey();
+        const yesterdayKey = getYesterdayKey();
+        const todaySecs = state.timeMap[todayKey] || 0;
+        const yestSecs = state.timeMap[yesterdayKey] || 0;
+        
+        const elToday = document.getElementById('dashTodayTime');
+        const elYest = document.getElementById('dashYesterdayTime');
+        if (elToday) elToday.textContent = this.format(todaySecs);
+        if (elYest) elYest.textContent = this.format(yestSecs);
+      }
+    };
+
+    // =========================================================================
+    // VOCABULARY SEEDS & CURRICULUM
     // =========================================================================
     const TIER_1_SEEDS = [
       { kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Me", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
@@ -1518,7 +1576,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       { kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction / Inconsistency", exJa: "論理に矛盾があります。", exKana: "ろんり に むじゅん が あります。", exRomaji: "ronri ni mujun ga arimasu", exPhonetic: "ron-ree nee moo-joon gah ah-ree-mahss", exEn: "There is a contradiction in logic." },
       { kanji: "懸念", kana: "けねん", romaji: "kenen", phonetic: "keh-nen", en: "Concern / Anxiety", exJa: "安全への懸念が残る。", exKana: "あんぜん えの けねん が のこる。", exRomaji: "anzen eno kenen ga nokoru", exPhonetic: "ahn-zen eh-noh keh-nen gah noh-koh-roo", exEn: "Concerns regarding safety remain." },
       { kanji: "示唆", kana: "しさ", romaji: "shisa", phonetic: "shee-sah", en: "Suggestion / Implication", exJa: "結果が可能性を示唆する。", exKana: "けっか が かのうせい を しさ する。", exRomaji: "kekka ga kanousei o shisa suru", exPhonetic: "kek-kah gah kah-noh-say oh shee-sah soo-roo", exEn: "The results imply a possibility." },
-      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu ni suikou suru", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
+      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu に suikou する。", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
       { kanji: "貢献", kana: "こうけん", romaji: "kouken", phonetic: "koh-ken", en: "Contribution", exJa: "社会に大きく貢献する。", exKana: "しゃかい に おおきく こうけん する。", exRomaji: "shakai ni ookiku kouken suru", exPhonetic: "shah-kye nee oh-kee-koo koh-ken soo-roo", exEn: "Making a major contribution to society." },
       { kanji: "脆弱", kana: "ぜいじゃく", romaji: "zeijaku", phonetic: "zay-jah-koo", en: "Fragile / Vulnerable", exJa: "システムの脆弱性を是正する。", exKana: "システム の ぜいじゃくせい を ぜせい する。", exRomaji: "shisutemu no zeijakusei o zesei suru", exPhonetic: "shee-soo-teh-moo noh zay-jah-koo-say oh zeh-say soo-roo", exEn: "Correcting system vulnerability." },
       { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku に ぜせい する。", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
@@ -1576,7 +1634,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
 
       loadVoices() {
         if (!('speechSynthesis' in window)) {
-          this.updateDiag("SpeechSynthesis unavailable; network fallback active");
+          this.updateDiag("SpeechSynthesis unavailable; fallback active");
           return;
         }
 
@@ -1786,32 +1844,22 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
     };
 
     // =========================================================================
-    // STORAGE & HELPERS
+    // STATE & REPOSITORIES
     // =========================================================================
-    function getTodayKey() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function getYesterdayKey() {
-      const d = new Date();
-      d.setDate(d.getDate() - 1);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
     function loadLearnedMap() {
       const raw = localStorage.getItem('lex_learned_history');
       if (raw) {
         try { return JSON.parse(raw); } catch (e) {}
       }
-      const legacyIds = JSON.parse(localStorage.getItem('lex_mastered_ids') || '[]');
-      const map = {};
-      const today = getTodayKey();
-      legacyIds.forEach(id => {
-        map[id] = { date: today, time: Date.now() };
-      });
-      localStorage.setItem('lex_learned_history', JSON.stringify(map));
-      return map;
+      return {};
+    }
+
+    function loadTimeMap() {
+      const raw = localStorage.getItem('lex_study_time_map');
+      if (raw) {
+        try { return JSON.parse(raw); } catch (e) {}
+      }
+      return {};
     }
 
     let state = {
@@ -1819,6 +1867,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       dailyGoal: parseInt(localStorage.getItem('lex_daily_goal')) || 40,
       matchCount: parseInt(localStorage.getItem('lex_match_count')) || 8,
       learnedMap: loadLearnedMap(),
+      timeMap: loadTimeMap(),
       cohortOffset: parseInt(localStorage.getItem('lex_cohort_offset')) || 0,
       speed: parseFloat(localStorage.getItem('lex_speed')) || 0.75,
       theme: localStorage.getItem('lex_theme') || 'dark',
@@ -1900,7 +1949,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       document.getElementById('dashCohortLabel').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')} Active`;
       document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
 
-      // 1. Today's Progress
+      // Today's Words Progress
       const todayCount = getTodayLearnedCount();
       document.getElementById('dashTodayNum').textContent = todayCount;
       document.getElementById('dashTodayGoal').textContent = state.dailyGoal;
@@ -1910,7 +1959,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       const todayRemaining = Math.max(0, state.dailyGoal - todayCount);
       document.getElementById('dashTodayRemaining').textContent = todayRemaining === 0 ? "Daily goal accomplished" : `${todayRemaining} words remaining`;
 
-      // 2. Total Mastered
+      // Total Mastered
       const masteredList = getMasteredIds();
       const totalMastered = masteredList.length;
       document.getElementById('dashTotalNum').textContent = totalMastered;
@@ -1921,17 +1970,20 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       const tierRemaining = Math.max(0, state.tierLimit - totalMastered);
       document.getElementById('dashTierRemaining').textContent = `${tierRemaining.toLocaleString()} unlearned`;
 
-      // Estimated Completion
+      // Estimated Days
       const estDays = Math.ceil(tierRemaining / state.dailyGoal);
       document.getElementById('dashEstCompletion').textContent = `Est: ~${estDays} days`;
 
-      // 3. Yesterday's Progress
+      // Yesterday's Words
       const yesterdayWords = getYesterdayLearnedWords();
       document.getElementById('dashYesterdayNum').textContent = yesterdayWords.length;
       document.getElementById('dashYesterdayDue').textContent = yesterdayWords.length;
       document.getElementById('navTestBadge').textContent = yesterdayWords.length;
 
-      // 4. Distribution Breakdown
+      // Update Active Study Timers
+      TimeEngine.updateDisplay();
+
+      // Tier Breakdown
       let t1 = 0, t2 = 0, t3 = 0;
       masteredList.forEach(id => {
         const w = VOCAB_BY_ID.get(id);
@@ -2031,7 +2083,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim); font-size: 0.85rem;">
+          <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-size: 0.8rem;">
             ${words.length === 0 ? 'No words learned yet. Practice with Flashcards to build your lexicon.' : 'No matching vocabulary found.'}
           </div>
         `;
@@ -2050,11 +2102,11 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
             <div class="review-meta-sub">${item.kana} · ${item.romaji} [${item.phonetic}]</div>
             <div class="review-meta-en">${item.en}</div>
           </div>
-          <div style="display: flex; gap: 0.4rem; align-items: center;">
-            <button class="btn" style="padding: 0.35rem 0.55rem; font-size: 0.72rem;" onclick="AudioEngine.speak('${item.kana}', ${state.speed})">
+          <div style="display: flex; gap: 0.35rem; align-items: center;">
+            <button class="btn" style="padding: 0.3rem 0.5rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${item.kana}', ${state.speed})">
               <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
             </button>
-            <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.72rem;" onclick="unlearnWord(${item.id})">
+            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.68rem;" onclick="unlearnWord(${item.id})">
               <svg class="icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
               Unlearn
             </button>
@@ -2173,14 +2225,14 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
         const row = document.createElement('div');
         row.className = 'sentence-row';
         row.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">Target: ${word.kanji}</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <span style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">Target: ${word.kanji}</span>
             <div class="audio-group">
-              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">
+              <button class="btn" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 Listen
               </button>
-              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">
+              <button class="btn" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">
                 <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 Slow
               </button>
@@ -2348,8 +2400,10 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
     function resetProgress() {
       if (confirm("Reset ALL learned vocabulary records and history? This cannot be undone.")) {
         state.learnedMap = {};
+        state.timeMap = {};
         state.cohortOffset = 0;
         localStorage.removeItem('lex_learned_history');
+        localStorage.removeItem('lex_study_time_map');
         localStorage.removeItem('lex_cohort_offset');
         syncCohort();
         renderCard();
@@ -2404,6 +2458,7 @@ IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR 
       setTheme(state.theme);
       AudioEngine.init();
       BgEngine.init();
+      TimeEngine.init();
       syncCohort();
       updateDashboard();
       renderCard();
