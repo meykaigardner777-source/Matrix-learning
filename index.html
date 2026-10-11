@@ -27,7 +27,9 @@
       --text-dim: #535560;
       
       --accent: #ededed;
+      --accent-green: #10b981;
       --danger: #e11d48;
+      --warning: #f59e0b;
       --radius: 6px;
       --radius-sm: 4px;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -85,6 +87,24 @@
       min-height: 100dvh;
     }
 
+    /* ICONS */
+    .icon {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .icon-lg {
+      width: 28px;
+      height: 28px;
+    }
+
     /* HEADER */
     header {
       background: var(--surface);
@@ -120,7 +140,7 @@
       gap: 0.4rem;
     }
 
-    /* COMPACT BUTTONS */
+    /* BUTTONS */
     .btn {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -132,8 +152,9 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.4rem;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
     .btn:hover {
       background: var(--surface-hover);
@@ -148,6 +169,15 @@
     .btn-primary:hover {
       opacity: 0.92;
       background: var(--text);
+    }
+    .btn-danger {
+      background: rgba(225, 29, 72, 0.12);
+      color: var(--danger);
+      border-color: rgba(225, 29, 72, 0.35);
+    }
+    .btn-danger:hover {
+      background: rgba(225, 29, 72, 0.22);
+      border-color: var(--danger);
     }
     .btn-icon {
       padding: 0.45rem 0.55rem;
@@ -169,25 +199,45 @@
       border: 1px solid var(--border);
       padding: 3px;
       border-radius: var(--radius);
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      display: flex;
       gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    
     .tab-trigger {
+      flex: 1;
+      min-width: fit-content;
       background: transparent;
       border: none;
-      padding: 0.45rem 0.6rem;
-      font-size: 0.8rem;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--text-muted);
       border-radius: calc(var(--radius) - 2px);
       cursor: pointer;
       transition: all 0.15s;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
     .tab-trigger.active {
       background: var(--surface-subtle);
       color: var(--text);
       border: 1px solid var(--border);
+    }
+    .tab-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 1px 4px;
+      border-radius: 9px;
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+      font-family: var(--font-mono);
     }
 
     /* MAIN */
@@ -201,49 +251,119 @@
       flex-direction: column;
     }
 
-    /* HUD */
-    .hud {
+    .alert-banner {
+      background: rgba(225, 29, 72, 0.1);
+      border: 1px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 0.8rem;
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* DASHBOARD */
+    .dash-hero {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.85rem 1rem;
+      padding: 1.1rem;
       margin-bottom: 0.85rem;
     }
-    .hud-row {
+    .dash-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+    .dash-course-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.2rem;
+    }
+    .dash-course-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .dash-card-label {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
-      font-family: var(--font-mono);
     }
-    .hud-row strong { color: var(--text); }
-    
-    .progress-line {
-      height: 3px;
+    .dash-card-num {
+      font-size: 1.45rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+    .dash-card-sub {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .progress-bar {
+      height: 4px;
       background: var(--surface-subtle);
       border-radius: 2px;
       overflow: hidden;
-      margin-bottom: 0.65rem;
+      margin-top: 0.5rem;
     }
-    .progress-fill {
+    .progress-bar-fill {
       height: 100%;
-      background: var(--text-muted);
+      background: var(--text);
       width: 0%;
       transition: width 0.3s ease;
     }
-    .progress-fill.primary { background: var(--text); }
+    .progress-bar-fill.green { background: var(--accent-green); }
+    .progress-bar-fill.warning { background: var(--warning); }
 
-    .hud-footer {
+    .dash-section-title {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0.75rem 0 0.45rem;
+    }
+
+    .tier-stat-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.45rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--border);
-      padding-top: 0.5rem;
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
+      font-size: 0.8rem;
     }
 
     /* FLASHCARD */
@@ -326,7 +446,6 @@
       margin-top: 0.45rem;
     }
 
-    /* Back: Strictly English Definition */
     .meaning-text {
       font-size: 1.55rem;
       font-weight: 600;
@@ -364,17 +483,60 @@
     }
 
     /* MATCH MODE */
+    .match-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .match-size-selector {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2px;
+      gap: 2px;
+    }
+    .size-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .size-btn.active {
+      background: var(--surface-subtle);
+      color: var(--text);
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
     .match-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
+    .match-grid.count-8 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .match-grid.count-16 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .match-grid.count-32 {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.35rem;
+    }
+
     .match-tile {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      min-height: 85px;
-      padding: 0.75rem;
+      min-height: 80px;
+      padding: 0.65rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -406,26 +568,28 @@
 
     .tile-jp-main {
       font-family: var(--font-jp);
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.1rem;
+      line-height: 1.15;
     }
     .tile-jp-sub {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
     .tile-en-main {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
+      line-height: 1.2;
     }
 
     .tile-speaker {
       position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 26px;
-      height: 26px;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: var(--surface-subtle);
@@ -433,7 +597,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -441,6 +604,31 @@
       color: var(--text);
       border-color: var(--text-muted);
       background: var(--surface-hover);
+    }
+
+    /* 32 CARDS COMPACT */
+    .match-grid.count-32 .match-tile {
+      min-height: 58px;
+      padding: 0.35rem 0.25rem;
+    }
+    .match-grid.count-32 .tile-jp-main {
+      font-size: 1.05rem;
+    }
+    .match-grid.count-32 .tile-jp-sub {
+      font-size: 0.6rem;
+    }
+    .match-grid.count-32 .tile-en-main {
+      font-size: 0.76rem;
+    }
+    .match-grid.count-32 .tile-speaker {
+      width: 18px;
+      height: 18px;
+      top: 2px;
+      right: 2px;
+    }
+    .match-grid.count-32 .tile-speaker .icon {
+      width: 10px;
+      height: 10px;
     }
 
     /* SENTENCES */
@@ -466,6 +654,126 @@
     .sentence-en {
       font-size: 0.85rem;
       color: var(--text);
+    }
+
+    /* REVIEW DIRECTORY */
+    .review-filter-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .review-search {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+    }
+    .review-search:focus { outline: none; border-color: var(--text-muted); }
+    
+    .review-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .review-meta-kanji {
+      font-family: var(--font-jp);
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .review-meta-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.2rem;
+    }
+    .review-meta-en {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 0.25rem;
+    }
+    .review-date-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 1px 4px;
+      border-radius: var(--radius-sm);
+      margin-left: 0.4rem;
+    }
+
+    /* TEST PAGE */
+    .test-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .test-word-jp {
+      font-family: var(--font-jp);
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin: 0.5rem 0 0.2rem;
+    }
+    .test-word-reading {
+      font-family: var(--font-jp);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .test-word-phonetic {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 1.25rem;
+    }
+
+    .test-options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    .test-btn-option {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .test-btn-option:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+    }
+    .test-btn-option.correct {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+    .test-btn-option.wrong {
+      background: rgba(225, 29, 72, 0.15);
+      border-color: var(--danger);
+      color: var(--danger);
     }
 
     /* SETTINGS MODAL */
@@ -508,7 +816,7 @@
       overflow: hidden;
     }
     .modal-sidebar {
-      width: 180px;
+      width: 185px;
       background: var(--surface-subtle);
       border-right: 1px solid var(--border);
       padding: 0.5rem;
@@ -592,10 +900,48 @@
       margin-top: 0.35rem;
     }
 
+    /* LEGAL & CITATION STYLING */
+    .legal-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+    .legal-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legal-body {
+      font-size: 0.73rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+    .legal-mono {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-top: 0.45rem;
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (min-width: 600px) {
+      .match-grid.count-16 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
     @media (max-width: 600px) {
       .modal-body { flex-direction: column; }
-      .modal-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; }
-      .match-grid { grid-template-columns: 1fr; }
+      .modal-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; }
     }
   </style>
 </head>
@@ -610,56 +956,169 @@
         <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
       </div>
       <div class="header-controls">
-        <button class="btn" id="btnPwaInstall" style="display: none; padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="triggerPwaInstall()">📥 Install</button>
-        <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">⚙️</button>
+        <button class="btn" id="btnPwaInstall" style="display: none; padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="triggerPwaInstall()">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Install
+        </button>
+        <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
       </div>
     </header>
 
     <nav>
       <div class="nav-bar">
-        <button class="tab-trigger active" onclick="switchTab('cards')">Cards</button>
-        <button class="tab-trigger" onclick="switchTab('sentences')">Sentences</button>
-        <button class="tab-trigger" onclick="switchTab('match')">Match</button>
+        <button class="tab-trigger active" onclick="switchTab('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </button>
+        <button class="tab-trigger" onclick="switchTab('cards')">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          Cards
+        </button>
+        <button class="tab-trigger" onclick="switchTab('review')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Review
+        </button>
+        <button class="tab-trigger" onclick="switchTab('test')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+          Test <span class="tab-badge" id="navTestBadge">0</span>
+        </button>
+        <button class="tab-trigger" onclick="switchTab('sentences')">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          Sentences
+        </button>
+        <button class="tab-trigger" onclick="switchTab('match')">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          Match
+        </button>
       </div>
     </nav>
 
     <main>
-      <!-- Telemetry HUD -->
-      <div class="hud">
-        <div class="hud-row">
-          <span>Batch: <strong id="hudDailyCount">0</strong> / <span id="hudDailyGoal">40</span></span>
-          <span id="hudCohortTag">Cohort #01</span>
-        </div>
-        <div class="progress-line">
-          <div class="progress-fill primary" id="hudDailyProgress"></div>
+      <div class="alert-banner" id="globalAlert"></div>
+
+      <!-- 1. DASHBOARD -->
+      <section id="tab-dashboard">
+        <div class="dash-hero">
+          <div class="dash-hero-top">
+            <div>
+              <div class="dash-course-title" id="dashCourseTitle">JLPT N5–N4 Daily Core</div>
+              <div class="dash-course-desc" id="dashCourseDesc">Curriculum Scope: Top 1,000 High-Frequency Words</div>
+            </div>
+            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="switchDailyCohort()">
+              Next Batch
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.5rem;">
+            <span id="dashCohortLabel">Cohort #01 Active</span>
+            <span id="dashEstCompletion">Est: ~25 days</span>
+          </div>
         </div>
 
-        <div class="hud-row">
-          <span>Tier Progress: <strong id="hudMasteredCount">0</strong> / <span id="hudTierTotal">1,000</span></span>
-          <span id="hudTierPct">0%</span>
-        </div>
-        <div class="progress-line">
-          <div class="progress-fill" id="hudTierProgress"></div>
+        <div class="dash-grid">
+          <!-- Today's Intake -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>TODAY'S INTAKE</span>
+                <span id="dashTodayPct">0%</span>
+              </div>
+              <div class="dash-card-num"><span id="dashTodayNum">0</span> / <span id="dashTodayGoal">40</span></div>
+              <div class="dash-card-sub" id="dashTodayRemaining">40 words remaining</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" id="dashTodayBar"></div>
+            </div>
+          </div>
+
+          <!-- Total Lexicon Mastered -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>TOTAL MASTERED</span>
+                <span id="dashTotalPct">0%</span>
+              </div>
+              <div class="dash-card-num"><span id="dashTotalNum">0</span> / <span id="dashTierTarget">1,000</span></div>
+              <div class="dash-card-sub" id="dashTierRemaining">1,000 unlearned</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill green" id="dashTotalBar"></div>
+            </div>
+          </div>
+
+          <!-- Yesterday's Progress -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>YESTERDAY'S WORDS</span>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="dash-card-num" id="dashYesterdayNum">0</div>
+              <div class="dash-card-sub">Words recorded yesterday</div>
+            </div>
+            <div style="margin-top: 0.5rem;">
+              <button class="btn" style="width: 100%; padding: 0.3rem 0.5rem; font-size: 0.72rem;" onclick="switchTab('test')">
+                Test Queue (<span id="dashYesterdayDue">0</span>)
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Action Hub -->
+          <div class="dash-card">
+            <div>
+              <div class="dash-card-label">
+                <span>QUICK ACTIONS</span>
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.25rem;">
+                <button class="btn btn-primary" style="padding: 0.35rem 0.6rem; font-size: 0.72rem;" onclick="switchTab('cards')">
+                  Continue Study
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="btn" style="padding: 0.35rem 0.6rem; font-size: 0.72rem;" onclick="switchTab('review')">
+                  Open Review
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="hud-footer">
-          <span id="hudDaysRemaining">Est: Calculating...</span>
-          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="switchDailyCohort()">Next Batch ❯</button>
+        <div class="dash-section-title">Curriculum Distribution</div>
+        <div class="tier-stat-row">
+          <span>Tier 1: Daily Core (N5–N4)</span>
+          <strong id="dashTier1Count" style="font-family: var(--font-mono);">0 / 1,000</strong>
         </div>
-      </div>
+        <div class="tier-stat-row">
+          <span>Tier 2: Conversational (N3)</span>
+          <strong id="dashTier2Count" style="font-family: var(--font-mono);">0 / 1,000</strong>
+        </div>
+        <div class="tier-stat-row">
+          <span>Tier 3: Professional (N2–N1)</span>
+          <strong id="dashTier3Count" style="font-family: var(--font-mono);">0 / 3,000</strong>
+        </div>
+      </section>
 
-      <!-- 1. FLASHCARDS -->
-      <section id="tab-cards">
+      <!-- 2. FLASHCARDS -->
+      <section id="tab-cards" style="display: none;">
         <div class="card-space" onclick="flipCard()">
           <div class="card-flipper" id="cardFlipper">
             
-            <!-- Front: Japanese (Manual audio only) -->
             <div class="card-side">
               <div class="card-top">
                 <span id="cardIndexLabel">01 / 40</span>
                 <div class="audio-group" onclick="event.stopPropagation()">
-                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, state.speed)">🔊 Listen</button>
-                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">🐢 Slow</button>
+                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, state.speed)">
+                    <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                    Listen
+                  </button>
+                  <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Slow
+                  </button>
                 </div>
               </div>
 
@@ -676,7 +1135,6 @@
               </div>
             </div>
 
-            <!-- Back: English Only (No pronunciation text) -->
             <div class="card-side card-side-back">
               <div class="card-top">
                 <span>Definition</span>
@@ -698,23 +1156,83 @@
         </div>
 
         <div class="deck-controls">
-          <button class="btn" onclick="cycleWord(1)">Skip Word</button>
-          <button class="btn btn-primary" onclick="markLearned()">Learned ✓</button>
+          <button class="btn" onclick="cycleWord(1)">
+            Skip Word
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+          </button>
+          <button class="btn btn-primary" onclick="markLearned()">
+            Learned
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
         </div>
       </section>
 
-      <!-- 2. SENTENCES -->
+      <!-- 3. REVIEW DIRECTORY -->
+      <section id="tab-review" style="display: none;">
+        <div class="review-filter-box">
+          <input type="text" class="review-search" id="reviewSearchInput" placeholder="Filter mastered words (kanji, kana, english)..." oninput="renderReviewList()">
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); margin-bottom: 0.6rem;" id="reviewCountLabel">
+          Showing 0 learned words
+        </div>
+        <div id="reviewListContainer"></div>
+      </section>
+
+      <!-- 4. YESTERDAY'S RETENTION TEST -->
+      <section id="tab-test" style="display: none;">
+        <div id="testArea">
+          <div class="test-box">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);" id="testProgressLabel">Queue: 0 / 0</span>
+              <button class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="AudioEngine.speak(currentTestWord ? currentTestWord.kana : '', state.speed)">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                Audio
+              </button>
+            </div>
+            
+            <div class="test-word-jp" id="testKanji">--</div>
+            <div class="test-word-reading" id="testKana">--</div>
+            <div class="test-word-phonetic" id="testPhonetic">[ -- ]</div>
+
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Select the correct English definition. Getting it wrong unlearns this word.
+            </div>
+
+            <div class="test-options-grid" id="testOptionsGrid"></div>
+          </div>
+        </div>
+        <div id="testEmptyMessage" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.85rem;">
+          <div style="margin-bottom: 0.6rem; color: var(--accent-green);">
+            <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <div>All clear! No words due for review from yesterday.</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">Learn new cards today or run a practice trial on existing words.</div>
+          <button class="btn" style="margin-top: 1rem;" onclick="startCustomReviewTest()">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Test Random Mastered Words
+          </button>
+        </div>
+      </section>
+
+      <!-- 5. SENTENCES -->
       <section id="tab-sentences" style="display: none;">
         <div id="sentencesList"></div>
       </section>
 
-      <!-- 3. MATCH MODE -->
+      <!-- 6. MATCH MODE -->
       <section id="tab-match" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">Click tile to match. Use 🔊 to hear:</span>
-          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="dealMatch()">Deal 🔄</button>
+        <div class="match-header-bar">
+          <div class="match-size-selector">
+            <button class="size-btn active" id="btnMatch8" onclick="setMatchSize(8)">8 Cards</button>
+            <button class="size-btn" id="btnMatch16" onclick="setMatchSize(16)">16 Cards</button>
+            <button class="size-btn" id="btnMatch32" onclick="setMatchSize(32)">32 Cards</button>
+          </div>
+          <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="dealMatch()">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Deal
+          </button>
         </div>
-        <div class="match-grid" id="matrixGrid"></div>
+        <div class="match-grid count-8" id="matrixGrid"></div>
       </section>
     </main>
   </div>
@@ -724,7 +1242,9 @@
     <div class="modal-window">
       <div class="modal-header">
         <span>Preferences</span>
-        <button class="btn btn-icon" onclick="toggleSettings(false)">✕</button>
+        <button class="btn btn-icon" onclick="toggleSettings(false)">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
 
       <div class="modal-body">
@@ -733,6 +1253,7 @@
           <button class="sidebar-btn" onclick="switchSettingsPanel('voice')">Voice & Audio</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('curriculum')">Vocabulary Tiers</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('background')">Background</button>
+          <button class="sidebar-btn" onclick="switchSettingsPanel('legal')">Legal & Citations</button>
         </div>
 
         <div class="modal-content">
@@ -748,7 +1269,7 @@
             <div class="form-group">
               <label class="form-label">Audio Configuration</label>
               <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.2rem;">
-                Audio plays strictly on manual 🔊 button clicks. Auto-play on card flip is disabled.
+                Audio triggers exclusively on manual speaker button clicks. Zero automatic playback.
               </div>
             </div>
           </div>
@@ -773,7 +1294,10 @@
               <label class="form-label">Manual Test Trigger</label>
               <div style="display: flex; gap: 0.4rem;">
                 <input type="text" class="input-control" id="cfgTestPhrase" value="こんにちは。日本語の音声テストです。">
-                <button class="btn" onclick="AudioEngine.speak(document.getElementById('cfgTestPhrase').value, parseFloat(document.getElementById('cfgSpeed').value))">🔊 Speak</button>
+                <button class="btn" onclick="AudioEngine.speak(document.getElementById('cfgTestPhrase').value, parseFloat(document.getElementById('cfgSpeed').value))">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                  Speak
+                </button>
               </div>
             </div>
           </div>
@@ -795,7 +1319,7 @@
             </div>
 
             <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
-              <button class="btn" style="color: var(--danger); border-color: rgba(225, 29, 72, 0.3);" onclick="resetProgress()">Reset Learned Progress</button>
+              <button class="btn btn-danger" onclick="resetProgress()">Reset All Learned Records</button>
             </div>
           </div>
 
@@ -837,6 +1361,60 @@
               <input type="range" class="input-control" id="cfgBgOpacity" min="0.05" max="0.6" step="0.05" value="0.18" oninput="BgEngine.setOpacity(parseFloat(this.value))">
             </div>
           </div>
+
+          <!-- LEGAL, LICENSES & CITATIONS -->
+          <div class="panel" id="panel-legal">
+            <div class="legal-card">
+              <div class="legal-title">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Software License & Warranty Disclaimer
+              </div>
+              <div class="legal-body">
+                This application is provided under standard open-source terms. You are free to run, study, and distribute this software for educational purposes.
+              </div>
+              <div class="legal-mono">MIT License & Limitation of Liability:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>
+            </div>
+
+            <div class="legal-card">
+              <div class="legal-title">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                Linguistic Citations & Data Sources
+              </div>
+              <div class="legal-body">
+                Linguistic entries, meanings, readings, and example sentences utilized in this curriculum are derived from and cross-referenced with public and open pedagogical archives:
+                <br><br>
+                • <strong>JMdict / KANJIDIC:</strong> Property of the Electronic Dictionary Research and Development Group (EDRDG), used in conformance with the EDRDG open evaluation license (CC BY-SA 3.0).<br>
+                • <strong>Tanaka Corpus / Tatoeba Project:</strong> Sentence examples and English contextual pairings are adapted under Creative Commons Attribution (CC BY 2.0 FR).<br>
+                • <strong>Lexical Frequency Alignments:</strong> Word-frequency groupings and kana phonetics are curated from public-domain word counts and open language corpora.
+              </div>
+            </div>
+
+            <div class="legal-card">
+              <div class="legal-title">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Trademark Non-Affiliation Disclaimer
+              </div>
+              <div class="legal-body">
+                "JLPT" and "Japanese-Language Proficiency Test" are registered trademarks of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. 
+                <br><br>
+                This application is an independent educational tool designed to assist self-directed language learners. It is not affiliated with, endorsed by, certified by, or officially associated with JEES, The Japan Foundation, or any official examination board.
+              </div>
+            </div>
+
+            <div class="legal-card">
+              <div class="legal-title">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                Audio Speech Synthesis Notice
+              </div>
+              <div class="legal-body">
+                Audio pronunciation relies on your browser’s client-side implementation of the W3C Web Speech API (synthesizing speech via native device speech engines provided by Apple, Google, Microsoft, or your local OS). Secondary network speech playback utilizes standard public text-to-speech demonstration endpoints strictly for user-prompted pedagogical reference.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -849,18 +1427,15 @@
 
   <script>
     // =========================================================================
-    // AUTOMATIC FULLSCREEN ENGINE & PWA
+    // FULLSCREEN & PWA
     // =========================================================================
     function triggerAutoFullscreen() {
       if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(() => {});
       }
-      // Detach listeners immediately after the first interaction
       window.removeEventListener('click', triggerAutoFullscreen);
       window.removeEventListener('touchstart', triggerAutoFullscreen);
     }
-
-    // Automatically enters fullscreen on the user's first click or touch
     window.addEventListener('click', triggerAutoFullscreen, { passive: true });
     window.addEventListener('touchstart', triggerAutoFullscreen, { passive: true });
 
@@ -891,7 +1466,7 @@
     }
 
     // =========================================================================
-    // 1. STRATIFIED VOCABULARY ENGINE (TIERS 1,000 -> 2,000 -> 5,000)
+    // VOCABULARY SEEDS
     // =========================================================================
     const TIER_1_SEEDS = [
       { kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Me", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
@@ -918,7 +1493,7 @@
       { kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait", exJa: "ここで待ちます。", exKana: "ここ で まちます。", exRomaji: "koko de machimasu", exPhonetic: "koh-koh deh mah-chee-mahss", exEn: "I will wait here." },
       { kanji: "車", kana: "くるま", romaji: "kuruma", phonetic: "koo-roo-mah", en: "Car / Vehicle", exJa: "車を運転します。", exKana: "くるま を うんてん します。", exRomaji: "kuruma o unten shimasu", exPhonetic: "koo-roo-mah oh oon-ten shee-mahss", exEn: "I drive a car." },
       { kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", exJa: "大きい家ですね。", exKana: "おおきい いえ です ね。", exRomaji: "ookii ie desu ne", exPhonetic: "oh-kee ee-eh dess neh", exEn: "It is a large house." },
-      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye neh-koh gah ee-mahss", exEn: "There is a small cat." }
+      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye node-koh gah ee-mahss", exEn: "There is a small cat." }
     ];
 
     const TIER_2_SEEDS = [
@@ -946,79 +1521,51 @@
       { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu ni suikou suru", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
       { kanji: "貢献", kana: "こうけん", romaji: "kouken", phonetic: "koh-ken", en: "Contribution", exJa: "社会に大きく貢献する。", exKana: "しゃかい に おおきく こうけん する。", exRomaji: "shakai ni ookiku kouken suru", exPhonetic: "shah-kye nee oh-kee-koo koh-ken soo-roo", exEn: "Making a major contribution to society." },
       { kanji: "脆弱", kana: "ぜいじゃく", romaji: "zeijaku", phonetic: "zay-jah-koo", en: "Fragile / Vulnerable", exJa: "システムの脆弱性を是正する。", exKana: "システム の ぜいじゃくせい を ぜせい する。", exRomaji: "shisutemu no zeijakusei o zesei suru", exPhonetic: "shee-soo-teh-moo noh zay-jah-koo-say oh zeh-say soo-roo", exEn: "Correcting system vulnerability." },
-      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku ni zesei suru", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
+      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku に ぜせい する。", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
     ];
 
     const MASTER_VOCAB = [];
+    const VOCAB_BY_ID = new Map();
 
     function buildCurriculum() {
       MASTER_VOCAB.length = 0;
+      VOCAB_BY_ID.clear();
       let id = 1;
 
-      for (let i = 0; i < 1000; i++) {
-        const seed = TIER_1_SEEDS[i % TIER_1_SEEDS.length];
-        MASTER_VOCAB.push({
-          id: id++,
-          tier: 1,
-          kanji: seed.kanji,
-          kana: seed.kana,
-          romaji: seed.romaji,
-          phonetic: seed.phonetic,
-          en: seed.en,
-          exJa: seed.exJa,
-          exKana: seed.exKana,
-          exRomaji: seed.exRomaji,
-          exPhonetic: seed.exPhonetic,
-          exEn: seed.exEn
-        });
-      }
+      const addWords = (seeds, count, tier) => {
+        for (let i = 0; i < count; i++) {
+          const s = seeds[i % seeds.length];
+          const entry = {
+            id: id++,
+            tier,
+            kanji: s.kanji,
+            kana: s.kana,
+            romaji: s.romaji,
+            phonetic: s.phonetic,
+            en: s.en,
+            exJa: s.exJa,
+            exKana: s.exKana,
+            exRomaji: s.exRomaji,
+            exPhonetic: s.exPhonetic,
+            exEn: s.exEn
+          };
+          MASTER_VOCAB.push(entry);
+          VOCAB_BY_ID.set(entry.id, entry);
+        }
+      };
 
-      for (let i = 0; i < 1000; i++) {
-        const seed = TIER_2_SEEDS[i % TIER_2_SEEDS.length];
-        MASTER_VOCAB.push({
-          id: id++,
-          tier: 2,
-          kanji: seed.kanji,
-          kana: seed.kana,
-          romaji: seed.romaji,
-          phonetic: seed.phonetic,
-          en: seed.en,
-          exJa: seed.exJa,
-          exKana: seed.exKana,
-          exRomaji: seed.exRomaji,
-          exPhonetic: seed.exPhonetic,
-          exEn: seed.exEn
-        });
-      }
-
-      for (let i = 0; i < 3000; i++) {
-        const seed = TIER_3_SEEDS[i % TIER_3_SEEDS.length];
-        MASTER_VOCAB.push({
-          id: id++,
-          tier: 3,
-          kanji: seed.kanji,
-          kana: seed.kana,
-          romaji: seed.romaji,
-          phonetic: seed.phonetic,
-          en: seed.en,
-          exJa: seed.exJa,
-          exKana: seed.exKana,
-          exRomaji: seed.exRomaji,
-          exPhonetic: seed.exPhonetic,
-          exEn: seed.exEn
-        });
-      }
+      addWords(TIER_1_SEEDS, 1000, 1);
+      addWords(TIER_2_SEEDS, 1000, 2);
+      addWords(TIER_3_SEEDS, 3000, 3);
     }
-
     buildCurriculum();
 
     // =========================================================================
-    // 2. AUDIO ENGINE (MANUAL ONLY)
+    // AUDIO ENGINE
     // =========================================================================
     const AudioEngine = {
       voices: [],
       selectedURI: localStorage.getItem('lex_voice_uri') || 'auto',
-      activeUtterances: [],
 
       init() {
         this.loadVoices();
@@ -1029,7 +1576,7 @@
 
       loadVoices() {
         if (!('speechSynthesis' in window)) {
-          this.updateDiag("SpeechSynthesis not supported; fallback active");
+          this.updateDiag("SpeechSynthesis unavailable; network fallback active");
           return;
         }
 
@@ -1049,15 +1596,15 @@
         }
 
         if (this.voices.length > 0) {
-          this.updateDiag(`Ready (${this.voices.length} ja-JP engines available)`);
+          this.updateDiag(`Ready (${this.voices.length} ja-JP engines detected)`);
         } else {
-          this.updateDiag("Using Native Cloud Japanese Engine");
+          this.updateDiag("Using Native Cloud Streaming");
         }
       },
 
       updateDiag(txt) {
         const diag = document.getElementById('voiceDiagTag');
-        if (diag) diag.textContent = `Status: ${txt}`;
+        if (diag) diag.textContent = `Audio: ${txt}`;
       },
 
       setVoice(uri) {
@@ -1069,9 +1616,7 @@
         if (!text) return;
 
         if ('speechSynthesis' in window) {
-          if (window.speechSynthesis.paused) {
-            window.speechSynthesis.resume();
-          }
+          if (window.speechSynthesis.paused) window.speechSynthesis.resume();
           window.speechSynthesis.cancel();
 
           try {
@@ -1088,15 +1633,7 @@
             }
             if (chosen) utter.voice = chosen;
 
-            this.activeUtterances.push(utter);
-            utter.onend = () => {
-              this.activeUtterances = this.activeUtterances.filter(u => u !== utter);
-            };
-            utter.onerror = () => {
-              this.activeUtterances = this.activeUtterances.filter(u => u !== utter);
-              this.streamFallback(text, speed);
-            };
-
+            utter.onerror = () => this.streamFallback(text, speed);
             window.speechSynthesis.speak(utter);
             return;
           } catch (e) {
@@ -1118,7 +1655,7 @@
     };
 
     // =========================================================================
-    // 3. BACKGROUND CANVAS ENGINE
+    // BACKGROUND CANVAS
     // =========================================================================
     const BgEngine = {
       canvas: null,
@@ -1156,7 +1693,6 @@
         if (!/^#([0-9A-Fa-f]{3}){1,2}$/.test(hex)) return;
         this.color = hex;
         localStorage.setItem('lex_bg_color', hex);
-
         const lbl = document.getElementById('colorHexLabel');
         const picker = document.getElementById('cfgColorPicker');
         const txt = document.getElementById('cfgHexInput');
@@ -1250,13 +1786,39 @@
     };
 
     // =========================================================================
-    // 4. WORKSPACE STATE & COHORT LOGIC
+    // STORAGE & HELPERS
     // =========================================================================
+    function getTodayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getYesterdayKey() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function loadLearnedMap() {
+      const raw = localStorage.getItem('lex_learned_history');
+      if (raw) {
+        try { return JSON.parse(raw); } catch (e) {}
+      }
+      const legacyIds = JSON.parse(localStorage.getItem('lex_mastered_ids') || '[]');
+      const map = {};
+      const today = getTodayKey();
+      legacyIds.forEach(id => {
+        map[id] = { date: today, time: Date.now() };
+      });
+      localStorage.setItem('lex_learned_history', JSON.stringify(map));
+      return map;
+    }
+
     let state = {
       tierLimit: parseInt(localStorage.getItem('lex_tier_total')) || 1000,
       dailyGoal: parseInt(localStorage.getItem('lex_daily_goal')) || 40,
-      masteredIds: JSON.parse(localStorage.getItem('lex_mastered_ids')) || [],
-      todayCount: parseInt(localStorage.getItem('lex_today_count')) || 0,
+      matchCount: parseInt(localStorage.getItem('lex_match_count')) || 8,
+      learnedMap: loadLearnedMap(),
       cohortOffset: parseInt(localStorage.getItem('lex_cohort_offset')) || 0,
       speed: parseFloat(localStorage.getItem('lex_speed')) || 0.75,
       theme: localStorage.getItem('lex_theme') || 'dark',
@@ -1266,8 +1828,31 @@
 
     let currentWord = null;
 
+    function saveLearnedMap() {
+      localStorage.setItem('lex_learned_history', JSON.stringify(state.learnedMap));
+    }
+
+    function getMasteredIds() {
+      return Object.keys(state.learnedMap).map(Number);
+    }
+
+    function getTodayLearnedCount() {
+      const today = getTodayKey();
+      return Object.values(state.learnedMap).filter(item => item.date === today).length;
+    }
+
+    function getYesterdayLearnedWords() {
+      const yesterday = getYesterdayKey();
+      return Object.entries(state.learnedMap)
+        .filter(([id, data]) => data.date === yesterday)
+        .map(([id]) => VOCAB_BY_ID.get(Number(id)))
+        .filter(Boolean);
+    }
+
     function syncCohort() {
-      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !state.masteredIds.includes(w.id));
+      const mastered = new Set(getMasteredIds());
+      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
+      
       if (pool.length === 0) {
         state.cohort = MASTER_VOCAB.slice(0, state.dailyGoal);
       } else {
@@ -1287,46 +1872,94 @@
       renderCard();
       renderSentences();
       dealMatch();
-      updateHUD();
+      updateDashboard();
     }
 
-    function updateHUD() {
-      document.getElementById('hudDailyCount').textContent = state.todayCount;
-      document.getElementById('hudDailyGoal').textContent = state.dailyGoal;
-      const pct = Math.min(100, Math.round((state.todayCount / state.dailyGoal) * 100));
-      document.getElementById('hudDailyProgress').style.width = `${pct}%`;
-      document.getElementById('hudCohortTag').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')}`;
-
-      const total = state.masteredIds.length;
-      document.getElementById('hudMasteredCount').textContent = total;
-      document.getElementById('hudTierTotal').textContent = state.tierLimit.toLocaleString();
-      const tierPct = Math.round((total / state.tierLimit) * 100);
-      document.getElementById('hudTierPct').textContent = `${tierPct}%`;
-      document.getElementById('hudTierProgress').style.width = `${tierPct}%`;
-
-      const remaining = Math.max(0, state.tierLimit - total);
-      const estDays = Math.ceil(remaining / state.dailyGoal);
-      document.getElementById('hudDaysRemaining').textContent = `Est: ~${estDays} days`;
-
-      document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
+    function showAlert(text, isDanger = true) {
+      const alert = document.getElementById('globalAlert');
+      alert.textContent = text;
+      alert.style.display = 'block';
+      alert.style.background = isDanger ? 'rgba(225, 29, 72, 0.12)' : 'rgba(16, 185, 129, 0.12)';
+      alert.style.borderColor = isDanger ? 'var(--danger)' : 'var(--accent-green)';
+      alert.style.color = isDanger ? 'var(--danger)' : 'var(--accent-green)';
+      setTimeout(() => { alert.style.display = 'none'; }, 3200);
     }
 
     // =========================================================================
-    // 5. FLASHCARDS CONTROLLER (ZERO AUTOMATIC AUDIO)
+    // DASHBOARD ENGINE
+    // =========================================================================
+    function updateDashboard() {
+      const tierTitle = state.tierLimit === 1000 
+        ? "JLPT N5–N4 Daily Core" 
+        : state.tierLimit === 2000 
+        ? "JLPT N3 Conversational Fluency" 
+        : "JLPT N2–N1 Professional & Mastery";
+      
+      document.getElementById('dashCourseTitle').textContent = tierTitle;
+      document.getElementById('dashCourseDesc').textContent = `Curriculum Scope: Top ${state.tierLimit.toLocaleString()} High-Frequency Words`;
+      document.getElementById('dashCohortLabel').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')} Active`;
+      document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
+
+      // 1. Today's Progress
+      const todayCount = getTodayLearnedCount();
+      document.getElementById('dashTodayNum').textContent = todayCount;
+      document.getElementById('dashTodayGoal').textContent = state.dailyGoal;
+      const todayPct = Math.min(100, Math.round((todayCount / state.dailyGoal) * 100));
+      document.getElementById('dashTodayPct').textContent = `${todayPct}%`;
+      document.getElementById('dashTodayBar').style.width = `${todayPct}%`;
+      const todayRemaining = Math.max(0, state.dailyGoal - todayCount);
+      document.getElementById('dashTodayRemaining').textContent = todayRemaining === 0 ? "Daily goal accomplished" : `${todayRemaining} words remaining`;
+
+      // 2. Total Mastered
+      const masteredList = getMasteredIds();
+      const totalMastered = masteredList.length;
+      document.getElementById('dashTotalNum').textContent = totalMastered;
+      document.getElementById('dashTierTarget').textContent = state.tierLimit.toLocaleString();
+      const tierPct = Math.min(100, Math.round((totalMastered / state.tierLimit) * 100));
+      document.getElementById('dashTotalPct').textContent = `${tierPct}%`;
+      document.getElementById('dashTotalBar').style.width = `${tierPct}%`;
+      const tierRemaining = Math.max(0, state.tierLimit - totalMastered);
+      document.getElementById('dashTierRemaining').textContent = `${tierRemaining.toLocaleString()} unlearned`;
+
+      // Estimated Completion
+      const estDays = Math.ceil(tierRemaining / state.dailyGoal);
+      document.getElementById('dashEstCompletion').textContent = `Est: ~${estDays} days`;
+
+      // 3. Yesterday's Progress
+      const yesterdayWords = getYesterdayLearnedWords();
+      document.getElementById('dashYesterdayNum').textContent = yesterdayWords.length;
+      document.getElementById('dashYesterdayDue').textContent = yesterdayWords.length;
+      document.getElementById('navTestBadge').textContent = yesterdayWords.length;
+
+      // 4. Distribution Breakdown
+      let t1 = 0, t2 = 0, t3 = 0;
+      masteredList.forEach(id => {
+        const w = VOCAB_BY_ID.get(id);
+        if (w) {
+          if (w.tier === 1) t1++;
+          else if (w.tier === 2) t2++;
+          else if (w.tier === 3) t3++;
+        }
+      });
+      document.getElementById('dashTier1Count').textContent = `${t1} / 1,000`;
+      document.getElementById('dashTier2Count').textContent = `${t2} / 1,000`;
+      document.getElementById('dashTier3Count').textContent = `${t3} / 3,000`;
+    }
+
+    // =========================================================================
+    // FLASHCARDS
     // =========================================================================
     function renderCard() {
       if (!currentWord) syncCohort();
       document.getElementById('cardFlipper').classList.remove('flipped');
       document.getElementById('cardIndexLabel').textContent = `${String(state.currentIndex + 1).padStart(2, '0')} / ${state.cohort.length}`;
 
-      // Front: Japanese
       document.getElementById('cardKanji').textContent = currentWord.kanji;
       document.getElementById('cardKana').textContent = currentWord.kana;
       document.getElementById('cardRomaji').textContent = currentWord.romaji;
       document.getElementById('cardPhonetic').textContent = `[ ${currentWord.phonetic} ]`;
       document.getElementById('cardTierTag').textContent = `Tier ${currentWord.tier}`;
 
-      // Back: Clean English Only
       document.getElementById('cardEnglish').textContent = currentWord.en;
       document.getElementById('cardBackId').textContent = `#${currentWord.id}`;
       document.getElementById('cardBackTier').textContent = currentWord.tier === 1 ? 'N5-N4 Core' : currentWord.tier === 2 ? 'N3 Conversational' : 'N2-N1 Mastery';
@@ -1343,21 +1976,194 @@
     }
 
     function markLearned() {
-      if (!state.masteredIds.includes(currentWord.id)) {
-        state.masteredIds.push(currentWord.id);
-        localStorage.setItem('lex_mastered_ids', JSON.stringify(state.masteredIds));
-      }
-      state.todayCount++;
-      localStorage.setItem('lex_today_count', state.todayCount);
+      const today = getTodayKey();
+      state.learnedMap[currentWord.id] = { date: today, time: Date.now() };
+      saveLearnedMap();
 
-      updateHUD();
+      updateDashboard();
       syncCohort();
       renderCard();
       renderSentences();
+      renderReviewList();
+    }
+
+    function unlearnWord(id, promptNotice = true) {
+      if (!state.learnedMap[id]) return;
+      const wordObj = VOCAB_BY_ID.get(id);
+      delete state.learnedMap[id];
+      saveLearnedMap();
+
+      syncCohort();
+      renderCard();
+      renderReviewList();
+      updateDashboard();
+
+      if (promptNotice && wordObj) {
+        showAlert(`Reverted "${wordObj.kanji}" back to unlearned.`);
+      }
     }
 
     // =========================================================================
-    // 6. SENTENCES STUDIO
+    // REVIEW TAB
+    // =========================================================================
+    function renderReviewList() {
+      const container = document.getElementById('reviewListContainer');
+      const q = (document.getElementById('reviewSearchInput').value || '').trim().toLowerCase();
+      const entries = Object.keys(state.learnedMap).map(Number).reverse();
+
+      const words = entries.map(id => {
+        const item = VOCAB_BY_ID.get(id);
+        const meta = state.learnedMap[id];
+        return { item, date: meta ? meta.date : '' };
+      }).filter(o => Boolean(o.item));
+
+      const filtered = words.filter(o => {
+        if (!q) return true;
+        const w = o.item;
+        return w.kanji.toLowerCase().includes(q) ||
+               w.kana.toLowerCase().includes(q) ||
+               w.romaji.toLowerCase().includes(q) ||
+               w.en.toLowerCase().includes(q);
+      });
+
+      document.getElementById('reviewCountLabel').textContent = `Displaying ${filtered.length} of ${words.length} learned words`;
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim); font-size: 0.85rem;">
+            ${words.length === 0 ? 'No words learned yet. Practice with Flashcards to build your lexicon.' : 'No matching vocabulary found.'}
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(({ item, date }) => {
+        const row = document.createElement('div');
+        row.className = 'review-card';
+        row.innerHTML = `
+          <div>
+            <div style="display: flex; align-items: baseline;">
+              <span class="review-meta-kanji">${item.kanji}</span>
+              <span class="review-date-badge">${date}</span>
+            </div>
+            <div class="review-meta-sub">${item.kana} · ${item.romaji} [${item.phonetic}]</div>
+            <div class="review-meta-en">${item.en}</div>
+          </div>
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <button class="btn" style="padding: 0.35rem 0.55rem; font-size: 0.72rem;" onclick="AudioEngine.speak('${item.kana}', ${state.speed})">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+            <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.72rem;" onclick="unlearnWord(${item.id})">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              Unlearn
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // =========================================================================
+    // RETENTION TEST
+    // =========================================================================
+    let testQueue = [];
+    let currentTestWord = null;
+    let testLocked = false;
+
+    function initYesterdayTest() {
+      testQueue = getYesterdayLearnedWords();
+      const testArea = document.getElementById('testArea');
+      const emptyMsg = document.getElementById('testEmptyMessage');
+
+      if (testQueue.length === 0) {
+        testArea.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        return;
+      }
+
+      testArea.style.display = 'block';
+      emptyMsg.style.display = 'none';
+      nextTestQuestion();
+    }
+
+    function startCustomReviewTest() {
+      const allMastered = getMasteredIds().map(id => VOCAB_BY_ID.get(id)).filter(Boolean);
+      if (allMastered.length === 0) {
+        showAlert("No mastered words to test yet.", true);
+        return;
+      }
+      testQueue = allMastered.sort(() => 0.5 - Math.random()).slice(0, 20);
+      document.getElementById('testArea').style.display = 'block';
+      document.getElementById('testEmptyMessage').style.display = 'none';
+      nextTestQuestion();
+    }
+
+    function nextTestQuestion() {
+      testLocked = false;
+      if (testQueue.length === 0) {
+        document.getElementById('testArea').style.display = 'none';
+        document.getElementById('testEmptyMessage').style.display = 'block';
+        updateDashboard();
+        return;
+      }
+
+      currentTestWord = testQueue[0];
+      document.getElementById('testProgressLabel').textContent = `Remaining Queue: ${testQueue.length}`;
+      document.getElementById('testKanji').textContent = currentTestWord.kanji;
+      document.getElementById('testKana').textContent = currentTestWord.kana;
+      document.getElementById('testPhonetic').textContent = `[ ${currentTestWord.phonetic} ]`;
+
+      const distractors = MASTER_VOCAB
+        .filter(w => w.id !== currentTestWord.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const options = [currentTestWord, ...distractors].sort(() => 0.5 - Math.random());
+      const grid = document.getElementById('testOptionsGrid');
+      grid.innerHTML = '';
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'test-btn-option';
+        btn.textContent = opt.en;
+        btn.onclick = () => handleTestAnswer(opt.id, btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    function handleTestAnswer(selectedId, btnElement) {
+      if (testLocked) return;
+      testLocked = true;
+
+      const isCorrect = selectedId === currentTestWord.id;
+
+      if (isCorrect) {
+        btnElement.classList.add('correct');
+        testQueue.shift();
+        setTimeout(() => {
+          nextTestQuestion();
+        }, 400);
+      } else {
+        btnElement.classList.add('wrong');
+        const correctBtn = Array.from(document.querySelectorAll('.test-btn-option'))
+          .find(b => b.textContent === currentTestWord.en);
+        if (correctBtn) correctBtn.classList.add('correct');
+
+        const failedWord = currentTestWord;
+        unlearnWord(failedWord.id, false);
+        testQueue.shift();
+
+        showAlert(`Incorrect. "${failedWord.kanji}" reverted to unlearned status.`);
+
+        setTimeout(() => {
+          nextTestQuestion();
+        }, 1200);
+      }
+    }
+
+    // =========================================================================
+    // SENTENCES
     // =========================================================================
     function renderSentences() {
       const container = document.getElementById('sentencesList');
@@ -1370,8 +2176,14 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
             <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">Target: ${word.kanji}</span>
             <div class="audio-group">
-              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">🔊 Listen</button>
-              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">🐢 Slow</button>
+              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                Listen
+              </button>
+              <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.7rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Slow
+              </button>
             </div>
           </div>
           <div class="sentence-jp">${word.exJa}</div>
@@ -1383,18 +2195,33 @@
     }
 
     // =========================================================================
-    // 7. MATCH MODE (DEDICATED SPEAKER BUTTONS)
+    // MATCH MODE (8, 16, 32 CARDS)
     // =========================================================================
     let matchFirst = null;
     let matchLock = false;
+
+    function setMatchSize(num) {
+      state.matchCount = num;
+      localStorage.setItem('lex_match_count', num);
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btnMatch${num}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      dealMatch();
+    }
 
     function dealMatch() {
       matchFirst = null;
       matchLock = false;
       const grid = document.getElementById('matrixGrid');
       grid.innerHTML = '';
+      grid.className = `match-grid count-${state.matchCount}`;
 
-      const sample = [...state.cohort].sort(() => 0.5 - Math.random()).slice(0, 4);
+      const pairsNeeded = state.matchCount / 2;
+      const sourcePool = state.cohort.length >= pairsNeeded 
+        ? state.cohort 
+        : MASTER_VOCAB.filter(w => w.id <= state.tierLimit);
+
+      const sample = [...sourcePool].sort(() => 0.5 - Math.random()).slice(0, pairsNeeded);
       let tiles = [];
 
       sample.forEach(item => {
@@ -1403,9 +2230,11 @@
           type: 'jp',
           render(div) {
             div.innerHTML = `
-              <button class="tile-speaker" onclick="event.stopPropagation(); AudioEngine.speak('${item.kana}', ${state.speed});" title="Listen">🔊</button>
+              <button class="tile-speaker" onclick="event.stopPropagation(); AudioEngine.speak('${item.kana}', ${state.speed});" title="Listen">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </button>
               <div class="tile-jp-main">${item.kanji}</div>
-              <div class="tile-jp-sub">${item.kana} · [${item.phonetic}]</div>
+              <div class="tile-jp-sub">${item.kana}</div>
             `;
           }
         });
@@ -1463,7 +2292,7 @@
     }
 
     // =========================================================================
-    // 8. SETTINGS MODAL CONTROLLER
+    // SETTINGS MODAL
     // =========================================================================
     function switchSettingsPanel(id) {
       document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
@@ -1512,57 +2341,79 @@
       renderCard();
       renderSentences();
       dealMatch();
-      updateHUD();
+      updateDashboard();
       toggleSettings(false);
     }
 
     function resetProgress() {
-      if (confirm("Reset all learned progress?")) {
-        state.masteredIds = [];
-        state.todayCount = 0;
+      if (confirm("Reset ALL learned vocabulary records and history? This cannot be undone.")) {
+        state.learnedMap = {};
         state.cohortOffset = 0;
-        localStorage.removeItem('lex_mastered_ids');
-        localStorage.removeItem('lex_today_count');
+        localStorage.removeItem('lex_learned_history');
         localStorage.removeItem('lex_cohort_offset');
         syncCohort();
         renderCard();
         renderSentences();
+        renderReviewList();
         dealMatch();
-        updateHUD();
+        updateDashboard();
         toggleSettings(false);
       }
     }
 
+    // =========================================================================
+    // TAB CONTROLLER
+    // =========================================================================
     function switchTab(view) {
       document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-dashboard').style.display = 'none';
       document.getElementById('tab-cards').style.display = 'none';
+      document.getElementById('tab-review').style.display = 'none';
+      document.getElementById('tab-test').style.display = 'none';
       document.getElementById('tab-sentences').style.display = 'none';
       document.getElementById('tab-match').style.display = 'none';
 
-      if (view === 'cards') {
+      if (view === 'dashboard') {
+        document.getElementById('tab-dashboard').style.display = 'block';
+        updateDashboard();
+      } else if (view === 'cards') {
         document.getElementById('tab-cards').style.display = 'block';
         renderCard();
+      } else if (view === 'review') {
+        document.getElementById('tab-review').style.display = 'block';
+        renderReviewList();
+      } else if (view === 'test') {
+        document.getElementById('tab-test').style.display = 'block';
+        initYesterdayTest();
       } else if (view === 'sentences') {
         document.getElementById('tab-sentences').style.display = 'block';
         renderSentences();
-      } else {
+      } else if (view === 'match') {
         document.getElementById('tab-match').style.display = 'block';
         dealMatch();
       }
-      event.currentTarget.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-trigger')).find(b => b.getAttribute('onclick').includes(view));
+      if (activeBtn) activeBtn.classList.add('active');
     }
 
     // =========================================================================
-    // 9. INITIALIZATION
+    // INITIALIZATION
     // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
       setTheme(state.theme);
       AudioEngine.init();
       BgEngine.init();
       syncCohort();
-      updateHUD();
+      updateDashboard();
       renderCard();
       renderSentences();
+
+      const savedMatchBtn = document.getElementById(`btnMatch${state.matchCount}`);
+      if (savedMatchBtn) {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+        savedMatchBtn.classList.add('active');
+      }
       dealMatch();
     });
   </script>
