@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -30,7 +29,7 @@
       --accent: #ededed;
       --accent-green: #10b981;
       --accent-cyan: #06b6d4;
-      --accent-cyan-glow: rgba(6, 182, 212, 0.25);
+      --accent-cyan-glow: rgba(6, 182, 212, 0.22);
       --danger: #e11d48;
       --warning: #f59e0b;
       --radius: 6px;
@@ -52,7 +51,7 @@
       --text-dim: #9497a4;
       --accent: #111215;
       --accent-cyan: #0891b2;
-      --accent-cyan-glow: rgba(8, 145, 178, 0.2);
+      --accent-cyan-glow: rgba(8, 145, 178, 0.18);
     }
 
     * {
@@ -63,6 +62,23 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* CUSTOM SLEEK SCROLLBARS (NO WEIRD DEFAULT BARS) */
+    *::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    *::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+      background: var(--border-hover);
+      border-radius: 4px;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-hover) transparent;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text);
@@ -71,6 +87,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
+      overflow-x: hidden;
     }
 
     #bgCanvas {
@@ -105,14 +122,8 @@
       vertical-align: middle;
       flex-shrink: 0;
     }
-    .icon-lg {
-      width: 26px;
-      height: 26px;
-    }
-    .icon-xl {
-      width: 42px;
-      height: 42px;
-    }
+    .icon-lg { width: 24px; height: 24px; }
+    .icon-xl { width: 36px; height: 36px; }
 
     /* BUTTONS */
     .btn {
@@ -130,9 +141,7 @@
       gap: 0.35rem;
       transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
     }
-    .btn:active {
-      transform: scale(0.98);
-    }
+    .btn:active { transform: scale(0.98); }
     .btn:hover {
       background: var(--surface-hover);
       border-color: var(--border-hover);
@@ -143,10 +152,7 @@
       border-color: var(--text);
       font-weight: 600;
     }
-    .btn-primary:hover {
-      opacity: 0.92;
-      background: var(--text);
-    }
+    .btn-primary:hover { opacity: 0.92; background: var(--text); }
     .btn-danger {
       background: rgba(225, 29, 72, 0.12);
       color: var(--danger);
@@ -172,77 +178,108 @@
       color: var(--text-muted);
     }
 
-    /* COMPACT UNIFIED TOP NAVIGATION */
-    nav.app-nav {
+    /* TOP STATUS HEADER */
+    header.app-header {
       max-width: 660px;
       width: 100%;
-      margin: 0.5rem auto 0;
-      padding: 0 0.65rem;
+      margin: 0 auto;
+      padding: 0.6rem 0.85rem 0.35rem;
       display: flex;
-      gap: 0.35rem;
+      justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 30;
+      z-index: 25;
       background: linear-gradient(180deg, var(--bg) 85%, transparent 100%);
-      padding-bottom: 0.25rem;
     }
-    .nav-bar {
-      flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 2px;
-      border-radius: var(--radius);
+    .brand-cluster {
       display: flex;
-      gap: 2px;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .brand-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 0 5px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* BOTTOM MOBILE REACH NAVIGATION BAR */
+    nav.app-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(17, 18, 21, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom));
+    }
+    body.theme-light nav.app-bottom-nav {
+      background: rgba(255, 255, 255, 0.92);
+    }
+    .nav-container {
+      max-width: 660px;
+      margin: 0 auto;
+      display: flex;
+      gap: 4px;
+      justify-content: space-around;
       overflow-x: auto;
       scrollbar-width: none;
     }
-    .nav-bar::-webkit-scrollbar { display: none; }
-    
-    .tab-trigger {
+    .nav-container::-webkit-scrollbar { display: none; }
+
+    .bottom-tab-btn {
       flex: 1;
-      min-width: fit-content;
+      min-width: 52px;
       background: transparent;
       border: none;
-      padding: 0.4rem 0.5rem;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      border-radius: calc(var(--radius) - 2px);
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
-      white-space: nowrap;
-      display: inline-flex;
+      padding: 0.35rem 0.25rem;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 0.25rem;
+      gap: 3px;
+      color: var(--text-muted);
+      font-size: 0.64rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
-    .tab-trigger.active {
-      background: var(--surface-subtle);
+    .bottom-tab-btn:hover {
       color: var(--text);
+    }
+    .bottom-tab-btn.active {
+      color: var(--text);
+      background: var(--surface-subtle);
       border: 1px solid var(--border);
     }
-    .tab-badge {
-      display: inline-block;
-      font-size: 0.62rem;
-      padding: 1px 4px;
-      border-radius: 9px;
-      background: rgba(245, 158, 11, 0.2);
-      color: var(--warning);
+    .bottom-tab-btn .tab-badge-dot {
+      position: absolute;
+      top: 4px;
+      right: 18%;
+      background: var(--warning);
+      color: #000;
+      font-size: 0.58rem;
+      font-weight: 700;
       font-family: var(--font-mono);
+      padding: 0 4px;
+      border-radius: 8px;
     }
-    .tab-badge-cyan {
-      background: rgba(6, 182, 212, 0.2);
+    .bottom-tab-btn.tab-cyan.active {
       color: var(--accent-cyan);
-    }
-
-    .nav-tools {
-      display: flex;
-      gap: 0.25rem;
-      align-items: center;
-      flex-shrink: 0;
+      border-color: rgba(6, 182, 212, 0.4);
     }
 
     /* MAIN CONTENT */
@@ -251,7 +288,7 @@
       max-width: 660px;
       width: 100%;
       margin: 0 auto;
-      padding: 0.5rem 0.75rem 2.5rem;
+      padding: 0.4rem 0.85rem calc(4.8rem + env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
     }
@@ -280,25 +317,6 @@
       padding: 0.85rem;
       margin-bottom: 0.65rem;
     }
-    .dash-brand-row {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 0.35rem;
-    }
-    .brand-name {
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .brand-badge {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-      padding: 0 4px;
-      border-radius: var(--radius-sm);
-    }
     .dash-hero-top {
       display: flex;
       justify-content: space-between;
@@ -306,7 +324,7 @@
       gap: 0.5rem;
     }
     .dash-course-title {
-      font-size: clamp(0.9rem, 4vw, 1.05rem);
+      font-size: clamp(0.95rem, 4vw, 1.05rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       line-height: 1.2;
@@ -392,10 +410,36 @@
       font-size: 0.75rem;
     }
 
+    /* BATCH TESTING AVAILABLE BANNER */
+    .mastery-test-banner {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--accent-green);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      margin-bottom: 0.65rem;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .mastery-test-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .mastery-test-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
     /* FLASHCARD OPTIMIZED FOR SMALL SCREENS */
     .card-space {
       perspective: 1000px;
-      height: clamp(245px, 39vh, 310px);
+      height: clamp(245px, 38vh, 305px);
       margin-bottom: 0.6rem;
       cursor: pointer;
     }
@@ -407,9 +451,7 @@
       transition: transform 0.35s ease;
       border-radius: var(--radius);
     }
-    .card-flipper.flipped {
-      transform: rotateY(180deg);
-    }
+    .card-flipper.flipped { transform: rotateY(180deg); }
 
     .card-side {
       position: absolute;
@@ -508,7 +550,7 @@
       gap: 0.5rem;
     }
 
-    /* MATCH MODE RESPONSIVENESS */
+    /* MATCH MODE */
     .match-header-bar {
       display: flex;
       justify-content: space-between;
@@ -789,31 +831,25 @@
       color: var(--danger);
     }
 
-    /* =========================================================================
-       RAPID MEMORY FLUSH (SHORT-TERM MEMORY BURST) DESIGN
-       ========================================================================= */
+    /* RAPID MEMORY FLUSH (SHORT-TERM MEMORY BURST) */
     .flush-shell {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
     }
-
     .flush-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0.85rem;
       position: relative;
-      overflow: hidden;
     }
-
     .flush-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 0.5rem;
     }
-
     .flush-badge-tag {
       font-family: var(--font-mono);
       font-size: 0.68rem;
@@ -827,9 +863,7 @@
       gap: 0.3rem;
     }
 
-    .flush-cfg-group {
-      margin-bottom: 0.9rem;
-    }
+    .flush-cfg-group { margin-bottom: 0.9rem; }
     .flush-cfg-label {
       display: flex;
       justify-content: space-between;
@@ -873,24 +907,14 @@
       font-weight: 600;
     }
 
-    /* Preview Phase Scrollable Grid */
     .flush-scroll-list {
-      max-height: min(54vh, 440px);
+      max-height: min(52vh, 420px);
       overflow-y: auto;
       padding-right: 0.25rem;
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
-      scrollbar-width: thin;
     }
-    .flush-scroll-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .flush-scroll-list::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-
     .flush-preview-item {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -900,10 +924,6 @@
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
-      transition: border-color 0.15s;
-    }
-    .flush-preview-item:hover {
-      border-color: var(--border-hover);
     }
     .flush-preview-kanji {
       font-family: var(--font-jp);
@@ -923,7 +943,7 @@
       margin-top: 0.15rem;
     }
 
-    /* Intermission View (Countdown Matrix) */
+    /* Intermission View */
     .flush-timer-box {
       text-align: center;
       padding: 1.8rem 1rem;
@@ -931,7 +951,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
     .flush-countdown-clock {
       font-family: var(--font-mono);
@@ -949,7 +968,6 @@
       max-width: 320px;
       line-height: 1.4;
     }
-
     .flush-pulse-ring {
       width: 70px;
       height: 70px;
@@ -1019,7 +1037,7 @@
       box-shadow: 0 0 0 1px var(--accent-cyan);
     }
 
-    /* Results View */
+    /* Results */
     .flush-score-banner {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1041,7 +1059,6 @@
       color: var(--accent-cyan);
       margin-top: 0.2rem;
     }
-
     .flush-result-row {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1053,12 +1070,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .flush-result-row.correct {
-      border-left: 3px solid var(--accent-green);
-    }
-    .flush-result-row.wrong {
-      border-left: 3px solid var(--danger);
-    }
+    .flush-result-row.correct { border-left: 3px solid var(--accent-green); }
+    .flush-result-row.fuzzy { border-left: 3px solid var(--warning); }
+    .flush-result-row.wrong { border-left: 3px solid var(--danger); }
 
     .flush-user-ans {
       font-size: 0.75rem;
@@ -1066,26 +1080,67 @@
       font-family: var(--font-mono);
       margin-top: 0.15rem;
     }
-    .flush-user-ans span.wrong-text {
-      color: var(--danger);
-      text-decoration: line-through;
+    .flush-user-ans span.wrong-text { color: var(--danger); text-decoration: line-through; }
+    .flush-user-ans span.correct-text { color: var(--accent-green); font-weight: 600; }
+    .flush-user-ans span.fuzzy-text { color: var(--warning); font-weight: 600; }
+
+    /* ACHIEVEMENTS LIST MODAL */
+    .achievement-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      margin-bottom: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
-    .flush-user-ans span.correct-text {
-      color: var(--accent-green);
-      font-weight: 600;
+    .achievement-card.unlocked {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(6, 182, 212, 0.05);
+    }
+    .achievement-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .achievement-card.unlocked .achievement-icon {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: var(--accent-cyan-glow);
+    }
+    .achievement-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .achievement-card.unlocked .achievement-title { color: var(--accent-cyan); }
+    .achievement-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      margin-top: 0.1rem;
     }
 
-    /* SETTINGS MODAL */
+    /* COHESIVE MODAL DIALOGS */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 100;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 0.65rem;
+      padding: 0.75rem;
     }
     .modal-overlay.open { display: flex; }
 
@@ -1094,20 +1149,22 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       width: 100%;
-      max-width: 720px;
-      height: min(520px, 94vh);
+      max-width: 680px;
+      height: min(520px, 92vh);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     .modal-header {
-      padding: 0.65rem 0.9rem;
+      padding: 0.7rem 0.95rem;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 600;
+      background: var(--surface);
     }
     .modal-body {
       flex: 1;
@@ -1115,17 +1172,17 @@
       overflow: hidden;
     }
     .modal-sidebar {
-      width: 165px;
+      width: 160px;
       background: var(--surface-subtle);
       border-right: 1px solid var(--border);
-      padding: 0.4rem;
+      padding: 0.45rem;
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
     }
     .sidebar-btn {
-      padding: 0.4rem 0.6rem;
-      font-size: 0.76rem;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.74rem;
       font-weight: 500;
       border-radius: var(--radius-sm);
       border: none;
@@ -1133,6 +1190,7 @@
       color: var(--text-muted);
       cursor: pointer;
       text-align: left;
+      transition: all 0.15s;
     }
     .sidebar-btn.active {
       background: var(--surface);
@@ -1154,7 +1212,7 @@
       font-size: 0.72rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.35rem;
       font-family: var(--font-mono);
     }
     .input-control {
@@ -1165,24 +1223,33 @@
       padding: 0.45rem 0.6rem;
       border-radius: var(--radius-sm);
       font-size: 0.78rem;
+      appearance: none;
+      -webkit-appearance: none;
     }
     .input-control:focus {
       outline: none;
-      border-color: var(--text-muted);
+      border-color: var(--border-hover);
     }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-muted);
+    /* CUSTOM RANGE CONTROLS */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
       background: var(--surface-subtle);
+      height: 6px;
+      border-radius: 3px;
+      cursor: pointer;
       border: 1px solid var(--border);
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      margin-top: 0.3rem;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 6px var(--accent-cyan-glow);
+      border: 2px solid var(--surface);
     }
 
     .legal-card {
@@ -1217,15 +1284,15 @@
       word-break: break-word;
     }
 
-    @media (min-width: 600px) {
-      .match-grid.count-16 {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
     @media (max-width: 600px) {
       .modal-body { flex-direction: column; }
-      .modal-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; }
+      .modal-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
@@ -1234,61 +1301,48 @@
   <canvas id="bgCanvas"></canvas>
 
   <div class="app-shell">
-    <!-- COMPACT STICKY NAVIGATION -->
-    <nav class="app-nav">
-      <div class="nav-bar">
-        <button class="tab-trigger active" onclick="switchTab('dashboard')">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-          Dashboard
-        </button>
-        <button class="tab-trigger" onclick="switchTab('cards')">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-          Cards
-        </button>
-        <button class="tab-trigger" onclick="switchTab('flush')">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Flush <span class="tab-badge tab-badge-cyan">Burst</span>
-        </button>
-        <button class="tab-trigger" onclick="switchTab('review')">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Review
-        </button>
-        <button class="tab-trigger" onclick="switchTab('test')">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-          Test <span class="tab-badge" id="navTestBadge">0</span>
-        </button>
-        <button class="tab-trigger" onclick="switchTab('sentences')">
-          <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-          Sentences
-        </button>
-        <button class="tab-trigger" onclick="switchTab('match')">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-          Match
-        </button>
+    <!-- TOP SLIM HUD -->
+    <header class="app-header">
+      <div class="brand-cluster">
+        <span class="brand-name">Lexicon</span>
+        <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
       </div>
 
-      <div class="nav-tools">
+      <div style="display: flex; gap: 0.3rem; align-items: center;">
         <button class="btn btn-icon" id="btnPwaInstall" style="display: none;" onclick="triggerPwaInstall()" title="Install App">
           <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        <button class="btn btn-icon" onclick="toggleAchievements(true)" title="Achievements">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
         </button>
         <button class="btn btn-icon" onclick="toggleSettings(true)" title="Preferences">
           <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
       </div>
-    </nav>
+    </header>
 
     <main>
       <div class="alert-banner" id="globalAlert"></div>
+
+      <!-- MASTERED BATCH TESTING AVAILABLE BANNER -->
+      <div class="mastery-test-banner" id="batchMasteryBanner">
+        <div>
+          <div class="mastery-test-title">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Cohort Mastered // Validation Ready
+          </div>
+          <div class="mastery-test-sub">All words in current batch learned. Test to unlock next cohort!</div>
+        </div>
+        <button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem;" onclick="startCohortValidationTest()">
+          Validate Cohort
+        </button>
+      </div>
 
       <!-- 1. DASHBOARD -->
       <section id="tab-dashboard">
         <div class="dash-hero">
           <div class="dash-hero-top">
             <div>
-              <div class="dash-brand-row">
-                <span class="brand-name">Lexicon</span>
-                <span class="brand-badge" id="hudTierBadge">Top 1,000</span>
-              </div>
               <div class="dash-course-title" id="dashCourseTitle">JLPT N5–N4 Daily Core</div>
               <div class="dash-course-desc" id="dashCourseDesc">Curriculum Scope: Top 1,000 High-Frequency Words</div>
             </div>
@@ -1304,7 +1358,7 @@
         </div>
 
         <div class="dash-grid">
-          <!-- 1. Today's Word Intake -->
+          <!-- 1. Today's Words -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1319,7 +1373,7 @@
             </div>
           </div>
 
-          <!-- 2. Today's Study Time -->
+          <!-- 2. Today's Time -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1334,7 +1388,7 @@
             </div>
           </div>
 
-          <!-- 3. Yesterday's Words & Test Queue -->
+          <!-- 3. Yesterday's Words -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1350,7 +1404,7 @@
             </button>
           </div>
 
-          <!-- 4. Yesterday's Study Time -->
+          <!-- 4. Yesterday's Time -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1365,7 +1419,7 @@
             </div>
           </div>
 
-          <!-- 5. Total Mastered Words -->
+          <!-- 5. Total Mastered -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1380,7 +1434,7 @@
             </div>
           </div>
 
-          <!-- 6. Study Launcher (includes Rapid Flush) -->
+          <!-- 6. Study Launchers -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1493,15 +1547,15 @@
                   <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   Short-Term Recall Burst
                 </div>
-                <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim);">Matrix Mode</span>
+                <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim);">Fuzzy Match Enabled</span>
               </div>
 
               <div style="font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem;">Rapid Memory Flush</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; margin-bottom: 1rem;">
-                Preview a targeted batch of vocabulary, retain the definitions in short-term memory through a timed distraction phase, and aggressively recall them.
+              <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; margin-bottom: 0.9rem;">
+                Preview a custom batch, hold the vocabulary in active working memory during the timed intermission, and test recall with typo-tolerant grading.
               </div>
 
-              <!-- 1. Batch Size Control (1 - 100 Words) -->
+              <!-- Batch Size (1 - 100) -->
               <div class="flush-cfg-group">
                 <div class="flush-cfg-label">
                   <span>BURST BATCH SIZE</span>
@@ -1517,7 +1571,7 @@
                 </div>
               </div>
 
-              <!-- 2. Retention Timer Control (15s - 10m) -->
+              <!-- Retention Delay (15s - 10m) -->
               <div class="flush-cfg-group">
                 <div class="flush-cfg-label">
                   <span>RETENTION TIMER DELAY</span>
@@ -1535,7 +1589,7 @@
                 </div>
               </div>
 
-              <!-- 3. Vocabulary Cohort Selection -->
+              <!-- Cohort Selection -->
               <div class="flush-cfg-group">
                 <label class="form-label">Vocabulary Source</label>
                 <select class="input-control" id="flushSourceSelect">
@@ -1552,7 +1606,7 @@
             </div>
           </div>
 
-          <!-- STAGE 2: PREVIEW PHASE (SCALABLE LIST) -->
+          <!-- STAGE 2: PREVIEW PHASE -->
           <div id="flushViewPreview" style="display: none;">
             <div class="flush-card">
               <div class="flush-top-row">
@@ -1563,7 +1617,7 @@
                 <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim);" id="flushPreviewCount">0 Words</span>
               </div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.55rem;">
-                Memorize the readings and meanings. When ready, commit them to memory and start the timer.
+                Memorize readings and English meanings. When ready, commit them to memory and start the timer.
               </div>
 
               <div class="flush-scroll-list" id="flushPreviewContainer"></div>
@@ -1648,7 +1702,7 @@
               </button>
               <button class="btn btn-primary" style="flex: 1;" onclick="markAllFlushCorrectAsLearned()">
                 <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Learn Correct Words
+                Commit Correct Words
               </button>
             </div>
 
@@ -1670,7 +1724,7 @@
         <div id="reviewListContainer"></div>
       </section>
 
-      <!-- 5. YESTERDAY'S RETENTION TEST -->
+      <!-- 5. RETENTION TEST -->
       <section id="tab-test" style="display: none;">
         <div id="testArea">
           <div class="test-box">
@@ -1686,7 +1740,7 @@
             <div class="test-word-reading" id="testKana">--</div>
             <div class="test-word-phonetic" id="testPhonetic">[ -- ]</div>
 
-            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.65rem;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.65rem;" id="testInstruction">
               Choose the correct definition. Wrong answers unlearn the word.
             </div>
 
@@ -1727,13 +1781,61 @@
         <div class="match-grid count-8" id="matrixGrid"></div>
       </section>
     </main>
+
+    <!-- MOBILE REACH BOTTOM NAVIGATION BAR -->
+    <nav class="app-bottom-nav">
+      <div class="nav-container">
+        <button class="bottom-tab-btn active" onclick="switchTab('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Dash</span>
+        </button>
+        <button class="bottom-tab-btn" onclick="switchTab('cards')">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          <span>Cards</span>
+        </button>
+        <button class="bottom-tab-btn tab-cyan" onclick="switchTab('flush')">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Flush</span>
+        </button>
+        <button class="bottom-tab-btn" onclick="switchTab('test')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+          <span>Test</span>
+          <span class="tab-badge-dot" id="navTestBadge">0</span>
+        </button>
+        <button class="bottom-tab-btn" onclick="switchTab('review')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Review</span>
+        </button>
+        <button class="bottom-tab-btn" onclick="switchTab('sentences')">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          <span>Phrases</span>
+        </button>
+        <button class="bottom-tab-btn" onclick="switchTab('match')">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span>Match</span>
+        </button>
+      </div>
+    </nav>
   </div>
 
-  <!-- SETTINGS MODAL -->
+  <!-- ACHIEVEMENTS MODAL -->
+  <div class="modal-overlay" id="achievementsModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <span>Neural Achievements</span>
+        <button class="btn btn-icon" onclick="toggleAchievements(false)">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-content" id="achievementsContainer"></div>
+    </div>
+  </div>
+
+  <!-- PREFERENCES / SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-window">
       <div class="modal-header">
-        <span>Preferences</span>
+        <span>System Preferences</span>
         <button class="btn btn-icon" onclick="toggleSettings(false)">
           <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
@@ -1744,6 +1846,7 @@
           <button class="sidebar-btn active" onclick="switchSettingsPanel('general')">General</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('voice')">Voice & Audio</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('curriculum')">Vocabulary Tiers</button>
+          <button class="sidebar-btn" onclick="switchSettingsPanel('progression')">Progression Logic</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('background')">Background</button>
           <button class="sidebar-btn" onclick="switchSettingsPanel('legal')">Legal & Citations</button>
         </div>
@@ -1752,16 +1855,16 @@
           <!-- General -->
           <div class="panel active" id="panel-general">
             <div class="form-group">
-              <label class="form-label">Theme</label>
+              <label class="form-label">Theme Preset</label>
               <select class="input-control" id="cfgTheme" onchange="setTheme(this.value)">
                 <option value="dark">Dark Charcoal</option>
                 <option value="light">Technical Light</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Audio Configuration</label>
+              <label class="form-label">Mobile Viewport</label>
               <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem;">
-                Audio triggers strictly upon manual speaker button clicks.
+                Bottom navigation configured for one-hand thumb operation.
               </div>
             </div>
           </div>
@@ -1769,9 +1872,8 @@
           <!-- Voice & Diagnostics -->
           <div class="panel" id="panel-voice">
             <div class="form-group">
-              <label class="form-label">Japanese Voice Engine</label>
+              <label class="form-label">Japanese Speech Synthesizer</label>
               <select class="input-control" id="cfgVoiceSelect" onchange="AudioEngine.setVoice(this.value)"></select>
-              <div class="status-badge" id="voiceDiagTag">Audio Status: Checking...</div>
             </div>
 
             <div class="form-group">
@@ -1815,12 +1917,26 @@
             </div>
           </div>
 
+          <!-- Progression Logic (Batch Modes) -->
+          <div class="panel" id="panel-progression">
+            <div class="form-group">
+              <label class="form-label">Batch Progression Mode</label>
+              <select class="input-control" id="cfgProgressionMode">
+                <option value="sequential">Dynamic Sequential (Free Next Batch Navigation)</option>
+                <option value="mastery-gate">Mastery Gate (Unlock Next Batch only upon 100% Validated Test)</option>
+              </select>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.4rem; line-height: 1.4;">
+                Mastery Gate locks batch switching until all words in the cohort are validated via test.
+              </div>
+            </div>
+          </div>
+
           <!-- Background Canvas -->
           <div class="panel" id="panel-background">
             <div class="form-group">
-              <label class="form-label">Effect Style</label>
+              <label class="form-label">Visual Shader</label>
               <select class="input-control" id="cfgBgPreset" onchange="BgEngine.setPreset(this.value)">
-                <option value="subtle-rain">Faint Code Stream</option>
+                <option value="subtle-rain">Faint Matrix Code Stream</option>
                 <option value="particles">Drifting Dust</option>
                 <option value="none">Solid (Off)</option>
               </select>
@@ -1853,9 +1969,7 @@
                 <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Software License & Warranty Disclaimer
               </div>
-              <div class="legal-body">
-                This software is distributed under standard open-source terms.
-              </div>
+              <div class="legal-body">This software is distributed under standard open-source terms.</div>
               <div class="legal-mono">MIT License & Limitation of Liability:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.
@@ -1869,10 +1983,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
                 Linguistic Citations & Data Sources
               </div>
               <div class="legal-body">
-                Linguistic entries, meanings, and sentence pairings are referenced from open pedagogical archives:
-                <br><br>
                 • <strong>JMdict / KANJIDIC:</strong> Property of EDRDG, used under Creative Commons Attribution-ShareAlike 3.0.<br>
-                • <strong>Tanaka Corpus / Tatoeba:</strong> Example sentences adapted under Creative Commons Attribution (CC BY 2.0 FR).
+                • <strong>Tanaka Corpus / Tatoeba:</strong> Adapted under Creative Commons Attribution (CC BY 2.0 FR).
               </div>
             </div>
 
@@ -1882,7 +1994,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
                 Trademark Non-Affiliation Disclaimer
               </div>
               <div class="legal-body">
-                "JLPT" is a registered trademark of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. This product is an independent study tool and is not endorsed or certified by JEES or The Japan Foundation.
+                "JLPT" is a registered trademark of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. This product is an independent study tool not certified by JEES or The Japan Foundation.
               </div>
             </div>
           </div>
@@ -1930,14 +2042,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       }
     }
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
     // =========================================================================
-    // STUDY TIME ENGINE (TODAY & YESTERDAY)
+    // STUDY TIME ENGINE
     // =========================================================================
     function getTodayKey() {
       const d = new Date();
@@ -1952,17 +2058,13 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     const TimeEngine = {
       lastTick: Date.now(),
-
       init() {
         this.lastTick = Date.now();
         document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'visible') {
-            this.lastTick = Date.now();
-          }
+          if (document.visibilityState === 'visible') this.lastTick = Date.now();
         });
         setInterval(() => this.tick(), 1000);
       },
-
       tick() {
         if (document.visibilityState !== 'visible') return;
         const now = Date.now();
@@ -1975,32 +2077,84 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           this.updateDisplay();
         }
       },
-
       save() {
         localStorage.setItem('lex_study_time_map', JSON.stringify(state.timeMap));
       },
-
       format(totalSeconds) {
         if (!totalSeconds || totalSeconds < 0) return '0m 00s';
         const hrs = Math.floor(totalSeconds / 3600);
         const mins = Math.floor((totalSeconds % 3600) / 60);
         const secs = totalSeconds % 60;
-        if (hrs > 0) {
-          return `${hrs}h ${mins}m`;
-        }
+        if (hrs > 0) return `${hrs}h ${mins}m`;
         return `${mins}m ${String(secs).padStart(2, '0')}s`;
       },
-
       updateDisplay() {
         const todayKey = getTodayKey();
         const yesterdayKey = getYesterdayKey();
         const todaySecs = state.timeMap[todayKey] || 0;
         const yestSecs = state.timeMap[yesterdayKey] || 0;
-        
         const elToday = document.getElementById('dashTodayTime');
         const elYest = document.getElementById('dashYesterdayTime');
         if (elToday) elToday.textContent = this.format(todaySecs);
         if (elYest) elYest.textContent = this.format(yestSecs);
+      }
+    };
+
+    // =========================================================================
+    // FUZZY SPELLING & TYPO-TOLERANCE ALGORITHM
+    // =========================================================================
+    const FuzzyEngine = {
+      levenshtein(a, b) {
+        const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
+        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+        for (let i = 1; i <= b.length; i++) {
+          for (let j = 1; j <= a.length; j++) {
+            if (b[i - 1] === a[j - 1]) matrix[i][j] = matrix[i - 1][j - 1];
+            else matrix[i][j] = Math.min(matrix[i - 1][j - 1], matrix[i][j - 1], matrix[i - 1][j]) + 1;
+          }
+        }
+        return matrix[b.length][a.length];
+      },
+
+      clean(str) {
+        return (str || '')
+          .toLowerCase()
+          .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+          .replace(/^(to|a|an)\s+/, '')
+          .trim();
+      },
+
+      evaluate(userInput, targetDefinition) {
+        const cleanUser = this.clean(userInput);
+        if (!cleanUser) return { match: false, status: 'wrong', dist: 99 };
+
+        const candidates = (targetDefinition || '')
+          .toLowerCase()
+          .split(/[\/,;()]/)
+          .map(s => this.clean(s))
+          .filter(Boolean);
+
+        for (const cand of candidates) {
+          if (cand === cleanUser) {
+            return { match: true, status: 'exact', dist: 0 };
+          }
+          if (cleanUser.length >= 3 && (cand.includes(cleanUser) || cleanUser.includes(cand))) {
+            return { match: true, status: 'exact', dist: 0 };
+          }
+        }
+
+        let bestDist = 99;
+        for (const cand of candidates) {
+          const dist = this.levenshtein(cleanUser, cand);
+          if (dist < bestDist) bestDist = dist;
+
+          const maxAllowed = cand.length <= 4 ? 1 : 2;
+          if (dist <= maxAllowed) {
+            return { match: true, status: 'fuzzy', dist };
+          }
+        }
+
+        return { match: false, status: 'wrong', dist: bestDist };
       }
     };
 
@@ -2040,27 +2194,13 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       { kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Communication", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
       { kanji: "約束", kana: "やくそく", romaji: "yakusoku", phonetic: "yah-koo-soh-koo", en: "Promise / Appointment", exJa: "約束を守ります。", exKana: "やくそく を まもります。", exRomaji: "yakusoku o mamorimasu", exPhonetic: "yah-koo-soh-koo oh mah-moh-ree-mahss", exEn: "I keep my promise." },
       { kanji: "相談", kana: "そうだん", romaji: "soudan", phonetic: "soh-dahn", en: "Consultation / Advice", exJa: "先生に相談します。", exKana: "せんせい に そうだん します。", exRomaji: "sensei ni soudan shimasu", exPhonetic: "sen-say nee soh-dahn shee-mahss", exEn: "I will consult my teacher." },
-      { kanji: "複雑", kana: "ふくざつ", romaji: "fukuzatsu", phonetic: "foo-koo-zah-tsoo", en: "Complex / Complicated", exJa: "この問題は複雑です。", exKana: "この もんだい は ふくざつ です。", exRomaji: "kono mondai wa fukuzatsu desu", exPhonetic: "koh-noh mon-dye wah foo-koo-zah-tsoo dess", exEn: "This issue is complicated." },
-      { kanji: "簡単", kana: "かんたん", romaji: "kantan", phonetic: "kahn-tahn", en: "Simple / Easy", exJa: "簡単な説明です。", exKana: "かんたん な せつめい です。", exRomaji: "kantan na setsumei desu", exPhonetic: "kahn-tahn nah set-soo-may dess", exEn: "It is a simple explanation." },
-      { kanji: "案内", kana: "あんない", romaji: "annai", phonetic: "ahn-nye", en: "Guidance / Tour", exJa: "街をご案内します。", exKana: "まち を ごあんない します。", exRomaji: "machi o goannai shimasu", exPhonetic: "mah-chee oh goh-ahn-nye shee-mahss", exEn: "I will guide you through town." },
-      { kanji: "遠慮", kana: "えんりょ", romaji: "enryo", phonetic: "en-ryoh", en: "Restraint / Hesitation", exJa: "遠慮しないでください。", exKana: "えんりょ しないで ください。", exRomaji: "enryo shinaide kudasai", exPhonetic: "en-ryoh shee-nye-deh koo-dah-sye", exEn: "Please don't hesitate." },
-      { kanji: "故障", kana: "こしょう", romaji: "koshou", phonetic: "koh-shoh", en: "Breakdown / Malfunction", exJa: "車が故障しました。", exKana: "くるま が こしょう しました。", exRomaji: "kuruma ga koshou shimashita", exPhonetic: "koo-roo-mah gah koh-shoh shee-mah-shee-tah", exEn: "The car broke down." },
-      { kanji: "習慣", kana: "しゅうかん", romaji: "shuukan", phonetic: "shoo-kahn", en: "Custom / Habit", exJa: "日本の習慣を学びます。", exKana: "にほん の しゅうかん を まなびます。", exRomaji: "nihon no shuukan o manabimasu", exPhonetic: "nee-hon noh shoo-kahn oh mah-nah-bee-mahss", exEn: "I learn Japanese customs." },
-      { kanji: "理由", kana: "りゆう", romaji: "riyuu", phonetic: "ree-yoo", en: "Reason", exJa: "遅れた理由を話します。", exKana: "おくれた りゆう を はなします。", exRomaji: "okureta riyuu o hanashimasu", exPhonetic: "oh-koo-reh-tah ree-yoo oh hah-nah-shee-mahss", exEn: "I will explain why I was late." },
-      { kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", exJa: "良い経験になりました。", exKana: "よい けいけん に なりました。", exRomaji: "yoi keiken ni narimashita", exPhonetic: "yoh-ee kay-ken nee nah-ree-mah-shee-tah", exEn: "It became a good experience." }
+      { kanji: "複雑", kana: "ふくざつ", romaji: "fukuzatsu", phonetic: "foo-koo-zah-tsoo", en: "Complex / Complicated", exJa: "この問題は複雑です。", exKana: "この もんだい は ふくざつ です。", exRomaji: "kono mondai wa fukuzatsu desu", exPhonetic: "koh-noh mon-dye wah foo-koo-zah-tsoo dess", exEn: "This issue is complicated." }
     ];
 
     const TIER_3_SEEDS = [
       { kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / Notion", exJa: "基本概念を把握する。", exKana: "きほん がいねん を はあく する。", exRomaji: "kihon gainen o haaku suru", exPhonetic: "kee-hon gye-nen oh hah-ah-koo soo-roo", exEn: "Grasping fundamental concepts." },
       { kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Understanding", exJa: "現状を正確に把握する。", exKana: "げんじょう を せいかく に はあく する。", exRomaji: "genjou o seikaku ni haaku suru", exPhonetic: "gen-joh oh say-kah-koo nee hah-ah-koo soo-roo", exEn: "Accurately grasping the current situation." },
-      { kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", exJa: "増加の傾向が見られます。", exKana: "ぞうか の けいこう が みられます。", exRomaji: "zouka no keikou ga miraremasu", exPhonetic: "zoh-kah noh kay-koh gah mee-rah-reh-mahss", exEn: "An upward trend is observed." },
-      { kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction / Inconsistency", exJa: "論理に矛盾があります。", exKana: "ろんり に むじゅん が あります。", exRomaji: "ronri ni mujun ga arimasu", exPhonetic: "ron-ree nee moo-joon gah ah-ree-mahss", exEn: "There is a contradiction in logic." },
-      { kanji: "懸念", kana: "けねん", romaji: "kenen", phonetic: "keh-nen", en: "Concern / Anxiety", exJa: "安全への懸念が残る。", exKana: "あんぜん えの けねん が のこる。", exRomaji: "anzen eno kenen ga nokoru", exPhonetic: "ahn-zen eh-noh keh-nen gah noh-koh-roo", exEn: "Concerns regarding safety remain." },
-      { kanji: "示唆", kana: "しさ", romaji: "shisa", phonetic: "shee-sah", en: "Suggestion / Implication", exJa: "結果が可能性を示唆する。", exKana: "けっか が かのうせい を しさ する。", exRomaji: "kekka ga kanousei o shisa suru", exPhonetic: "kek-kah gah kah-noh-say oh shee-sah soo-roo", exEn: "The results imply a possibility." },
-      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu ni suikou suru", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
-      { kanji: "貢献", kana: "こうけん", romaji: "kouken", phonetic: "koh-ken", en: "Contribution", exJa: "社会に大きく貢献する。", exKana: "しゃかい に おおきく こうけん する。", exRomaji: "shakai ni ookiku kouken suru", exPhonetic: "shah-kye nee oh-kee-koo koh-ken soo-roo", exEn: "Making a major contribution to society." },
-      { kanji: "脆弱", kana: "ぜいじゃく", romaji: "zeijaku", phonetic: "zay-jah-koo", en: "Fragile / Vulnerable", exJa: "システムの脆弱性を是正する。", exKana: "システム の ぜいじゃくせい を ぜせい する。", exRomaji: "shisutemu no zeijakusei o zesei suru", exPhonetic: "shee-soo-teh-moo noh zay-jah-koo-say oh zeh-say soo-roo", exEn: "Correcting system vulnerability." },
-      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku ni zesei suru", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
+      { kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", exJa: "増加の傾向が見られます。", exKana: "ぞうか の けいこう が みられます。", exRomaji: "zouka no keikou ga miraremasu", exPhonetic: "zoh-kah noh kay-koh gah mee-rah-reh-mahss", exEn: "An upward trend is observed." }
     ];
 
     const MASTER_VOCAB = [];
@@ -2114,17 +2254,13 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       },
 
       loadVoices() {
-        if (!('speechSynthesis' in window)) {
-          this.updateDiag("SpeechSynthesis unavailable; fallback active");
-          return;
-        }
-
+        if (!('speechSynthesis' in window)) return;
         const all = window.speechSynthesis.getVoices();
         this.voices = all.filter(v => (v.lang || '').toLowerCase().replace('_', '-').startsWith('ja'));
         
         const sel = document.getElementById('cfgVoiceSelect');
         if (sel) {
-          sel.innerHTML = '<option value="auto">Auto-Select Best Japanese Voice</option>';
+          sel.innerHTML = '<option value="auto">Auto-Select Best Japanese Engine</option>';
           this.voices.forEach(v => {
             const opt = document.createElement('option');
             opt.value = v.voiceURI;
@@ -2133,17 +2269,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
             sel.appendChild(opt);
           });
         }
-
-        if (this.voices.length > 0) {
-          this.updateDiag(`Ready (${this.voices.length} ja-JP engines detected)`);
-        } else {
-          this.updateDiag("Using Native Cloud Streaming");
-        }
-      },
-
-      updateDiag(txt) {
-        const diag = document.getElementById('voiceDiagTag');
-        if (diag) diag.textContent = `Audio: ${txt}`;
       },
 
       setVoice(uri) {
@@ -2153,7 +2278,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
       speak(text, speed = 0.75) {
         if (!text) return;
-
         if ('speechSynthesis' in window) {
           if (window.speechSynthesis.paused) window.speechSynthesis.resume();
           window.speechSynthesis.cancel();
@@ -2325,7 +2449,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     };
 
     // =========================================================================
-    // STATE & REPOSITORIES
+    // STATE & ACHIEVEMENTS SYSTEM
     // =========================================================================
     function loadLearnedMap() {
       const raw = localStorage.getItem('lex_learned_history');
@@ -2343,12 +2467,22 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       return {};
     }
 
+    function loadAchievements() {
+      const raw = localStorage.getItem('lex_achievements');
+      if (raw) {
+        try { return JSON.parse(raw); } catch (e) {}
+      }
+      return {};
+    }
+
     let state = {
       tierLimit: parseInt(localStorage.getItem('lex_tier_total')) || 1000,
       dailyGoal: parseInt(localStorage.getItem('lex_daily_goal')) || 40,
+      progressionMode: localStorage.getItem('lex_progression_mode') || 'sequential',
       matchCount: parseInt(localStorage.getItem('lex_match_count')) || 8,
       learnedMap: loadLearnedMap(),
       timeMap: loadTimeMap(),
+      achievements: loadAchievements(),
       cohortOffset: parseInt(localStorage.getItem('lex_cohort_offset')) || 0,
       speed: parseFloat(localStorage.getItem('lex_speed')) || 0.75,
       theme: localStorage.getItem('lex_theme') || 'dark',
@@ -2358,8 +2492,63 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     let currentWord = null;
 
+    const ACHIEVEMENTS_DEF = [
+      { id: "batch_first", title: "Neural Link Established", desc: "Complete or validate your very first vocabulary cohort." },
+      { id: "flush_burst", title: "Synapse Overdrive", desc: "Complete an active recall burst in Rapid Memory Flush mode." },
+      { id: "flush_perfect", title: "Flawless Retention", desc: "Achieve 100% neural recall score on a Flush batch." },
+      { id: "mastery_gate", title: "Cohort Domination", desc: "Validate 100% of an entire batch under testing validation." },
+      { id: "master_50", title: "Linguistic Core 50", desc: "Master 50 total vocabulary items into permanent lexicon." },
+      { id: "master_200", title: "Working Fluency 200", desc: "Accumulate 200 mastered words across Japanese tiers." }
+    ];
+
+    const AchievementEngine = {
+      unlock(id) {
+        if (!state.achievements[id]) {
+          state.achievements[id] = Date.now();
+          localStorage.setItem('lex_achievements', JSON.stringify(state.achievements));
+          const def = ACHIEVEMENTS_DEF.find(a => a.id === id);
+          if (def) {
+            showAlert(`Achievement Unlocked: ${def.title}`, false);
+          }
+          this.render();
+        }
+      },
+      checkAll() {
+        const count = getMasteredIds().length;
+        if (count >= 50) this.unlock('master_50');
+        if (count >= 200) this.unlock('master_200');
+      },
+      render() {
+        const container = document.getElementById('achievementsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        ACHIEVEMENTS_DEF.forEach(ach => {
+          const unlocked = Boolean(state.achievements[ach.id]);
+          const card = document.createElement('div');
+          card.className = `achievement-card ${unlocked ? 'unlocked' : ''}`;
+          card.innerHTML = `
+            <div class="achievement-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+            <div>
+              <div class="achievement-title">${ach.title} ${unlocked ? '✓' : ''}</div>
+              <div class="achievement-desc">${ach.desc}</div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    };
+
+    function toggleAchievements(open) {
+      document.getElementById('achievementsModal').classList.toggle('open', open);
+      if (open) AchievementEngine.render();
+    }
+
     function saveLearnedMap() {
       localStorage.setItem('lex_learned_history', JSON.stringify(state.learnedMap));
+      AchievementEngine.checkAll();
     }
 
     function getMasteredIds() {
@@ -2379,23 +2568,36 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         .filter(Boolean);
     }
 
-    function syncCohort() {
+    function isCohortAllMastered() {
+      if (!state.cohort || state.cohort.length === 0) return false;
       const mastered = new Set(getMasteredIds());
-      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
-      
-      if (pool.length === 0) {
-        state.cohort = MASTER_VOCAB.slice(0, state.dailyGoal);
-      } else {
-        const start = (state.cohortOffset * state.dailyGoal) % pool.length;
-        state.cohort = pool.slice(start, start + state.dailyGoal);
-        if (state.cohort.length === 0) state.cohort = pool.slice(0, state.dailyGoal);
-      }
+      return state.cohort.every(word => mastered.has(word.id));
+    }
+
+    function syncCohort() {
+      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit);
+      const start = (state.cohortOffset * state.dailyGoal) % pool.length;
+      state.cohort = pool.slice(start, start + state.dailyGoal);
+      if (state.cohort.length === 0) state.cohort = pool.slice(0, state.dailyGoal);
 
       if (state.currentIndex >= state.cohort.length) state.currentIndex = 0;
       currentWord = state.cohort[state.currentIndex] || MASTER_VOCAB[0];
+
+      checkMasteryBanner();
+    }
+
+    function checkMasteryBanner() {
+      const banner = document.getElementById('batchMasteryBanner');
+      if (banner) {
+        banner.style.display = isCohortAllMastered() ? 'flex' : 'none';
+      }
     }
 
     function switchDailyCohort() {
+      if (state.progressionMode === 'mastery-gate' && !isCohortAllMastered()) {
+        showAlert("Mastery Gate Active: All words in current batch must be learned and tested first!", true);
+        return;
+      }
       state.cohortOffset++;
       localStorage.setItem('lex_cohort_offset', state.cohortOffset);
       syncCohort();
@@ -2412,7 +2614,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       alert.style.background = isDanger ? 'rgba(225, 29, 72, 0.12)' : 'rgba(16, 185, 129, 0.12)';
       alert.style.borderColor = isDanger ? 'var(--danger)' : 'var(--accent-green)';
       alert.style.color = isDanger ? 'var(--danger)' : 'var(--accent-green)';
-      setTimeout(() => { alert.style.display = 'none'; }, 3200);
+      setTimeout(() => { alert.style.display = 'none'; }, 3400);
     }
 
     // =========================================================================
@@ -2430,7 +2632,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.getElementById('dashCohortLabel').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')} Active`;
       document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
 
-      // Today's Words Progress
+      // Today's Words
       const todayCount = getTodayLearnedCount();
       document.getElementById('dashTodayNum').textContent = todayCount;
       document.getElementById('dashTodayGoal').textContent = state.dailyGoal;
@@ -2461,8 +2663,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.getElementById('dashYesterdayDue').textContent = yesterdayWords.length;
       document.getElementById('navTestBadge').textContent = yesterdayWords.length;
 
-      // Update Active Study Timers
       TimeEngine.updateDisplay();
+      checkMasteryBanner();
 
       // Tier Breakdown
       let t1 = 0, t2 = 0, t3 = 0;
@@ -2518,6 +2720,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       renderCard();
       renderSentences();
       renderReviewList();
+      checkMasteryBanner();
     }
 
     function unlearnWord(id, promptNotice = true) {
@@ -2537,7 +2740,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // RAPID MEMORY FLUSH ENGINE
+    // RAPID MEMORY FLUSH (WITH FUZZY MATCH ENGINE)
     // =========================================================================
     let flushState = {
       batchSize: parseInt(localStorage.getItem('lex_flush_batch')) || 10,
@@ -2569,9 +2772,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       });
     }
 
-    function setFlushBatch(val) {
-      updateFlushBatchDisplay(val);
-    }
+    function setFlushBatch(val) { updateFlushBatchDisplay(val); }
 
     function updateFlushTimerDisplay(val) {
       flushState.timerSeconds = parseInt(val);
@@ -2596,9 +2797,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       });
     }
 
-    function setFlushTimer(val) {
-      updateFlushTimerDisplay(val);
-    }
+    function setFlushTimer(val) { updateFlushTimerDisplay(val); }
 
     function switchFlushView(stage) {
       document.getElementById('flushViewConfig').style.display = 'none';
@@ -2632,22 +2831,18 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         candidatePool = [...MASTER_VOCAB];
       }
 
-      if (candidatePool.length === 0) {
-        candidatePool = MASTER_VOCAB.slice(0, 100);
-      }
+      if (candidatePool.length === 0) candidatePool = MASTER_VOCAB.slice(0, 100);
 
-      // Shuffle & Slice to selected Batch Size (1 to 100)
       const shuffled = [...candidatePool].sort(() => 0.5 - Math.random());
       flushState.words = shuffled.slice(0, flushState.batchSize);
       flushState.results = [];
       flushState.currentIndex = 0;
 
-      // Render Preview List
       const container = document.getElementById('flushPreviewContainer');
       container.innerHTML = '';
       document.getElementById('flushPreviewCount').textContent = `${flushState.words.length} Vocabulary Items`;
 
-      flushState.words.forEach((word, idx) => {
+      flushState.words.forEach(word => {
         const item = document.createElement('div');
         item.className = 'flush-preview-item';
         item.innerHTML = `
@@ -2721,30 +2916,21 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     function handleFlushKey(e) {
-      if (e.key === 'Enter') {
-        submitFlushAnswer();
-      }
-    }
-
-    function isMeaningMatch(userInput, targetDefinition) {
-      if (!userInput || !targetDefinition) return false;
-      const cleanUser = userInput.trim().toLowerCase().replace(/^(to|a|an)\s+/, '');
-      const segments = targetDefinition.toLowerCase().split(/[\/,;()]/).map(s => s.trim().replace(/^(to|a|an)\s+/, '')).filter(Boolean);
-
-      return segments.some(seg => {
-        return seg === cleanUser || (cleanUser.length > 2 && seg.includes(cleanUser));
-      });
+      if (e.key === 'Enter') submitFlushAnswer();
     }
 
     function submitFlushAnswer() {
       const input = document.getElementById('flushRecallInput');
       const userText = input.value.trim();
-      const isCorrect = isMeaningMatch(userText, flushActiveWord.en);
+
+      // Run Fuzzy / Typo Evaluator
+      const evalResult = FuzzyEngine.evaluate(userText, flushActiveWord.en);
 
       flushState.results.push({
         word: flushActiveWord,
         userAnswer: userText || '(Blank)',
-        isCorrect
+        status: evalResult.status,
+        isCorrect: evalResult.match
       });
 
       flushState.currentIndex++;
@@ -2761,9 +2947,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.getElementById('flushScoreRatio').textContent = `${correctCount} / ${total}`;
       document.getElementById('flushScorePercent').textContent = `${pct}% Neural Retention`;
 
-      let feedback = "Excellent retention capability. Working memory synced.";
-      if (pct < 50) feedback = "Short-term decay detected. Consider shortening retention wait.";
-      else if (pct < 80) feedback = "Strong short-term retention with slight cognitive drift.";
+      let feedback = "Retention confirmed. Memory synapses synchronized.";
+      if (pct < 50) feedback = "Cognitive decay detected. Consider lowering delay timer.";
+      else if (pct === 100) {
+        feedback = "Flawless score! Immediate short-term working memory confirmed.";
+        AchievementEngine.unlock('flush_perfect');
+      }
+      AchievementEngine.unlock('flush_burst');
+
       document.getElementById('flushScoreComment').textContent = feedback;
 
       const container = document.getElementById('flushResultsContainer');
@@ -2771,7 +2962,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
       flushState.results.forEach((res, idx) => {
         const row = document.createElement('div');
-        row.className = `flush-result-row ${res.isCorrect ? 'correct' : 'wrong'}`;
+        const statusClass = res.status === 'fuzzy' ? 'fuzzy' : res.isCorrect ? 'correct' : 'wrong';
+        row.className = `flush-result-row ${statusClass}`;
         row.innerHTML = `
           <div>
             <div style="display: flex; align-items: baseline; gap: 0.35rem;">
@@ -2779,8 +2971,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
               <span class="flush-preview-sub">${res.word.kana}</span>
             </div>
             <div class="flush-user-ans">
-              Your answer: <span class="${res.isCorrect ? 'correct-text' : 'wrong-text'}">${escapeHTML(res.userAnswer)}</span>
-              ${!res.isCorrect ? ` · Definition: <strong>${res.word.en}</strong>` : ''}
+              Your answer: <span class="${res.status === 'fuzzy' ? 'fuzzy-text' : res.isCorrect ? 'correct-text' : 'wrong-text'}">${escapeHTML(res.userAnswer)}</span>
+              ${res.status === 'fuzzy' ? ' <em>(Typo tolerated)</em>' : ''}
+              ${!res.isCorrect ? ` · Target: <strong>${res.word.en}</strong>` : ''}
             </div>
           </div>
           <div style="display: flex; gap: 0.3rem; align-items: center;">
@@ -2799,7 +2992,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     function toggleFlushResultCorrection(idx) {
       if (!flushState.results[idx]) return;
       flushState.results[idx].isCorrect = !flushState.results[idx].isCorrect;
-      
+      flushState.results[idx].status = flushState.results[idx].isCorrect ? 'exact' : 'wrong';
+
       const correctCount = flushState.results.filter(r => r.isCorrect).length;
       const total = flushState.results.length;
       const pct = Math.round((correctCount / total) * 100);
@@ -2811,13 +3005,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         const item = flushState.results[idx];
         rows[idx].className = `flush-result-row ${item.isCorrect ? 'correct' : 'wrong'}`;
         const ansSpan = rows[idx].querySelector('.flush-user-ans span');
-        if (ansSpan) {
-          ansSpan.className = item.isCorrect ? 'correct-text' : 'wrong-text';
-        }
+        if (ansSpan) ansSpan.className = item.isCorrect ? 'correct-text' : 'wrong-text';
         const toggleBtn = rows[idx].querySelectorAll('button')[1];
-        if (toggleBtn) {
-          toggleBtn.textContent = item.isCorrect ? 'Mark Wrong' : 'Mark Correct';
-        }
+        if (toggleBtn) toggleBtn.textContent = item.isCorrect ? 'Mark Wrong' : 'Mark Correct';
       }
     }
 
@@ -2843,7 +3033,123 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // REVIEW TAB
+    // RETENTION & BATCH VALIDATION TEST
+    // =========================================================================
+    let testQueue = [];
+    let currentTestWord = null;
+    let testLocked = false;
+    let isCohortValidationActive = false;
+
+    function initYesterdayTest() {
+      isCohortValidationActive = false;
+      document.getElementById('testInstruction').textContent = "Choose the correct definition. Wrong answers unlearn the word.";
+      testQueue = getYesterdayLearnedWords();
+      const testArea = document.getElementById('testArea');
+      const emptyMsg = document.getElementById('testEmptyMessage');
+
+      if (testQueue.length === 0) {
+        testArea.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        return;
+      }
+
+      testArea.style.display = 'block';
+      emptyMsg.style.display = 'none';
+      nextTestQuestion();
+    }
+
+    function startCohortValidationTest() {
+      switchTab('test');
+      isCohortValidationActive = true;
+      document.getElementById('testInstruction').textContent = "Batch Validation: Answer all correctly to graduate this cohort!";
+      testQueue = [...state.cohort].sort(() => 0.5 - Math.random());
+      document.getElementById('testArea').style.display = 'block';
+      document.getElementById('testEmptyMessage').style.display = 'none';
+      nextTestQuestion();
+    }
+
+    function startCustomReviewTest() {
+      isCohortValidationActive = false;
+      const allMastered = getMasteredIds().map(id => VOCAB_BY_ID.get(id)).filter(Boolean);
+      if (allMastered.length === 0) {
+        showAlert("No mastered words to test yet.", true);
+        return;
+      }
+      testQueue = allMastered.sort(() => 0.5 - Math.random()).slice(0, 20);
+      document.getElementById('testArea').style.display = 'block';
+      document.getElementById('testEmptyMessage').style.display = 'none';
+      nextTestQuestion();
+    }
+
+    function nextTestQuestion() {
+      testLocked = false;
+      if (testQueue.length === 0) {
+        document.getElementById('testArea').style.display = 'none';
+        document.getElementById('testEmptyMessage').style.display = 'block';
+        
+        if (isCohortValidationActive) {
+          showAlert("Batch Validation Complete! Cohort graduated.", false);
+          AchievementEngine.unlock('mastery_gate');
+          AchievementEngine.unlock('batch_first');
+          state.cohortOffset++;
+          localStorage.setItem('lex_cohort_offset', state.cohortOffset);
+          syncCohort();
+        }
+        updateDashboard();
+        return;
+      }
+
+      currentTestWord = testQueue[0];
+      document.getElementById('testProgressLabel').textContent = `Remaining: ${testQueue.length}`;
+      document.getElementById('testKanji').textContent = currentTestWord.kanji;
+      document.getElementById('testKana').textContent = currentTestWord.kana;
+      document.getElementById('testPhonetic').textContent = `[ ${currentTestWord.phonetic} ]`;
+
+      const distractors = MASTER_VOCAB
+        .filter(w => w.id !== currentTestWord.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const options = [currentTestWord, ...distractors].sort(() => 0.5 - Math.random());
+      const grid = document.getElementById('testOptionsGrid');
+      grid.innerHTML = '';
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'test-btn-option';
+        btn.textContent = opt.en;
+        btn.onclick = () => handleTestAnswer(opt.id, btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    function handleTestAnswer(selectedId, btnElement) {
+      if (testLocked) return;
+      testLocked = true;
+
+      const isCorrect = selectedId === currentTestWord.id;
+
+      if (isCorrect) {
+        btnElement.classList.add('correct');
+        testQueue.shift();
+        setTimeout(() => nextTestQuestion(), 380);
+      } else {
+        btnElement.classList.add('wrong');
+        const correctBtn = Array.from(document.querySelectorAll('.test-btn-option'))
+          .find(b => b.textContent === currentTestWord.en);
+        if (correctBtn) correctBtn.classList.add('correct');
+
+        const failedWord = currentTestWord;
+        unlearnWord(failedWord.id, false);
+        testQueue.shift();
+
+        showAlert(`Incorrect. "${failedWord.kanji}" reverted to unlearned status.`);
+        setTimeout(() => nextTestQuestion(), 1200);
+      }
+    }
+
+    // =========================================================================
+    // REVIEW & SENTENCES & MATCH
     // =========================================================================
     function renderReviewList() {
       const container = document.getElementById('reviewListContainer');
@@ -2903,107 +3209,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       });
     }
 
-    // =========================================================================
-    // RETENTION TEST
-    // =========================================================================
-    let testQueue = [];
-    let currentTestWord = null;
-    let testLocked = false;
-
-    function initYesterdayTest() {
-      testQueue = getYesterdayLearnedWords();
-      const testArea = document.getElementById('testArea');
-      const emptyMsg = document.getElementById('testEmptyMessage');
-
-      if (testQueue.length === 0) {
-        testArea.style.display = 'none';
-        emptyMsg.style.display = 'block';
-        return;
-      }
-
-      testArea.style.display = 'block';
-      emptyMsg.style.display = 'none';
-      nextTestQuestion();
-    }
-
-    function startCustomReviewTest() {
-      const allMastered = getMasteredIds().map(id => VOCAB_BY_ID.get(id)).filter(Boolean);
-      if (allMastered.length === 0) {
-        showAlert("No mastered words to test yet.", true);
-        return;
-      }
-      testQueue = allMastered.sort(() => 0.5 - Math.random()).slice(0, 20);
-      document.getElementById('testArea').style.display = 'block';
-      document.getElementById('testEmptyMessage').style.display = 'none';
-      nextTestQuestion();
-    }
-
-    function nextTestQuestion() {
-      testLocked = false;
-      if (testQueue.length === 0) {
-        document.getElementById('testArea').style.display = 'none';
-        document.getElementById('testEmptyMessage').style.display = 'block';
-        updateDashboard();
-        return;
-      }
-
-      currentTestWord = testQueue[0];
-      document.getElementById('testProgressLabel').textContent = `Remaining Queue: ${testQueue.length}`;
-      document.getElementById('testKanji').textContent = currentTestWord.kanji;
-      document.getElementById('testKana').textContent = currentTestWord.kana;
-      document.getElementById('testPhonetic').textContent = `[ ${currentTestWord.phonetic} ]`;
-
-      const distractors = MASTER_VOCAB
-        .filter(w => w.id !== currentTestWord.id)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
-
-      const options = [currentTestWord, ...distractors].sort(() => 0.5 - Math.random());
-      const grid = document.getElementById('testOptionsGrid');
-      grid.innerHTML = '';
-
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'test-btn-option';
-        btn.textContent = opt.en;
-        btn.onclick = () => handleTestAnswer(opt.id, btn);
-        grid.appendChild(btn);
-      });
-    }
-
-    function handleTestAnswer(selectedId, btnElement) {
-      if (testLocked) return;
-      testLocked = true;
-
-      const isCorrect = selectedId === currentTestWord.id;
-
-      if (isCorrect) {
-        btnElement.classList.add('correct');
-        testQueue.shift();
-        setTimeout(() => {
-          nextTestQuestion();
-        }, 400);
-      } else {
-        btnElement.classList.add('wrong');
-        const correctBtn = Array.from(document.querySelectorAll('.test-btn-option'))
-          .find(b => b.textContent === currentTestWord.en);
-        if (correctBtn) correctBtn.classList.add('correct');
-
-        const failedWord = currentTestWord;
-        unlearnWord(failedWord.id, false);
-        testQueue.shift();
-
-        showAlert(`Incorrect. "${failedWord.kanji}" reverted to unlearned status.`);
-
-        setTimeout(() => {
-          nextTestQuestion();
-        }, 1200);
-      }
-    }
-
-    // =========================================================================
-    // SENTENCES
-    // =========================================================================
     function renderSentences() {
       const container = document.getElementById('sentencesList');
       container.innerHTML = '';
@@ -3019,10 +3224,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 Listen
               </button>
-              <button class="btn" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${word.exJa}', 0.55)">
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                Slow
-              </button>
             </div>
           </div>
           <div class="sentence-jp">${word.exJa}</div>
@@ -3033,9 +3234,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       });
     }
 
-    // =========================================================================
-    // MATCH MODE (8, 16, 32 CARDS)
-    // =========================================================================
     let matchFirst = null;
     let matchLock = false;
 
@@ -3087,7 +3285,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       });
 
       tiles.sort(() => 0.5 - Math.random());
-
       tiles.forEach(data => {
         const div = document.createElement('div');
         div.className = 'match-tile';
@@ -3157,6 +3354,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       if (open) {
         document.getElementById('cfgTier').value = state.tierLimit;
         document.getElementById('cfgGoal').value = state.dailyGoal;
+        document.getElementById('cfgProgressionMode').value = state.progressionMode;
         document.getElementById('cfgSpeed').value = state.speed;
         document.getElementById('speedVal').textContent = `${state.speed}x`;
         document.getElementById('cfgBgPreset').value = BgEngine.preset;
@@ -3170,10 +3368,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     function saveSettings() {
       state.tierLimit = parseInt(document.getElementById('cfgTier').value);
       state.dailyGoal = parseInt(document.getElementById('cfgGoal').value);
+      state.progressionMode = document.getElementById('cfgProgressionMode').value;
       state.speed = parseFloat(document.getElementById('cfgSpeed').value);
 
       localStorage.setItem('lex_tier_total', state.tierLimit);
       localStorage.setItem('lex_daily_goal', state.dailyGoal);
+      localStorage.setItem('lex_progression_mode', state.progressionMode);
       localStorage.setItem('lex_speed', state.speed);
 
       syncCohort();
@@ -3185,12 +3385,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     function resetProgress() {
-      if (confirm("Reset ALL learned vocabulary records and history? This cannot be undone.")) {
+      if (confirm("Reset ALL learned vocabulary records and achievements? This cannot be undone.")) {
         state.learnedMap = {};
         state.timeMap = {};
+        state.achievements = {};
         state.cohortOffset = 0;
         localStorage.removeItem('lex_learned_history');
         localStorage.removeItem('lex_study_time_map');
+        localStorage.removeItem('lex_achievements');
         localStorage.removeItem('lex_cohort_offset');
         syncCohort();
         renderCard();
@@ -3203,10 +3405,10 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // TAB CONTROLLER
+    // BOTTOM TAB CONTROLLER
     // =========================================================================
     function switchTab(view) {
-      document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.bottom-tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-dashboard').style.display = 'none';
       document.getElementById('tab-cards').style.display = 'none';
       document.getElementById('tab-flush').style.display = 'none';
@@ -3231,7 +3433,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         renderReviewList();
       } else if (view === 'test') {
         document.getElementById('tab-test').style.display = 'block';
-        initYesterdayTest();
+        if (!isCohortValidationActive) initYesterdayTest();
       } else if (view === 'sentences') {
         document.getElementById('tab-sentences').style.display = 'block';
         renderSentences();
@@ -3240,8 +3442,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         dealMatch();
       }
 
-      const activeBtn = Array.from(document.querySelectorAll('.tab-trigger')).find(b => b.getAttribute('onclick').includes(view));
+      const activeBtn = Array.from(document.querySelectorAll('.bottom-tab-btn')).find(b => b.getAttribute('onclick').includes(view));
       if (activeBtn) activeBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     // =========================================================================
