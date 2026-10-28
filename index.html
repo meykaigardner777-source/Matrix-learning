@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -28,6 +29,8 @@
       
       --accent: #ededed;
       --accent-green: #10b981;
+      --accent-cyan: #06b6d4;
+      --accent-cyan-glow: rgba(6, 182, 212, 0.25);
       --danger: #e11d48;
       --warning: #f59e0b;
       --radius: 6px;
@@ -48,6 +51,8 @@
       --text-muted: #646774;
       --text-dim: #9497a4;
       --accent: #111215;
+      --accent-cyan: #0891b2;
+      --accent-cyan-glow: rgba(8, 145, 178, 0.2);
     }
 
     * {
@@ -104,6 +109,10 @@
       width: 26px;
       height: 26px;
     }
+    .icon-xl {
+      width: 42px;
+      height: 42px;
+    }
 
     /* BUTTONS */
     .btn {
@@ -119,7 +128,10 @@
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+    }
+    .btn:active {
+      transform: scale(0.98);
     }
     .btn:hover {
       background: var(--surface-hover);
@@ -144,6 +156,16 @@
       background: rgba(225, 29, 72, 0.22);
       border-color: var(--danger);
     }
+    .btn-cyan {
+      background: rgba(6, 182, 212, 0.14);
+      color: var(--accent-cyan);
+      border-color: rgba(6, 182, 212, 0.35);
+      font-weight: 600;
+    }
+    .btn-cyan:hover {
+      background: rgba(6, 182, 212, 0.24);
+      border-color: var(--accent-cyan);
+    }
     .btn-icon {
       padding: 0.4rem 0.5rem;
       font-size: 0.8rem;
@@ -152,7 +174,7 @@
 
     /* COMPACT UNIFIED TOP NAVIGATION */
     nav.app-nav {
-      max-width: 640px;
+      max-width: 660px;
       width: 100%;
       margin: 0.5rem auto 0;
       padding: 0 0.65rem;
@@ -211,6 +233,10 @@
       color: var(--warning);
       font-family: var(--font-mono);
     }
+    .tab-badge-cyan {
+      background: rgba(6, 182, 212, 0.2);
+      color: var(--accent-cyan);
+    }
 
     .nav-tools {
       display: flex;
@@ -222,7 +248,7 @@
     /* MAIN CONTENT */
     main {
       flex: 1;
-      max-width: 640px;
+      max-width: 660px;
       width: 100%;
       margin: 0 auto;
       padding: 0.5rem 0.75rem 2.5rem;
@@ -343,6 +369,7 @@
       transition: width 0.3s ease;
     }
     .progress-bar-fill.green { background: var(--accent-green); }
+    .progress-bar-fill.cyan { background: var(--accent-cyan); }
 
     .dash-section-title {
       font-size: 0.7rem;
@@ -519,12 +546,8 @@
       display: grid;
       gap: 0.45rem;
     }
-    .match-grid.count-8 {
-      grid-template-columns: 1fr 1fr;
-    }
-    .match-grid.count-16 {
-      grid-template-columns: 1fr 1fr;
-    }
+    .match-grid.count-8 { grid-template-columns: 1fr 1fr; }
+    .match-grid.count-16 { grid-template-columns: 1fr 1fr; }
     .match-grid.count-32 {
       grid-template-columns: repeat(4, 1fr);
       gap: 0.3rem;
@@ -605,30 +628,20 @@
       background: var(--surface-hover);
     }
 
-    /* 32 CARDS COMPACT ADAPTATION */
     .match-grid.count-32 .match-tile {
       min-height: 52px;
       padding: 0.3rem 0.2rem;
     }
-    .match-grid.count-32 .tile-jp-main {
-      font-size: 0.95rem;
-    }
-    .match-grid.count-32 .tile-jp-sub {
-      font-size: 0.58rem;
-    }
-    .match-grid.count-32 .tile-en-main {
-      font-size: 0.72rem;
-    }
+    .match-grid.count-32 .tile-jp-main { font-size: 0.95rem; }
+    .match-grid.count-32 .tile-jp-sub { font-size: 0.58rem; }
+    .match-grid.count-32 .tile-en-main { font-size: 0.72rem; }
     .match-grid.count-32 .tile-speaker {
       width: 17px;
       height: 17px;
       top: 2px;
       right: 2px;
     }
-    .match-grid.count-32 .tile-speaker .icon {
-      width: 9px;
-      height: 9px;
-    }
+    .match-grid.count-32 .tile-speaker .icon { width: 9px; height: 9px; }
 
     /* SENTENCES */
     .sentence-row {
@@ -774,6 +787,292 @@
       background: rgba(225, 29, 72, 0.15);
       border-color: var(--danger);
       color: var(--danger);
+    }
+
+    /* =========================================================================
+       RAPID MEMORY FLUSH (SHORT-TERM MEMORY BURST) DESIGN
+       ========================================================================= */
+    .flush-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .flush-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flush-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .flush-badge-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent-cyan);
+      background: var(--accent-cyan-glow);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .flush-cfg-group {
+      margin-bottom: 0.9rem;
+    }
+    .flush-cfg-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .flush-cfg-num {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .flush-chips-row {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .flush-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      padding: 0.22rem 0.5rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .flush-chip:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+    .flush-chip.active {
+      background: var(--accent-cyan-glow);
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    /* Preview Phase Scrollable Grid */
+    .flush-scroll-list {
+      max-height: min(54vh, 440px);
+      overflow-y: auto;
+      padding-right: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      scrollbar-width: thin;
+    }
+    .flush-scroll-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .flush-scroll-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .flush-preview-item {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      transition: border-color 0.15s;
+    }
+    .flush-preview-item:hover {
+      border-color: var(--border-hover);
+    }
+    .flush-preview-kanji {
+      font-family: var(--font-jp);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .flush-preview-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .flush-preview-en {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 0.15rem;
+    }
+
+    /* Intermission View (Countdown Matrix) */
+    .flush-timer-box {
+      text-align: center;
+      padding: 1.8rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .flush-countdown-clock {
+      font-family: var(--font-mono);
+      font-size: clamp(2.6rem, 9vw, 3.4rem);
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      margin: 0.5rem 0 0.2rem;
+    }
+    .flush-countdown-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      max-width: 320px;
+      line-height: 1.4;
+    }
+
+    .flush-pulse-ring {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: cyanPulse 2s infinite ease-in-out;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes cyanPulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(6, 182, 212, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+
+    /* Active Recall Input View */
+    .flush-recall-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 0.65rem;
+    }
+    .flush-recall-kanji {
+      font-family: var(--font-jp);
+      font-size: clamp(2.3rem, 8.5vw, 2.9rem);
+      font-weight: 700;
+      margin: 0.4rem 0 0.15rem;
+    }
+    .flush-recall-sub {
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .flush-recall-phonetic {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-bottom: 0.9rem;
+    }
+
+    .flush-input-row {
+      width: 100%;
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+    .flush-input {
+      flex: 1;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .flush-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px var(--accent-cyan);
+    }
+
+    /* Results View */
+    .flush-score-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 0.65rem;
+    }
+    .flush-score-num {
+      font-family: var(--font-mono);
+      font-size: clamp(2.2rem, 8vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .flush-score-pct {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      margin-top: 0.2rem;
+    }
+
+    .flush-result-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.8rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .flush-result-row.correct {
+      border-left: 3px solid var(--accent-green);
+    }
+    .flush-result-row.wrong {
+      border-left: 3px solid var(--danger);
+    }
+
+    .flush-user-ans {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.15rem;
+    }
+    .flush-user-ans span.wrong-text {
+      color: var(--danger);
+      text-decoration: line-through;
+    }
+    .flush-user-ans span.correct-text {
+      color: var(--accent-green);
+      font-weight: 600;
     }
 
     /* SETTINGS MODAL */
@@ -946,6 +1245,10 @@
           <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
           Cards
         </button>
+        <button class="tab-trigger" onclick="switchTab('flush')">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Flush <span class="tab-badge tab-badge-cyan">Burst</span>
+        </button>
         <button class="tab-trigger" onclick="switchTab('review')">
           <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
           Review
@@ -1077,20 +1380,20 @@
             </div>
           </div>
 
-          <!-- 6. Study Launcher -->
+          <!-- 6. Study Launcher (includes Rapid Flush) -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
-                <span>CONTINUE</span>
+                <span>DRILL MODES</span>
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               </div>
               <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.2rem;">
+                <button class="btn btn-cyan" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="switchTab('flush')">
+                  Rapid Memory Flush
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </button>
                 <button class="btn btn-primary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="switchTab('cards')">
                   Flashcards
-                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-                <button class="btn" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="switchTab('match')">
-                  Match Mode
                   <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
               </div>
@@ -1178,7 +1481,185 @@
         </div>
       </section>
 
-      <!-- 3. REVIEW DIRECTORY -->
+      <!-- 3. RAPID MEMORY FLUSH (SHORT-TERM MEMORY BURST) -->
+      <section id="tab-flush" style="display: none;">
+        <div class="flush-shell">
+          
+          <!-- STAGE 1: CONFIGURATION VIEW -->
+          <div id="flushViewConfig">
+            <div class="flush-card">
+              <div class="flush-top-row">
+                <div class="flush-badge-tag">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Short-Term Recall Burst
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim);">Matrix Mode</span>
+              </div>
+
+              <div style="font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem;">Rapid Memory Flush</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; margin-bottom: 1rem;">
+                Preview a targeted batch of vocabulary, retain the definitions in short-term memory through a timed distraction phase, and aggressively recall them.
+              </div>
+
+              <!-- 1. Batch Size Control (1 - 100 Words) -->
+              <div class="flush-cfg-group">
+                <div class="flush-cfg-label">
+                  <span>BURST BATCH SIZE</span>
+                  <span class="flush-cfg-num" id="flushBatchNumDisplay">10 Words</span>
+                </div>
+                <input type="range" class="input-control" id="flushBatchSlider" min="1" max="100" value="10" oninput="updateFlushBatchDisplay(this.value)">
+                <div class="flush-chips-row">
+                  <button class="flush-chip" onclick="setFlushBatch(5)">5 Words</button>
+                  <button class="flush-chip active" onclick="setFlushBatch(10)">10 Words</button>
+                  <button class="flush-chip" onclick="setFlushBatch(20)">20 Words</button>
+                  <button class="flush-chip" onclick="setFlushBatch(50)">50 Words</button>
+                  <button class="flush-chip" onclick="setFlushBatch(100)">100 Words</button>
+                </div>
+              </div>
+
+              <!-- 2. Retention Timer Control (15s - 10m) -->
+              <div class="flush-cfg-group">
+                <div class="flush-cfg-label">
+                  <span>RETENTION TIMER DELAY</span>
+                  <span class="flush-cfg-num" id="flushTimerNumDisplay">45 Seconds</span>
+                </div>
+                <input type="range" class="input-control" id="flushTimerSlider" min="15" max="600" step="5" value="45" oninput="updateFlushTimerDisplay(this.value)">
+                <div class="flush-chips-row">
+                  <button class="flush-chip" onclick="setFlushTimer(15)">15s</button>
+                  <button class="flush-chip" onclick="setFlushTimer(30)">30s</button>
+                  <button class="flush-chip active" onclick="setFlushTimer(45)">45s</button>
+                  <button class="flush-chip" onclick="setFlushTimer(60)">1m</button>
+                  <button class="flush-chip" onclick="setFlushTimer(120)">2m</button>
+                  <button class="flush-chip" onclick="setFlushTimer(300)">5m</button>
+                  <button class="flush-chip" onclick="setFlushTimer(600)">10m</button>
+                </div>
+              </div>
+
+              <!-- 3. Vocabulary Cohort Selection -->
+              <div class="flush-cfg-group">
+                <label class="form-label">Vocabulary Source</label>
+                <select class="input-control" id="flushSourceSelect">
+                  <option value="active-cohort">Active Daily Cohort</option>
+                  <option value="unlearned" selected>Current Tier Unlearned Words</option>
+                  <option value="all-curriculum">Entire Available Curriculum</option>
+                </select>
+              </div>
+
+              <button class="btn btn-cyan" style="width: 100%; padding: 0.55rem; font-size: 0.82rem;" onclick="startFlushSession()">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Launch Preview Phase
+              </button>
+            </div>
+          </div>
+
+          <!-- STAGE 2: PREVIEW PHASE (SCALABLE LIST) -->
+          <div id="flushViewPreview" style="display: none;">
+            <div class="flush-card">
+              <div class="flush-top-row">
+                <div class="flush-badge-tag">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Phase 1 // Memorization
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim);" id="flushPreviewCount">0 Words</span>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.55rem;">
+                Memorize the readings and meanings. When ready, commit them to memory and start the timer.
+              </div>
+
+              <div class="flush-scroll-list" id="flushPreviewContainer"></div>
+
+              <div style="display: flex; gap: 0.4rem; margin-top: 0.65rem;">
+                <button class="btn" style="flex: 1;" onclick="cancelFlushToConfig()">
+                  Cancel
+                </button>
+                <button class="btn btn-cyan" style="flex: 2;" onclick="startFlushIntermission()">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Begin Retention Countdown
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 3: TIMER INTERMISSION VIEW -->
+          <div id="flushViewTimer" style="display: none;">
+            <div class="flush-card flush-timer-box">
+              <div class="flush-pulse-ring">
+                <svg class="icon icon-lg" style="color: var(--accent-cyan);" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <div class="flush-badge-tag" style="margin-bottom: 0.4rem;">Phase 2 // Short-Term Retention</div>
+              <div class="flush-countdown-clock" id="flushCountdownTime">00:45</div>
+              <div class="flush-countdown-sub">
+                Hold the definitions in your active working memory without looking at external notes.
+              </div>
+              <div style="display: flex; gap: 0.45rem;">
+                <button class="btn btn-danger" onclick="cancelFlushToConfig()">Abort</button>
+                <button class="btn btn-cyan" onclick="skipFlushTimerToRecall()">
+                  Skip Wait & Test Now
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 4: ACTIVE RECALL INPUT PHASE -->
+          <div id="flushViewRecall" style="display: none;">
+            <div class="flush-recall-card">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent-cyan);" id="flushRecallStep">Card 1 / 10</span>
+                <div class="audio-group">
+                  <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(flushActiveWord ? flushActiveWord.kana : '', state.speed)">
+                    <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    Listen
+                  </button>
+                </div>
+              </div>
+
+              <div class="flush-recall-kanji" id="flushRecallKanji">--</div>
+              <div class="flush-recall-sub" id="flushRecallKana">--</div>
+              <div class="flush-recall-phonetic" id="flushRecallPhonetic">[ -- ]</div>
+
+              <div style="width: 100%; font-size: 0.72rem; color: var(--text-muted); text-align: left; margin-bottom: 0.25rem;">
+                Type the English meaning:
+              </div>
+
+              <div class="flush-input-row">
+                <input type="text" class="flush-input" id="flushRecallInput" placeholder="e.g. Water, To eat, Friend..." autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="handleFlushKey(event)">
+                <button class="btn btn-primary" onclick="submitFlushAnswer()">
+                  Next
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 5: RESULTS & GRADING SUMMARY -->
+          <div id="flushViewResults" style="display: none;">
+            <div class="flush-score-banner">
+              <div class="flush-badge-tag" style="margin-bottom: 0.35rem;">Neural Recall Score</div>
+              <div class="flush-score-num" id="flushScoreRatio">0 / 0</div>
+              <div class="flush-score-pct" id="flushScorePercent">0% Retention</div>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;" id="flushScoreComment">Session completed.</div>
+            </div>
+
+            <div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem;">
+              <button class="btn btn-cyan" style="flex: 1;" onclick="switchFlushView('config')">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                New Burst
+              </button>
+              <button class="btn btn-primary" style="flex: 1;" onclick="markAllFlushCorrectAsLearned()">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Learn Correct Words
+              </button>
+            </div>
+
+            <div class="dash-section-title">Recall Breakdown</div>
+            <div id="flushResultsContainer"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. REVIEW DIRECTORY -->
       <section id="tab-review" style="display: none;">
         <div class="review-filter-box">
           <input type="text" class="review-search" id="reviewSearchInput" placeholder="Filter mastered words..." oninput="renderReviewList()">
@@ -1189,7 +1670,7 @@
         <div id="reviewListContainer"></div>
       </section>
 
-      <!-- 4. YESTERDAY'S RETENTION TEST -->
+      <!-- 5. YESTERDAY'S RETENTION TEST -->
       <section id="tab-test" style="display: none;">
         <div id="testArea">
           <div class="test-box">
@@ -1225,12 +1706,12 @@
         </div>
       </section>
 
-      <!-- 5. SENTENCES -->
+      <!-- 6. SENTENCES -->
       <section id="tab-sentences" style="display: none;">
         <div id="sentencesList"></div>
       </section>
 
-      <!-- 6. MATCH MODE -->
+      <!-- 7. MATCH MODE -->
       <section id="tab-match" style="display: none;">
         <div class="match-header-bar">
           <div class="match-size-selector">
@@ -1551,7 +2032,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       { kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait", exJa: "ここで待ちます。", exKana: "ここ で まちます。", exRomaji: "koko de machimasu", exPhonetic: "koh-koh deh mah-chee-mahss", exEn: "I will wait here." },
       { kanji: "車", kana: "くるま", romaji: "kuruma", phonetic: "koo-roo-mah", en: "Car / Vehicle", exJa: "車を運転します。", exKana: "くるま を うんてん します。", exRomaji: "kuruma o unten shimasu", exPhonetic: "koo-roo-mah oh oon-ten shee-mahss", exEn: "I drive a car." },
       { kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", exJa: "大きい家ですね。", exKana: "おおきい いえ です ね。", exRomaji: "ookii ie desu ne", exPhonetic: "oh-kee ee-eh dess neh", exEn: "It is a large house." },
-      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye node-koh gah ee-mahss", exEn: "There is a small cat." }
+      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい猫がいます。", exKana: "ちいさい ねこ が います。", exRomaji: "chiisai neko ga imasu", exPhonetic: "chee-sye ne-koh gah ee-mahss", exEn: "There is a small cat." }
     ];
 
     const TIER_2_SEEDS = [
@@ -1576,10 +2057,10 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       { kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction / Inconsistency", exJa: "論理に矛盾があります。", exKana: "ろんり に むじゅん が あります。", exRomaji: "ronri ni mujun ga arimasu", exPhonetic: "ron-ree nee moo-joon gah ah-ree-mahss", exEn: "There is a contradiction in logic." },
       { kanji: "懸念", kana: "けねん", romaji: "kenen", phonetic: "keh-nen", en: "Concern / Anxiety", exJa: "安全への懸念が残る。", exKana: "あんぜん えの けねん が のこる。", exRomaji: "anzen eno kenen ga nokoru", exPhonetic: "ahn-zen eh-noh keh-nen gah noh-koh-roo", exEn: "Concerns regarding safety remain." },
       { kanji: "示唆", kana: "しさ", romaji: "shisa", phonetic: "shee-sah", en: "Suggestion / Implication", exJa: "結果が可能性を示唆する。", exKana: "けっか が かのうせい を しさ する。", exRomaji: "kekka ga kanousei o shisa suru", exPhonetic: "kek-kah gah kah-noh-say oh shee-sah soo-roo", exEn: "The results imply a possibility." },
-      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu に suikou する。", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
+      { kanji: "遂行", kana: "すいこう", romaji: "suikou", phonetic: "soo-ee-koh", en: "Execution / Accomplishment", exJa: "任務を確実に遂行する。", exKana: "にんむ を かくじつ に すいこう する。", exRomaji: "ninmu o kakujitsu ni suikou suru", exPhonetic: "neen-moo oh kah-koo-jee-tsoo nee soo-ee-koh soo-roo", exEn: "Executing the mission reliably." },
       { kanji: "貢献", kana: "こうけん", romaji: "kouken", phonetic: "koh-ken", en: "Contribution", exJa: "社会に大きく貢献する。", exKana: "しゃかい に おおきく こうけん する。", exRomaji: "shakai ni ookiku kouken suru", exPhonetic: "shah-kye nee oh-kee-koo koh-ken soo-roo", exEn: "Making a major contribution to society." },
       { kanji: "脆弱", kana: "ぜいじゃく", romaji: "zeijaku", phonetic: "zay-jah-koo", en: "Fragile / Vulnerable", exJa: "システムの脆弱性を是正する。", exKana: "システム の ぜいじゃくせい を ぜせい する。", exRomaji: "shisutemu no zeijakusei o zesei suru", exPhonetic: "shee-soo-teh-moo noh zay-jah-koo-say oh zeh-say soo-roo", exEn: "Correcting system vulnerability." },
-      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku に ぜせい する。", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
+      { kanji: "是正", kana: "ぜせい", romaji: "zesei", phonetic: "zeh-say", en: "Correction / Rectification", exJa: "不備を迅速に是正する。", exKana: "ふび を じんそく に ぜせい する。", exRomaji: "fubi o jinsoku ni zesei suru", exPhonetic: "foo-bee oh jeen-soh-koo nee zeh-say soo-roo", exEn: "Promptly rectifying deficiencies." }
     ];
 
     const MASTER_VOCAB = [];
@@ -2056,6 +2537,312 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
+    // RAPID MEMORY FLUSH ENGINE
+    // =========================================================================
+    let flushState = {
+      batchSize: parseInt(localStorage.getItem('lex_flush_batch')) || 10,
+      timerSeconds: parseInt(localStorage.getItem('lex_flush_timer')) || 45,
+      words: [],
+      currentIndex: 0,
+      timerInterval: null,
+      timerEndTime: null,
+      results: []
+    };
+    let flushActiveWord = null;
+
+    function formatTimeSec(totalSec) {
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateFlushBatchDisplay(val) {
+      flushState.batchSize = parseInt(val);
+      localStorage.setItem('lex_flush_batch', flushState.batchSize);
+      document.getElementById('flushBatchNumDisplay').textContent = `${flushState.batchSize} Words`;
+      
+      const slider = document.getElementById('flushBatchSlider');
+      if (slider && slider.value !== String(flushState.batchSize)) slider.value = flushState.batchSize;
+
+      document.querySelectorAll('#flushViewConfig .flush-cfg-group:nth-child(4) .flush-chip').forEach(chip => {
+        chip.classList.toggle('active', parseInt(chip.textContent) === flushState.batchSize);
+      });
+    }
+
+    function setFlushBatch(val) {
+      updateFlushBatchDisplay(val);
+    }
+
+    function updateFlushTimerDisplay(val) {
+      flushState.timerSeconds = parseInt(val);
+      localStorage.setItem('lex_flush_timer', flushState.timerSeconds);
+      
+      let label = `${flushState.timerSeconds} Seconds`;
+      if (flushState.timerSeconds >= 60) {
+        const mins = flushState.timerSeconds / 60;
+        label = mins % 1 === 0 ? `${mins} Minute${mins > 1 ? 's' : ''}` : `${Math.floor(mins)}m ${flushState.timerSeconds % 60}s`;
+      }
+      document.getElementById('flushTimerNumDisplay').textContent = label;
+      
+      const slider = document.getElementById('flushTimerSlider');
+      if (slider && slider.value !== String(flushState.timerSeconds)) slider.value = flushState.timerSeconds;
+
+      document.querySelectorAll('#flushViewConfig .flush-cfg-group:nth-child(5) .flush-chip').forEach(chip => {
+        let chipSec = 0;
+        const text = chip.textContent.trim();
+        if (text.endsWith('s')) chipSec = parseInt(text);
+        else if (text.endsWith('m')) chipSec = parseInt(text) * 60;
+        chip.classList.toggle('active', chipSec === flushState.timerSeconds);
+      });
+    }
+
+    function setFlushTimer(val) {
+      updateFlushTimerDisplay(val);
+    }
+
+    function switchFlushView(stage) {
+      document.getElementById('flushViewConfig').style.display = 'none';
+      document.getElementById('flushViewPreview').style.display = 'none';
+      document.getElementById('flushViewTimer').style.display = 'none';
+      document.getElementById('flushViewRecall').style.display = 'none';
+      document.getElementById('flushViewResults').style.display = 'none';
+
+      if (stage === 'config') document.getElementById('flushViewConfig').style.display = 'block';
+      if (stage === 'preview') document.getElementById('flushViewPreview').style.display = 'block';
+      if (stage === 'timer') document.getElementById('flushViewTimer').style.display = 'block';
+      if (stage === 'recall') document.getElementById('flushViewRecall').style.display = 'block';
+      if (stage === 'results') document.getElementById('flushViewResults').style.display = 'block';
+    }
+
+    function cancelFlushToConfig() {
+      if (flushState.timerInterval) clearInterval(flushState.timerInterval);
+      switchFlushView('config');
+    }
+
+    function startFlushSession() {
+      const source = document.getElementById('flushSourceSelect').value;
+      const mastered = new Set(getMasteredIds());
+      let candidatePool = [];
+
+      if (source === 'active-cohort') {
+        candidatePool = [...state.cohort];
+      } else if (source === 'unlearned') {
+        candidatePool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
+      } else {
+        candidatePool = [...MASTER_VOCAB];
+      }
+
+      if (candidatePool.length === 0) {
+        candidatePool = MASTER_VOCAB.slice(0, 100);
+      }
+
+      // Shuffle & Slice to selected Batch Size (1 to 100)
+      const shuffled = [...candidatePool].sort(() => 0.5 - Math.random());
+      flushState.words = shuffled.slice(0, flushState.batchSize);
+      flushState.results = [];
+      flushState.currentIndex = 0;
+
+      // Render Preview List
+      const container = document.getElementById('flushPreviewContainer');
+      container.innerHTML = '';
+      document.getElementById('flushPreviewCount').textContent = `${flushState.words.length} Vocabulary Items`;
+
+      flushState.words.forEach((word, idx) => {
+        const item = document.createElement('div');
+        item.className = 'flush-preview-item';
+        item.innerHTML = `
+          <div>
+            <div style="display: flex; align-items: baseline; gap: 0.35rem;">
+              <span class="flush-preview-kanji">${word.kanji}</span>
+              <span class="flush-preview-sub">${word.kana} [${word.phonetic}]</span>
+            </div>
+            <div class="flush-preview-en">${word.en}</div>
+          </div>
+          <button class="btn" style="padding: 0.25rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${word.kana}', ${state.speed})">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            Pronounce
+          </button>
+        `;
+        container.appendChild(item);
+      });
+
+      switchFlushView('preview');
+      container.scrollTop = 0;
+    }
+
+    function startFlushIntermission() {
+      switchFlushView('timer');
+      
+      const clockEl = document.getElementById('flushCountdownTime');
+      flushState.timerEndTime = Date.now() + (flushState.timerSeconds * 1000);
+      clockEl.textContent = formatTimeSec(flushState.timerSeconds);
+
+      if (flushState.timerInterval) clearInterval(flushState.timerInterval);
+
+      flushState.timerInterval = setInterval(() => {
+        const remainingMs = flushState.timerEndTime - Date.now();
+        const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+        clockEl.textContent = formatTimeSec(remainingSec);
+
+        if (remainingSec <= 0) {
+          clearInterval(flushState.timerInterval);
+          startFlushRecallPhase();
+        }
+      }, 250);
+    }
+
+    function skipFlushTimerToRecall() {
+      if (flushState.timerInterval) clearInterval(flushState.timerInterval);
+      startFlushRecallPhase();
+    }
+
+    function startFlushRecallPhase() {
+      flushState.currentIndex = 0;
+      flushState.results = [];
+      switchFlushView('recall');
+      nextFlushRecallCard();
+    }
+
+    function nextFlushRecallCard() {
+      if (flushState.currentIndex >= flushState.words.length) {
+        finishFlushSession();
+        return;
+      }
+
+      flushActiveWord = flushState.words[flushState.currentIndex];
+      document.getElementById('flushRecallStep').textContent = `Card ${flushState.currentIndex + 1} of ${flushState.words.length}`;
+      document.getElementById('flushRecallKanji').textContent = flushActiveWord.kanji;
+      document.getElementById('flushRecallKana').textContent = flushActiveWord.kana;
+      document.getElementById('flushRecallPhonetic').textContent = `[ ${flushActiveWord.phonetic} ]`;
+
+      const input = document.getElementById('flushRecallInput');
+      input.value = '';
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function handleFlushKey(e) {
+      if (e.key === 'Enter') {
+        submitFlushAnswer();
+      }
+    }
+
+    function isMeaningMatch(userInput, targetDefinition) {
+      if (!userInput || !targetDefinition) return false;
+      const cleanUser = userInput.trim().toLowerCase().replace(/^(to|a|an)\s+/, '');
+      const segments = targetDefinition.toLowerCase().split(/[\/,;()]/).map(s => s.trim().replace(/^(to|a|an)\s+/, '')).filter(Boolean);
+
+      return segments.some(seg => {
+        return seg === cleanUser || (cleanUser.length > 2 && seg.includes(cleanUser));
+      });
+    }
+
+    function submitFlushAnswer() {
+      const input = document.getElementById('flushRecallInput');
+      const userText = input.value.trim();
+      const isCorrect = isMeaningMatch(userText, flushActiveWord.en);
+
+      flushState.results.push({
+        word: flushActiveWord,
+        userAnswer: userText || '(Blank)',
+        isCorrect
+      });
+
+      flushState.currentIndex++;
+      nextFlushRecallCard();
+    }
+
+    function finishFlushSession() {
+      switchFlushView('results');
+
+      const correctCount = flushState.results.filter(r => r.isCorrect).length;
+      const total = flushState.results.length;
+      const pct = Math.round((correctCount / total) * 100);
+
+      document.getElementById('flushScoreRatio').textContent = `${correctCount} / ${total}`;
+      document.getElementById('flushScorePercent').textContent = `${pct}% Neural Retention`;
+
+      let feedback = "Excellent retention capability. Working memory synced.";
+      if (pct < 50) feedback = "Short-term decay detected. Consider shortening retention wait.";
+      else if (pct < 80) feedback = "Strong short-term retention with slight cognitive drift.";
+      document.getElementById('flushScoreComment').textContent = feedback;
+
+      const container = document.getElementById('flushResultsContainer');
+      container.innerHTML = '';
+
+      flushState.results.forEach((res, idx) => {
+        const row = document.createElement('div');
+        row.className = `flush-result-row ${res.isCorrect ? 'correct' : 'wrong'}`;
+        row.innerHTML = `
+          <div>
+            <div style="display: flex; align-items: baseline; gap: 0.35rem;">
+              <span class="flush-preview-kanji">${res.word.kanji}</span>
+              <span class="flush-preview-sub">${res.word.kana}</span>
+            </div>
+            <div class="flush-user-ans">
+              Your answer: <span class="${res.isCorrect ? 'correct-text' : 'wrong-text'}">${escapeHTML(res.userAnswer)}</span>
+              ${!res.isCorrect ? ` · Definition: <strong>${res.word.en}</strong>` : ''}
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.3rem; align-items: center;">
+            <button class="btn" style="padding: 0.25rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${res.word.kana}', ${state.speed})">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+            <button class="btn" style="padding: 0.25rem 0.45rem; font-size: 0.65rem;" onclick="toggleFlushResultCorrection(${idx})">
+              ${res.isCorrect ? 'Mark Wrong' : 'Mark Correct'}
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function toggleFlushResultCorrection(idx) {
+      if (!flushState.results[idx]) return;
+      flushState.results[idx].isCorrect = !flushState.results[idx].isCorrect;
+      
+      const correctCount = flushState.results.filter(r => r.isCorrect).length;
+      const total = flushState.results.length;
+      const pct = Math.round((correctCount / total) * 100);
+      document.getElementById('flushScoreRatio').textContent = `${correctCount} / ${total}`;
+      document.getElementById('flushScorePercent').textContent = `${pct}% Neural Retention`;
+
+      const rows = document.querySelectorAll('#flushResultsContainer .flush-result-row');
+      if (rows[idx]) {
+        const item = flushState.results[idx];
+        rows[idx].className = `flush-result-row ${item.isCorrect ? 'correct' : 'wrong'}`;
+        const ansSpan = rows[idx].querySelector('.flush-user-ans span');
+        if (ansSpan) {
+          ansSpan.className = item.isCorrect ? 'correct-text' : 'wrong-text';
+        }
+        const toggleBtn = rows[idx].querySelectorAll('button')[1];
+        if (toggleBtn) {
+          toggleBtn.textContent = item.isCorrect ? 'Mark Wrong' : 'Mark Correct';
+        }
+      }
+    }
+
+    function markAllFlushCorrectAsLearned() {
+      const today = getTodayKey();
+      let count = 0;
+      flushState.results.forEach(res => {
+        if (res.isCorrect) {
+          state.learnedMap[res.word.id] = { date: today, time: Date.now() };
+          count++;
+        }
+      });
+      saveLearnedMap();
+      updateDashboard();
+      syncCohort();
+      showAlert(`Committed ${count} recalled vocabulary words into Mastered Lexicon.`, false);
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    // =========================================================================
     // REVIEW TAB
     // =========================================================================
     function renderReviewList() {
@@ -2084,7 +2871,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       if (filtered.length === 0) {
         container.innerHTML = `
           <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-size: 0.8rem;">
-            ${words.length === 0 ? 'No words learned yet. Practice with Flashcards to build your lexicon.' : 'No matching vocabulary found.'}
+            ${words.length === 0 ? 'No words learned yet. Practice with Flashcards or Flush mode to build your lexicon.' : 'No matching vocabulary found.'}
           </div>
         `;
         return;
@@ -2422,6 +3209,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-dashboard').style.display = 'none';
       document.getElementById('tab-cards').style.display = 'none';
+      document.getElementById('tab-flush').style.display = 'none';
       document.getElementById('tab-review').style.display = 'none';
       document.getElementById('tab-test').style.display = 'none';
       document.getElementById('tab-sentences').style.display = 'none';
@@ -2433,6 +3221,11 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       } else if (view === 'cards') {
         document.getElementById('tab-cards').style.display = 'block';
         renderCard();
+      } else if (view === 'flush') {
+        document.getElementById('tab-flush').style.display = 'block';
+        updateFlushBatchDisplay(flushState.batchSize);
+        updateFlushTimerDisplay(flushState.timerSeconds);
+        switchFlushView('config');
       } else if (view === 'review') {
         document.getElementById('tab-review').style.display = 'block';
         renderReviewList();
@@ -2463,6 +3256,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       updateDashboard();
       renderCard();
       renderSentences();
+
+      updateFlushBatchDisplay(flushState.batchSize);
+      updateFlushTimerDisplay(flushState.timerSeconds);
 
       const savedMatchBtn = document.getElementById(`btnMatch${state.matchCount}`);
       if (savedMatchBtn) {
