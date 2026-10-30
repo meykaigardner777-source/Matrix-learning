@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Japanese Core // Lexicon</title>
   
-  <!-- Self-contained PWA Manifest (Prevents 404s in local VS Code servers) -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Japanese%20Core%20%2F%2F%20Lexicon%22%2C%22short_name%22%3A%22Lexicon%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23090a0c%22%2C%22theme_color%22%3A%22%23090a0c%22%7D" />
   <meta name="theme-color" content="#090a0c" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -454,7 +453,7 @@
     .audio-group { display: flex; gap: 0.3rem; }
     .deck-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 
-    /* MATCH MODE (PRESERVED AS REQUESTED) */
+    /* MATCH MODE (CSS UNTOUCHED AS REQUESTED) */
     .match-header-bar {
       display: flex;
       justify-content: space-between;
@@ -984,7 +983,6 @@
     <main>
       <div class="alert-banner" id="globalAlert"></div>
 
-      <!-- MASTERED BATCH VALIDATION BANNER -->
       <div class="mastery-test-banner" id="batchMasteryBanner">
         <div>
           <div class="mastery-test-title">
@@ -1537,7 +1535,7 @@
             <div class="form-group">
               <label class="form-label">PWA Service Worker</label>
               <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; line-height: 1.4;">
-                Offline caching & background workers active. Fully functional offline.
+                Offline caching active. Complete local vocabulary access without internet requirement.
               </div>
             </div>
           </div>
@@ -1570,11 +1568,11 @@
 
           <div class="panel" id="panel-curriculum">
             <div class="form-group">
-              <label class="form-label">Vocabulary Tier Scope</label>
+              <label class="form-label">Vocabulary Scope & Tier Depth</label>
               <select class="input-control" id="cfgTier">
-                <option value="1" selected>Tier 1: Daily Core (JLPT N5–N4)</option>
-                <option value="2">Tier 2: Intermediate (JLPT N3 Fluency)</option>
-                <option value="3">Tier 3: Advanced (JLPT N2–N1 Mastery)</option>
+                <option value="1" selected>Tier 1: Daily Core (JLPT N5–N4 Top Frequency Essentials)</option>
+                <option value="2">Tier 1 + 2: Intermediate (JLPT N5–N3 Everyday + Fluency)</option>
+                <option value="3">Tier 1 + 2 + 3: Full Lexicon (JLPT N5–N1 Complete Scope)</option>
               </select>
             </div>
 
@@ -1586,7 +1584,7 @@
             <div class="dash-section-title" style="margin-top: 0.8rem;">Category Inclusions</div>
             <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.4rem 0.65rem;">
               <label class="switch-label">
-                <span>Particles (助詞 — は, が, を, に...)</span>
+                <span>Particles (助詞 — は, が, を, に, で, と...)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatParticles" checked>
               </label>
               <label class="switch-label">
@@ -1598,11 +1596,11 @@
                 <input type="checkbox" class="switch-input" id="cfgCatAdjectives" checked>
               </label>
               <label class="switch-label">
-                <span>Adverbs (Time & Manner)</span>
+                <span>Adverbs (Time, Degree & Manner)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatAdverbs" checked>
               </label>
               <label class="switch-label">
-                <span>Nouns (Essential Lexicon)</span>
+                <span>Nouns (Essential Lexicon & Concepts)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatNouns" checked>
               </label>
             </div>
@@ -1717,48 +1715,6 @@
         delete this._mem[key];
       }
     };
-
-    // =========================================================================
-    // SAFE INLINE SERVICE WORKER REGISTRATION (HTTP/HTTPS ONLY)
-    // =========================================================================
-    try {
-      if (typeof window !== 'undefined' && 'serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
-        const swCode = `
-          const CACHE = 'lex-cache-v1';
-          self.addEventListener('install', e => { self.skipWaiting(); });
-          self.addEventListener('activate', e => { e.waitUntil(clients.claim()); });
-          self.addEventListener('fetch', e => {
-            if (e.request.method !== 'GET') return;
-            e.respondWith(
-              fetch(e.request).catch(() => caches.match(e.request).then(r => r || new Response('Offline', { status: 503 })))
-            );
-          });
-        `;
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-      }
-    } catch (err) {}
-
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installBtn = document.getElementById('btnPwaInstall');
-      if (installBtn) installBtn.style.display = 'inline-flex';
-    });
-
-    function triggerPwaInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            const installBtn = document.getElementById('btnPwaInstall');
-            if (installBtn) installBtn.style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
-      }
-    }
 
     // =========================================================================
     // TIME TRACKING
@@ -1876,7 +1832,9 @@
     // AUTHENTIC JAPANESE VOCABULARY CORPUS WITH IMMUTABLE STRING KEYS
     // =========================================================================
     const RAW_VOCAB_DB = [
-      // Particles
+      // -------------------------------------------------------------
+      // TIER 1: ESSENTIAL PARTICLES (助詞)
+      // -------------------------------------------------------------
       { key: "p_wa", tier: 1, cat: "particle", kanji: "は", kana: "は", romaji: "wa", phonetic: "wah", en: "Topic marker", exJa: "これは本です。", exKana: "これ は ほん です。", exRomaji: "kore wa hon desu", exPhonetic: "koh-reh wah hon dess", exEn: "This is a book." },
       { key: "p_ga", tier: 1, cat: "particle", kanji: "が", kana: "が", romaji: "ga", phonetic: "gah", en: "Subject marker", exJa: "猫がいます。", exKana: "ねこ が います。", exRomaji: "neko ga imasu", exPhonetic: "neh-koh gah ee-mahss", exEn: "There is a cat." },
       { key: "p_o", tier: 1, cat: "particle", kanji: "を", kana: "を", romaji: "o", phonetic: "oh", en: "Direct object marker", exJa: "ご飯を食べます。", exKana: "ごはん を たべます。", exRomaji: "gohan o tabemasu", exPhonetic: "goh-hahn oh tah-beh-mahss", exEn: "I eat rice." },
@@ -1888,26 +1846,57 @@
       { key: "p_kara", tier: 1, cat: "particle", kanji: "から", kana: "から", romaji: "kara", phonetic: "kah-rah", en: "From / Since", exJa: "駅から歩きます。", exKana: "えき から あるきます。", exRomaji: "eki kara arukimasu", exPhonetic: "eh-kee kah-rah ah-roo-kee-mahss", exEn: "I walk from the station." },
       { key: "p_made", tier: 1, cat: "particle", kanji: "まで", kana: "まで", romaji: "made", phonetic: "mah-deh", en: "Until / Up to", exJa: "五時まで勉強します。", exKana: "ごじ まで べんきょう します。", exRomaji: "goji made benkyou shimasu", exPhonetic: "goh-jee mah-deh ben-kyoh shee-mahss", exEn: "I study until 5 o'clock." },
       { key: "p_dake", tier: 1, cat: "particle", kanji: "だけ", kana: "だけ", romaji: "dake", phonetic: "dah-keh", en: "Only / Merely", exJa: "一つだけあります。", exKana: "ひとつ だけ あります。", exRomaji: "hitotsu dake arimasu", exPhonetic: "hee-toh-tsoo dah-keh ah-ree-mahss", exEn: "There is only one." },
+      { key: "p_yori", tier: 1, cat: "particle", kanji: "より", kana: "より", romaji: "yori", phonetic: "yoh-ree", en: "More than / Compared to", exJa: "飛行機は新幹線より速いです。", exKana: "ひこうき は しんかんせん より はやい です。", exRomaji: "hikouki wa shinkansen yori hayai desu", exPhonetic: "hee-koh-kee wah sheen-kahn-sen yoh-ree hah-yye dess", exEn: "Airplanes are faster than bullet trains." },
+      { key: "p_hodo", tier: 1, cat: "particle", kanji: "ほど", kana: "ほど", romaji: "hodo", phonetic: "hoh-doh", en: "To the extent of / As much as", exJa: "昨日ほど寒くないです。", exKana: "きのう ほど さむくない です。", exRomaji: "kinou hodo samukunai desu", exPhonetic: "kee-noh hoh-doh sah-moo-koo-nye dess", exEn: "It is not as cold as yesterday." },
+      { key: "p_nado", tier: 1, cat: "particle", kanji: "など", kana: "など", romaji: "nado", phonetic: "nah-doh", en: "And so on / Such as", exJa: "本やノートなどを買いました。", exKana: "ほん や ノート など を かいました。", exRomaji: "hon ya nooto nado o kaimashita", exPhonetic: "hon yah noh-toh nah-doh oh kye-mah-shee-tah", exEn: "I bought books, notebooks, and so forth." },
+      { key: "p_shika", tier: 1, cat: "particle", kanji: "しか", kana: "しか", romaji: "shika", phonetic: "shee-kah", en: "Nothing but / Only (with neg)", exJa: "百円しかありません。", exKana: "ひゃくえん しか ありません。", exRomaji: "hyakuen shika arimasen", exPhonetic: "hyah-koo-en shee-kah ah-ree-mah-sen", exEn: "I only have one hundred yen." },
+      { key: "p_ne", tier: 1, cat: "particle", kanji: "ね", kana: "ね", romaji: "ne", phonetic: "neh", en: "Right? / Isn't it?", exJa: "いい天気ですね。", exKana: "いい てんき です ね。", exRomaji: "ii tenki desu ne", exPhonetic: "ee ten-kee dess neh", exEn: "Nice weather, isn't it?" },
+      { key: "p_yo", tier: 1, cat: "particle", kanji: "よ", kana: "よ", romaji: "yo", phonetic: "yoh", en: "Emphasis / I assure you", exJa: "これは美味しいですよ。", exKana: "これ は おいしい です よ。", exRomaji: "kore wa oishii desu yo", exPhonetic: "koh-reh wah oy-shee dess yoh", exEn: "This is really delicious, you know." },
+      { key: "p_ka", tier: 1, cat: "particle", kanji: "か", kana: "か", romaji: "ka", phonetic: "kah", en: "Question marker / Or", exJa: "行きますか。", exKana: "いきます か。", exRomaji: "ikimasu ka", exPhonetic: "ee-kee-mahss kah", exEn: "Will you go?" },
+      { key: "p_no", tier: 1, cat: "particle", kanji: "の", kana: "の", romaji: "no", phonetic: "noh", en: "Possessive / Of", exJa: "私の車です。", exKana: "わたし の くるま です。", exRomaji: "watashi no kuruma desu", exPhonetic: "wah-tah-shee noh koo-roo-mah dess", exEn: "It is my car." },
 
-      // Verbs
+      // -------------------------------------------------------------
+      // TIER 1: HIGH-FREQUENCY DAILY VERBS
+      // -------------------------------------------------------------
       { key: "v_iku", tier: 1, cat: "verb", kanji: "行く", kana: "いく", romaji: "iku", phonetic: "ee-koo", en: "To go", exJa: "学校へ行きます。", exKana: "がっこう へ いきます。", exRomaji: "gakkou e ikimasu", exPhonetic: "gahk-koh eh ee-kee-mahss", exEn: "I go to school." },
       { key: "v_kuru", tier: 1, cat: "verb", kanji: "来る", kana: "くる", romaji: "kuru", phonetic: "koo-roo", en: "To come", exJa: "友達が来ます。", exKana: "ともだち が きます。", exRomaji: "tomodachi ga kimasu", exPhonetic: "toh-moh-dah-chee gah kee-mahss", exEn: "A friend comes." },
       { key: "v_suru", tier: 1, cat: "verb", kanji: "する", kana: "する", romaji: "suru", phonetic: "soo-roo", en: "To do", exJa: "宿題をします。", exKana: "しゅくだい を します。", exRomaji: "shukudai o shimasu", exPhonetic: "shoo-koo-dye oh shee-mahss", exEn: "I do homework." },
-      { key: "v_miru", tier: 1, cat: "verb", kanji: "見る", kana: "みる", romaji: "miru", phonetic: "mee-roo", en: "To see / watch", exJa: "テレビを見ます。", exKana: "テレビ を みます。", exRomaji: "terebi o mimasu", exPhonetic: "teh-reh-bee oh mee-mahss", exEn: "I watch TV." },
+      { key: "v_miru", tier: 1, cat: "verb", kanji: "見る", kana: "みる", romaji: "miru", phonetic: "mee-roo", en: "To see / To watch", exJa: "映画を見ます。", exKana: "えいが を みます。", exRomaji: "eiga o mimasu", exPhonetic: "ay-gah oh mee-mahss", exEn: "I watch a movie." },
       { key: "v_taberu", tier: 1, cat: "verb", kanji: "食べる", kana: "たべる", romaji: "taberu", phonetic: "tah-beh-roo", en: "To eat", exJa: "朝食を食べます。", exKana: "ちょうしょく を たべます。", exRomaji: "choushoku o tabemasu", exPhonetic: "choh-shoh-koo oh tah-beh-mahss", exEn: "I eat breakfast." },
       { key: "v_nomu", tier: 1, cat: "verb", kanji: "飲む", kana: "のむ", romaji: "nomu", phonetic: "noh-moo", en: "To drink", exJa: "お茶を飲みます。", exKana: "おちゃ を のみます。", exRomaji: "ocha o nomimasu", exPhonetic: "oh-chah oh noh-mee-mahss", exEn: "I drink tea." },
-      { key: "v_hanasu", tier: 1, cat: "verb", kanji: "話す", kana: "はなす", romaji: "hanasu", phonetic: "hah-nah-soo", en: "To speak / talk", exJa: "日本語を話します。", exKana: "にほんご を はなします。", exRomaji: "nihongo o hanashimasu", exPhonetic: "nee-hon-goh oh hah-nah-shee-mahss", exEn: "I speak Japanese." },
-      { key: "v_kiku", tier: 1, cat: "verb", kanji: "聞く", kana: "きく", romaji: "kiku", phonetic: "kee-koo", en: "To listen / hear", exJa: "音楽を聞きます。", exKana: "おんがく を ききます。", exRomaji: "ongaku o kikimasu", exPhonetic: "on-gah-koo oh kee-kee-mahss", exEn: "I listen to music." },
+      { key: "v_hanasu", tier: 1, cat: "verb", kanji: "話す", kana: "はなす", romaji: "hanasu", phonetic: "hah-nah-soo", en: "To speak / To talk", exJa: "日本語を話します。", exKana: "にほんご を はなします。", exRomaji: "nihongo o hanashimasu", exPhonetic: "nee-hon-goh oh hah-nah-shee-mahss", exEn: "I speak Japanese." },
+      { key: "v_kiku", tier: 1, cat: "verb", kanji: "聞く", kana: "きく", romaji: "kiku", phonetic: "kee-koo", en: "To listen / To hear", exJa: "音楽を聞きます。", exKana: "おんがく を ききます。", exRomaji: "ongaku o kikimasu", exPhonetic: "on-gah-koo oh kee-kee-mahss", exEn: "I listen to music." },
       { key: "v_yomu", tier: 1, cat: "verb", kanji: "読む", kana: "よむ", romaji: "yomu", phonetic: "yoh-moo", en: "To read", exJa: "本を読みます。", exKana: "ほん を よみます。", exRomaji: "hon o yomimasu", exPhonetic: "hon oh yoh-mee-mahss", exEn: "I read a book." },
       { key: "v_kaku", tier: 1, cat: "verb", kanji: "書く", kana: "かく", romaji: "kaku", phonetic: "kah-koo", en: "To write", exJa: "文字を書きます。", exKana: "もじ を かきます。", exRomaji: "moji o kakimasu", exPhonetic: "moh-jee oh kah-kee-mahss", exEn: "I write characters." },
-      { key: "v_kau", tier: 1, cat: "verb", kanji: "買う", kana: "かう", romaji: "kau", phonetic: "kah-oo", en: "To buy / purchase", exJa: "切符を買います。", exKana: "きっぷ を かいます。", exRomaji: "kippu o kaimasu", exPhonetic: "keep-poo oh kye-mahss", exEn: "I buy a ticket." },
+      { key: "v_kau", tier: 1, cat: "verb", kanji: "買う", kana: "かう", romaji: "kau", phonetic: "kah-oo", en: "To buy", exJa: "切符を買います。", exKana: "きっぷ を かいます。", exRomaji: "kippu o kaimasu", exPhonetic: "keep-poo oh kye-mahss", exEn: "I buy a ticket." },
       { key: "v_matsu", tier: 1, cat: "verb", kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait", exJa: "バスを待ちます。", exKana: "バス を まちます。", exRomaji: "basu o machimasu", exPhonetic: "bah-soo oh mah-chee-mahss", exEn: "I wait for the bus." },
       { key: "v_benkyou", tier: 1, cat: "verb", kanji: "勉強する", kana: "べんきょうする", romaji: "benkyousuru", phonetic: "ben-kyoh-soo-roo", en: "To study", exJa: "毎日勉強します。", exKana: "まいにち べんきょう します。", exRomaji: "mainichi benkyou shimasu", exPhonetic: "mye-nee-chee ben-kyoh shee-mahss", exEn: "I study every day." },
-      { key: "v_oshieru", tier: 1, cat: "verb", kanji: "教える", kana: "おしえる", romaji: "oshieru", phonetic: "oh-shee-eh-roo", en: "To teach / tell", exJa: "英語を教えます。", exKana: "えいご を おしえます。", exRomaji: "eigo o oshiemasu", exPhonetic: "ay-goh oh oh-shee-eh-mahss", exEn: "I teach English." },
-      { key: "v_oboeru", tier: 1, cat: "verb", kanji: "覚える", kana: "おぼえる", romaji: "oboeru", phonetic: "oh-boh-eh-roo", en: "To memorize", exJa: "単語を覚えます。", exKana: "たんご を おぼえます。", exRomaji: "tango o oboemasu", exPhonetic: "tahn-goh oh oh-boh-eh-mahss", exEn: "I memorize words." },
+      { key: "v_oshieru", tier: 1, cat: "verb", kanji: "教える", kana: "おしえる", romaji: "oshieru", phonetic: "oh-shee-eh-roo", en: "To teach / To inform", exJa: "英語を教えます。", exKana: "えいご を おしえます。", exRomaji: "eigo o oshiemasu", exPhonetic: "ay-goh oh oh-shee-eh-mahss", exEn: "I teach English." },
+      { key: "v_oboeru", tier: 1, cat: "verb", kanji: "覚える", kana: "おぼえる", romaji: "oboeru", phonetic: "oh-boh-eh-roo", en: "To memorize / To remember", exJa: "単語を覚えます。", exKana: "たんご を おぼえます。", exRomaji: "tango o oboemasu", exPhonetic: "tahn-goh oh oh-boh-eh-mahss", exEn: "I memorize words." },
       { key: "v_kaeru", tier: 1, cat: "verb", kanji: "帰る", kana: "かえる", romaji: "kaeru", phonetic: "kah-eh-roo", en: "To return home", exJa: "家に帰ります。", exKana: "いえ に かえります。", exRomaji: "ie ni kaerimasu", exPhonetic: "ee-eh nee kah-eh-ree-mahss", exEn: "I return home." },
+      { key: "v_au", tier: 1, cat: "verb", kanji: "会う", kana: "あう", romaji: "au", phonetic: "ah-oo", en: "To meet", exJa: "友達に会います。", exKana: "ともだち に あいます。", exRomaji: "tomodachi ni aimasu", exPhonetic: "toh-moh-dah-chee nee eye-mahss", exEn: "I will meet a friend." },
+      { key: "v_akeru", tier: 1, cat: "verb", kanji: "開ける", kana: "あける", romaji: "akeru", phonetic: "ah-keh-roo", en: "To open (something)", exJa: "ドアを開けます。", exKana: "ドア を あけます。", exRomaji: "doa o akemasu", exPhonetic: "doh-ah oh ah-keh-mahss", exEn: "I open the door." },
+      { key: "v_shimeru", tier: 1, cat: "verb", kanji: "閉める", kana: "しめる", romaji: "shimeru", phonetic: "shee-meh-roo", en: "To close (something)", exJa: "窓を閉めます。", exKana: "まど を しめます。", exRomaji: "mado o shimemasu", exPhonetic: "mah-doh oh shee-meh-mahss", exEn: "I close the window." },
+      { key: "v_hajimeru", tier: 1, cat: "verb", kanji: "始める", kana: "はじめる", romaji: "hajimeru", phonetic: "hah-jee-meh-roo", en: "To start / To begin", exJa: "授業を始めます。", exKana: "じゅぎょう を はじめます。", exRomaji: "jugyou o hajimemasu", exPhonetic: "joo-gyoh oh hah-jee-meh-mahss", exEn: "Let's begin the class." },
+      { key: "v_owaru", tier: 1, cat: "verb", kanji: "終わる", kana: "おわる", romaji: "owaru", phonetic: "oh-wah-roo", en: "To end / To finish", exJa: "仕事が終わりました。", exKana: "しごと が おわりました。", exRomaji: "shigoto ga owarimashita", exPhonetic: "shee-goh-toh gah oh-wah-ree-mah-shee-tah", exEn: "Work has finished." },
+      { key: "v_hairu", tier: 1, cat: "verb", kanji: "入る", kana: "はいる", romaji: "hairu", phonetic: "hye-roo", en: "To enter", exJa: "部屋に入ります。", exKana: "へや に はいります。", exRomaji: "heya ni hairimasu", exPhonetic: "heh-yah nee hye-ree-mahss", exEn: "I enter the room." },
+      { key: "v_deru", tier: 1, cat: "verb", kanji: "出る", kana: "でる", romaji: "deru", phonetic: "deh-roo", en: "To exit / To leave", exJa: "家を出ます。", exKana: "いえ を でます。", exRomaji: "ie o demasu", exPhonetic: "ee-eh oh deh-mahss", exEn: "I leave the house." },
+      { key: "v_tatsu", tier: 1, cat: "verb", kanji: "立つ", kana: "たつ", romaji: "tatsu", phonetic: "tah-tsoo", en: "To stand up", exJa: "席を立ちます。", exKana: "せき を たちます。", exRomaji: "seki o tachimasu", exPhonetic: "seh-kee oh tah-chee-mahss", exEn: "I stand up from my seat." },
+      { key: "v_suwaru", tier: 1, cat: "verb", kanji: "座る", kana: "すわる", romaji: "suwaru", phonetic: "soo-wah-roo", en: "To sit down", exJa: "椅子に座ります。", exKana: "いす に すわります。", exRomaji: "isu ni suwarimasu", exPhonetic: "ee-soo nee soo-wah-ree-mahss", exEn: "I sit on the chair." },
+      { key: "v_aruku", tier: 1, cat: "verb", kanji: "歩く", kana: "あるく", romaji: "aruku", phonetic: "ah-roo-koo", en: "To walk", exJa: "公園を歩きます。", exKana: "こうえん を あるきます。", exRomaji: "kouen o arukimasu", exPhonetic: "koh-en oh ah-roo-kee-mahss", exEn: "I walk through the park." },
+      { key: "v_hashiru", tier: 1, cat: "verb", kanji: "走る", kana: "はしる", romaji: "hashiru", phonetic: "hah-shee-roo", en: "To run", exJa: "朝走ります。", exKana: "あさ はしります。", exRomaji: "asa hashirimasu", exPhonetic: "ah-sah hah-shee-ree-mahss", exEn: "I run in the morning." },
+      { key: "v_tsukau", tier: 1, cat: "verb", kanji: "使う", kana: "つかう", romaji: "tsukau", phonetic: "tsoo-kah-oo", en: "To use", exJa: "パソコンを使います。", exKana: "パソコン を つかいます。", exRomaji: "pasokon o tsukaimasu", exPhonetic: "pah-soh-kon oh tsoo-kye-mahss", exEn: "I use a computer." },
+      { key: "v_tsukuru", tier: 1, cat: "verb", kanji: "作る", kana: "つくる", romaji: "tsukuru", phonetic: "tsoo-koo-roo", en: "To make / To build", exJa: "料理を作ります。", exKana: "りょうり を つくります。", exRomaji: "ryouri o tsukurimasu", exPhonetic: "ryoh-ree oh tsoo-koo-ree-mahss", exEn: "I make food." },
+      { key: "v_toru", tier: 1, cat: "verb", kanji: "取る", kana: "とる", romaji: "toru", phonetic: "toh-roo", en: "To take / To pass", exJa: "写真を撮ります。", exKana: "しゃしん を とります。", exRomaji: "shashin o torimasu", exPhonetic: "shah-sheen oh toh-ree-mahss", exEn: "I take a photograph." },
+      { key: "v_motsu", tier: 1, cat: "verb", kanji: "持つ", kana: "もつ", romaji: "motsu", phonetic: "moh-tsoo", en: "To hold / To possess", exJa: "傘を持っています。", exKana: "かさ を もっています。", exRomaji: "kasa o motte imasu", exPhonetic: "kah-sah oh mot-teh ee-mahss", exEn: "I have an umbrella." },
+      { key: "v_oku", tier: 1, cat: "verb", kanji: "置く", kana: "おく", romaji: "oku", phonetic: "oh-koo", en: "To place / To put down", exJa: "机の上に置きます。", exKana: "つくえ の うえ に おきます。", exRomaji: "tsukue no ue ni okimasu", exPhonetic: "tsoo-koo-eh noh oo-eh nee oh-kee-mahss", exEn: "I put it on the desk." },
+      { key: "v_iu", tier: 1, cat: "verb", kanji: "言う", kana: "いう", romaji: "iu", phonetic: "ee-oo", en: "To say / To tell", exJa: "本当のことを言います。", exKana: "ほんとう の こと を いいます。", exRomaji: "hontou no koto o iimasu", exPhonetic: "hon-toh noh koh-toh oh ee-mahss", exEn: "I tell the truth." },
+      { key: "v_hataraku", tier: 1, cat: "verb", kanji: "働く", kana: "はたらく", romaji: "hataraku", phonetic: "hah-tah-rah-koo", en: "To work", exJa: "病院で働いています。", exKana: "びょういん で はたらいて います。", exRomaji: "byouin de hataraite imasu", exPhonetic: "byoh-een deh hah-tah-rye-teh ee-mahss", exEn: "I work at a hospital." },
+      { key: "v_yasumu", tier: 1, cat: "verb", kanji: "休む", kana: "やすむ", romaji: "yasumu", phonetic: "yah-soo-moo", en: "To rest / To take off", exJa: "今日は仕事を休みます。", exKana: "きょう は しごと を やすみます。", exRomaji: "kyou wa shigoto o yasumimasu", exPhonetic: "kyoh wah shee-goh-toh oh yah-soo-mee-mahss", exEn: "I am taking today off from work." },
 
-      // Adjectives
+      // -------------------------------------------------------------
+      // TIER 1: ESSENTIAL ADJECTIVES
+      // -------------------------------------------------------------
       { key: "adj_ookii", tier: 1, cat: "adj", kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", exJa: "大きい家です。", exKana: "おおきい いえ です。", exRomaji: "ookii ie desu", exPhonetic: "oh-kee ee-eh dess", exEn: "It is a big house." },
       { key: "adj_chiisai", tier: 1, cat: "adj", kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい花です。", exKana: "ちいさい はな です。", exRomaji: "chiisai hana desu", exPhonetic: "chee-sye hah-nah dess", exEn: "It is a small flower." },
       { key: "adj_takai", tier: 1, cat: "adj", kanji: "高い", kana: "たかい", romaji: "takai", phonetic: "tah-kye", en: "Expensive / High", exJa: "値段が高いです。", exKana: "ねだん が たかい です。", exRomaji: "nedan ga takai desu", exPhonetic: "neh-dahn gah tah-kye dess", exEn: "The price is high." },
@@ -1915,20 +1904,37 @@
       { key: "adj_atarashii", tier: 1, cat: "adj", kanji: "新しい", kana: "あたらしい", romaji: "atarashii", phonetic: "ah-tah-rah-shee", en: "New / Fresh", exJa: "新しい車です。", exKana: "あたらしい くるま です。", exRomaji: "atarashii kuruma desu", exPhonetic: "ah-tah-rah-shee koo-roo-mah dess", exEn: "It is a new car." },
       { key: "adj_furui", tier: 1, cat: "adj", kanji: "古い", kana: "ふるい", romaji: "furui", phonetic: "foo-roo-ee", en: "Old", exJa: "古い建物です。", exKana: "ふるい たてもの です。", exRomaji: "furui tatemono desu", exPhonetic: "foo-roo-ee tah-teh-moh-noh dess", exEn: "It is an old building." },
       { key: "adj_ii", tier: 1, cat: "adj", kanji: "良い", kana: "いい", romaji: "ii", phonetic: "ee", en: "Good", exJa: "いい天気ですね。", exKana: "いい てんき です ね。", exRomaji: "ii tenki desu ne", exPhonetic: "ee ten-kee dess neh", exEn: "Nice weather." },
+      { key: "adj_warui", tier: 1, cat: "adj", kanji: "悪い", kana: "わるい", romaji: "warui", phonetic: "wah-roo-ee", en: "Bad", exJa: "気分が悪いです。", exKana: "きぶん が わるい です。", exRomaji: "kibun ga warui desu", exPhonetic: "kee-boon gah wah-roo-ee dess", exEn: "I feel sick / bad." },
       { key: "adj_oishii", tier: 1, cat: "adj", kanji: "美味しい", kana: "おいしい", romaji: "oishii", phonetic: "oy-shee", en: "Delicious", exJa: "とても美味しいです。", exKana: "とても おいしい です。", exRomaji: "totemo oishii desu", exPhonetic: "toh-teh-moh oy-shee dess", exEn: "It is very delicious." },
       { key: "adj_suki", tier: 1, cat: "adj", kanji: "好き", kana: "すき", romaji: "suki", phonetic: "soo-kee", en: "Liked / Favorite", exJa: "りんごが好きです。", exKana: "りんご が すき です。", exRomaji: "ringo ga suki desu", exPhonetic: "reen-goh gah soo-kee dess", exEn: "I like apples." },
+      { key: "adj_kirai", tier: 1, cat: "adj", kanji: "嫌い", kana: "きらい", romaji: "kirai", phonetic: "kee-rye", en: "Disliked / Hated", exJa: "辛い物が嫌いです。", exKana: "からい もの が きらい です。", exRomaji: "karai mono ga kirai desu", exPhonetic: "kah-rye moh-noh gah kee-rye dess", exEn: "I dislike spicy food." },
       { key: "adj_shizuka", tier: 1, cat: "adj", kanji: "静か", kana: "しずか", romaji: "shizuka", phonetic: "shee-zoo-kah", en: "Quiet / Peaceful", exJa: "静かな部屋です。", exKana: "しずか な へや です。", exRomaji: "shizuka na heya desu", exPhonetic: "shee-zoo-kah nah heh-yah dess", exEn: "It is a quiet room." },
       { key: "adj_benri", tier: 1, cat: "adj", kanji: "便利", kana: "べんり", romaji: "benri", phonetic: "ben-ree", en: "Convenient", exJa: "とても便利です。", exKana: "とても べんり です。", exRomaji: "totemo benri desu", exPhonetic: "toh-teh-moh ben-ree dess", exEn: "It is very convenient." },
+      { key: "adj_hayai_time", tier: 1, cat: "adj", kanji: "早い", kana: "はやい", romaji: "hayai", phonetic: "hah-yye", en: "Early", exJa: "朝早く起きます。", exKana: "あさ はやく おきます。", exRomaji: "asa hayaku okimasu", exPhonetic: "ah-sah hah-yah-koo oh-kee-mahss", exEn: "I wake up early in the morning." },
+      { key: "adj_hayai_speed", tier: 1, cat: "adj", kanji: "速い", kana: "はやい", romaji: "hayai", phonetic: "hah-yye", en: "Fast / Quick", exJa: "足が速いです。", exKana: "あし が はやい です。", exRomaji: "ashi ga hayai desu", exPhonetic: "ah-shee gah hah-yye dess", exEn: "He runs fast." },
+      { key: "adj_osoi", tier: 1, cat: "adj", kanji: "遅い", kana: "おそい", romaji: "osoi", phonetic: "oh-soy", en: "Slow / Late", exJa: "帰りが遅いです。", exKana: "かえり が おそい です。", exRomaji: "kaeri ga osoi desu", exPhonetic: "kah-eh-ree gah oh-soy dess", exEn: "Returning home late." },
+      { key: "adj_atsui", tier: 1, cat: "adj", kanji: "暑い", kana: "あつい", romaji: "atsui", phonetic: "ah-tsoo-ee", en: "Hot (weather)", exJa: "今日はとても暑いです。", exKana: "きょう は とても あつい です。", exRomaji: "kyou wa totemo atsui desu", exPhonetic: "kyoh wah toh-teh-moh ah-tsoo-ee dess", exEn: "Today is very hot." },
+      { key: "adj_samui", tier: 1, cat: "adj", kanji: "寒い", kana: "さむい", romaji: "samui", phonetic: "sah-moo-ee", en: "Cold (weather)", exJa: "冬は寒いです。", exKana: "ふゆ は さむい です。", exRomaji: "fuyu wa samui desu", exPhonetic: "foo-yoo wah sah-moo-ee dess", exEn: "Winter is cold." },
+      { key: "adj_muzukashii", tier: 1, cat: "adj", kanji: "難しい", kana: "むずかしい", romaji: "muzukashii", phonetic: "moo-zoo-kah-shee", en: "Difficult / Hard", exJa: "漢字は難しいです。", exKana: "かんじ は むずかしい です。", exRomaji: "kanji wa muzukashii desu", exPhonetic: "kahn-jee wah moo-zoo-kah-shee dess", exEn: "Kanji is difficult." },
+      { key: "adj_yasashii", tier: 1, cat: "adj", kanji: "易しい", kana: "やさしい", romaji: "yasashii", phonetic: "yah-sah-shee", en: "Easy / Simple", exJa: "易しい質問です。", exKana: "やさしい しつもん です。", exRomaji: "yasashii shitsumon desu", exPhonetic: "yah-sah-shee sheet-soo-mon dess", exEn: "It is an easy question." },
 
-      // Adverbs
+      // -------------------------------------------------------------
+      // TIER 1: HIGH-FREQUENCY ADVERBS & TIME
+      // -------------------------------------------------------------
       { key: "adv_kyou", tier: 1, cat: "adverb", kanji: "今日", kana: "きょう", romaji: "kyou", phonetic: "kyoh", en: "Today", exJa: "今日行きます。", exKana: "きょう いきます。", exRomaji: "kyou ikimasu", exPhonetic: "kyoh ee-kee-mahss", exEn: "I will go today." },
       { key: "adv_ashita", tier: 1, cat: "adverb", kanji: "明日", kana: "あした", romaji: "ashita", phonetic: "ah-shee-tah", en: "Tomorrow", exJa: "明日会いましょう。", exKana: "あした あいましょう。", exRomaji: "ashita aimashou", exPhonetic: "ah-shee-tah eye-mah-shoh", exEn: "Let's meet tomorrow." },
       { key: "adv_kinou", tier: 1, cat: "adverb", kanji: "昨日", kana: "きのう", romaji: "kinou", phonetic: "kee-noh", en: "Yesterday", exJa: "昨日は雨でした。", exKana: "きのう は あめ でした。", exRomaji: "kinou wa ame deshita", exPhonetic: "kee-noh wah ah-meh deh-shee-tah", exEn: "It was rainy yesterday." },
       { key: "adv_ima", tier: 1, cat: "adverb", kanji: "今", kana: "いま", romaji: "ima", phonetic: "ee-mah", en: "Now", exJa: "今忙しいです。", exKana: "いま いそがしい です。", exRomaji: "ima isogashii desu", exPhonetic: "ee-mah ee-soh-gah-shee dess", exEn: "I am busy now." },
       { key: "adv_itsumo", tier: 1, cat: "adverb", kanji: "いつも", kana: "いつも", romaji: "itsumo", phonetic: "eet-soo-moh", en: "Always", exJa: "いつも元気です。", exKana: "いつも げんき です。", exRomaji: "itsumo genki desu", exPhonetic: "eet-soo-moh gen-kee dess", exEn: "I am always well." },
       { key: "adv_totemo", tier: 1, cat: "adverb", kanji: "とても", kana: "とても", romaji: "totemo", phonetic: "toh-teh-moh", en: "Very / Extremely", exJa: "とても楽しいです。", exKana: "とても たのしい です。", exRomaji: "totemo tanoshii desu", exPhonetic: "toh-teh-moh tah-noh-shee dess", exEn: "It is very fun." },
+      { key: "adv_sukoshi", tier: 1, cat: "adverb", kanji: "少し", kana: "すこし", romaji: "sukoshi", phonetic: "soo-koh-shee", en: "A little / Slightly", exJa: "少し疲れています。", exKana: "すこし つかれて います。", exRomaji: "sukoshi tsukarete imasu", exPhonetic: "soo-koh-shee tsoo-kah-reh-teh ee-mahss", exEn: "I am a little tired." },
+      { key: "adv_takusan", tier: 1, cat: "adverb", kanji: "たくさん", kana: "たくさん", romaji: "takusan", phonetic: "tah-koo-sahn", en: "A lot / Many", exJa: "たくさん食べました。", exKana: "たくさん たべました。", exRomaji: "takusan tabemashita", exPhonetic: "tah-koo-sahn tah-beh-mah-shee-tah", exEn: "I ate a lot." },
+      { key: "adv_mou", tier: 1, cat: "adverb", kanji: "もう", kana: "もう", romaji: "mou", phonetic: "moh", en: "Already / Anymore", exJa: "もう終わりました。", exKana: "もう おわりました。", exRomaji: "mou owarimashita", exPhonetic: "moh oh-wah-ree-mah-shee-tah", exEn: "It has already ended." },
+      { key: "adv_mada", tier: 1, cat: "adverb", kanji: "まだ", kana: "まだ", romaji: "mada", phonetic: "mah-dah", en: "Still / Not yet", exJa: "まだ分かりません。", exKana: "まだ わかりません。", exRomaji: "mada wakarimasen", exPhonetic: "mah-dah wah-kah-ree-mah-sen", exEn: "I do not understand yet." },
 
-      // Nouns
+      // -------------------------------------------------------------
+      // TIER 1: CORE NOUNS
+      // -------------------------------------------------------------
       { key: "n_watashi", tier: 1, cat: "noun", kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Myself", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
       { key: "n_hito", tier: 1, cat: "noun", kanji: "人", kana: "ひと", romaji: "hito", phonetic: "hee-toh", en: "Person / People", exJa: "優しい人です。", exKana: "やさしい ひと です。", exRomaji: "yasashii hito desu", exPhonetic: "yah-sah-shee hee-toh dess", exEn: "That is a kind person." },
       { key: "n_mizu", tier: 1, cat: "noun", kanji: "水", kana: "みず", romaji: "mizu", phonetic: "mee-zoo", en: "Water", exJa: "水を飲みます。", exKana: "みず を のみます。", exRomaji: "mizu o nomimasu", exPhonetic: "mee-zoo oh noh-mee-mahss", exEn: "I drink water." },
@@ -1939,8 +1945,15 @@
       { key: "n_tomodachi", tier: 1, cat: "noun", kanji: "友達", kana: "ともだち", romaji: "tomodachi", phonetic: "toh-moh-dah-chee", en: "Friend", exJa: "友達と遊びます。", exKana: "ともだち と あそびます。", exRomaji: "tomodachi to asobimasu", exPhonetic: "toh-moh-dah-chee toh ah-soh-bee-mahss", exEn: "I hang out with friends." },
       { key: "n_ie", tier: 1, cat: "noun", kanji: "家", kana: "いえ", romaji: "ie", phonetic: "ee-eh", en: "House / Home", exJa: "家に帰りましょう。", exKana: "いえ に かえりましょう。", exRomaji: "ie ni kaerimashou", exPhonetic: "ee-eh nee kah-eh-ree-mah-shoh", exEn: "Let's head home." },
       { key: "n_okane", tier: 1, cat: "noun", kanji: "お金", kana: "おかね", romaji: "okane", phonetic: "oh-kah-neh", en: "Money", exJa: "お金を払います。", exKana: "おかね を はらいます。", exRomaji: "okane o haraimasu", exPhonetic: "oh-kah-neh oh hah-rye-mahss", exEn: "I will pay money." },
+      { key: "n_kuruma", tier: 1, cat: "noun", kanji: "車", kana: "くるま", romaji: "kuruma", phonetic: "koo-roo-mah", en: "Car / Vehicle", exJa: "新しい車を買いました。", exKana: "あたらしい くるま を かいました。", exRomaji: "atarashii kuruma o kaimashita", exPhonetic: "ah-tah-rah-shee koo-roo-mah oh kye-mah-shee-tah", exEn: "I bought a new car." },
+      { key: "n_kazoku", tier: 1, cat: "noun", kanji: "家族", kana: "かぞく", romaji: "kazoku", phonetic: "kah-zoh-koo", en: "Family", exJa: "家族と一緒に暮らしています。", exKana: "かぞく と いっしょ に くらして います。", exRomaji: "kazoku to issho ni kurashite imasu", exPhonetic: "kah-zoh-koo toh eesh-shoh nee koo-rah-shee-teh ee-mahss", exEn: "I live together with my family." },
+      { key: "n_gakkou", tier: 1, cat: "noun", kanji: "学校", kana: "がっこう", romaji: "gakkou", phonetic: "gahk-koh", en: "School", exJa: "学校は駅から近いです。", exKana: "がっこう は えき から ちかい です。", exRomaji: "gakkou wa eki kara chikai desu", exPhonetic: "gahk-koh wah eh-kee kah-rah chee-kye dess", exEn: "The school is close to the station." },
+      { key: "n_shigoto", tier: 1, cat: "noun", kanji: "仕事", kana: "しごと", romaji: "shigoto", phonetic: "shee-goh-toh", en: "Work / Job", exJa: "仕事に集中します。", exKana: "しごと に しゅうちゅう します。", exRomaji: "shigoto ni shuuchuu shimasu", exPhonetic: "shee-goh-toh nee shoo-choo shee-mahss", exEn: "I concentrate on my work." },
+      { key: "n_heya", tier: 1, cat: "noun", kanji: "部屋", kana: "へや", romaji: "heya", phonetic: "heh-yah", en: "Room", exJa: "部屋を掃除しました。", exKana: "へや を そうじ しました。", exRomaji: "heya o souji shimashita", exPhonetic: "heh-yah oh soh-jee shee-mah-shee-tah", exEn: "I cleaned my room." },
 
-      // Tier 2: Intermediate (N3)
+      // -------------------------------------------------------------
+      // TIER 2: INTERMEDIATE FLUENCY (JLPT N3)
+      // -------------------------------------------------------------
       { key: "t2_junbi", tier: 2, cat: "noun", kanji: "準備", kana: "じゅんび", romaji: "junbi", phonetic: "joon-bee", en: "Preparation", exJa: "準備ができました。", exKana: "じゅんび が できました。", exRomaji: "junbi ga dekimashita", exPhonetic: "joon-bee gah deh-kee-mah-shee-tah", exEn: "Preparations are complete." },
       { key: "t2_renraku", tier: 2, cat: "noun", kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Message", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
       { key: "t2_yakusoku", tier: 2, cat: "noun", kanji: "約束", kana: "やくそく", romaji: "yakusoku", phonetic: "yah-koo-soh-koo", en: "Promise / Appointment", exJa: "約束を守ります。", exKana: "やくそく を まもります。", exRomaji: "yakusoku o mamorimasu", exPhonetic: "yah-koo-soh-koo oh mah-moh-ree-mahss", exEn: "I keep promises." },
@@ -1949,14 +1962,30 @@
       { key: "t2_keiken", tier: 2, cat: "noun", kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", exJa: "いい経験になりました。", exKana: "いい けいけん に なりました。", exRomaji: "ii keiken ni narimashita", exPhonetic: "ee kay-ken nee nah-ree-mah-shee-tah", exEn: "It was a good experience." },
       { key: "t2_annai", tier: 2, cat: "noun", kanji: "案内", kana: "あんない", romaji: "annai", phonetic: "ahn-nye", en: "Guidance / Tour", exJa: "町を案内します。", exKana: "まち を あんない します。", exRomaji: "machi o annai shimasu", exPhonetic: "mah-chee oh ahn-nye shee-mahss", exEn: "I will guide you through town." },
       { key: "t2_setsumei", tier: 2, cat: "noun", kanji: "説明", kana: "せつめい", romaji: "setsumei", phonetic: "seh-tsoo-may", en: "Explanation", exJa: "詳しく説明します。", exKana: "くわしく せつめい します。", exRomaji: "kuwashiku setsumei shimasu", exPhonetic: "koo-wah-shee-koo seh-tsoo-may shee-mahss", exEn: "I will explain in detail." },
+      { key: "t2_yotei", tier: 2, cat: "noun", kanji: "予定", kana: "よてい", romaji: "yotei", phonetic: "yoh-tay", en: "Schedule / Plan", exJa: "明日の予定を確認します。", exKana: "あした の よてい を かくにん します。", exRomaji: "ashita no yotei o kakunin shimasu", exPhonetic: "ah-shee-tah noh yoh-tay oh kah-koo-neen shee-mahss", exEn: "I check tomorrow's schedule." },
+      { key: "t2_kekka", tier: 2, cat: "noun", kanji: "結果", kana: "けっか", romaji: "kekka", phonetic: "kek-kah", en: "Result / Outcome", exJa: "試験の結果が出ました。", exKana: "しけん の けっか が でました。", exRomaji: "shiken no kekka ga demashita", exPhonetic: "shee-ken noh kek-kah gah deh-mah-shee-tah", exEn: "Exam results are out." },
+      { key: "t2_riyuu", tier: 2, cat: "noun", kanji: "理由", kana: "りゆう", romaji: "riyuu", phonetic: "ree-yoo", en: "Reason", exJa: "遅れた理由を話します。", exKana: "おくれた りゆう を はなします。", exRomaji: "okureta riyuu o hanashimasu", exPhonetic: "oh-koo-reh-tah ree-yoo oh hah-nah-shee-mahss", exEn: "I will explain the reason I was late." },
+      { key: "t2_mokuteki", tier: 2, cat: "noun", kanji: "目的", kana: "もくてき", romaji: "mokuteki", phonetic: "mohk-teh-kee", en: "Purpose / Goal", exJa: "旅行の目的は何ですか。", exKana: "りょこう の もくてき は なん です か。", exRomaji: "ryokou no mokuteki wa nan desu ka", exPhonetic: "ryoh-koh noh mohk-teh-kee wah nahn dess kah", exEn: "What is the purpose of your trip?" },
+      { key: "t2_shiraberu", tier: 2, cat: "verb", kanji: "調べる", kana: "しらべる", romaji: "shiraberu", phonetic: "shee-rah-beh-roo", en: "To investigate / To look up", exJa: "辞書で意味を調べます。", exKana: "じしょ で いみ を しらべます。", exRomaji: "jisho de imi o shirabemasu", exPhonetic: "jee-shoh deh ee-mee oh shee-rah-beh-mahss", exEn: "I look up the meaning in a dictionary." },
+      { key: "t2_tsutaeru", tier: 2, cat: "verb", kanji: "伝える", kana: "つたえる", romaji: "tsutaeru", phonetic: "tsoo-tah-eh-roo", en: "To convey / To transmit", exJa: "気持ちを伝えます。", exKana: "きもち を つたえます。", exRomaji: "kimochi o tsutaemasu", exPhonetic: "kee-moh-chee oh tsoo-tah-eh-mahss", exEn: "I convey my feelings." },
+      { key: "t2_teinei", tier: 2, cat: "adj", kanji: "丁寧", kana: "ていねい", romaji: "teinei", phonetic: "tay-nay", en: "Polite / Courteous", exJa: "丁寧な言葉遣いです。", exKana: "ていねい な ことばづかい です。", exRomaji: "teinei na kotobazukai desu", exPhonetic: "tay-nay nah koh-toh-bah-zoo-kye dess", exEn: "It is polite language phrasing." },
 
-      // Tier 3: Advanced (N2–N1)
+      // -------------------------------------------------------------
+      // TIER 3: ADVANCED PROFESSIONAL (JLPT N2–N1)
+      // -------------------------------------------------------------
       { key: "t3_gainen", tier: 3, cat: "noun", kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / Idea", exJa: "基本概念を理解する。", exKana: "きほん がいねん を りかい する。", exRomaji: "kihon gainen o rikai suru", exPhonetic: "kee-hon gye-nen oh ree-kye soo-roo", exEn: "Understand fundamental concepts." },
       { key: "t3_haaku", tier: 3, cat: "noun", kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Comprehension", exJa: "状況を把握します。", exKana: "じょうきょう を はあく します。", exRomaji: "joukyou o haaku shimasu", exPhonetic: "joh-kyoh oh hah-ah-koo shee-mahss", exEn: "I grasp the situation." },
       { key: "t3_keikou", tier: 3, cat: "noun", kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", exJa: "増加の傾向があります。", exKana: "ぞうか の けいこう が あります。", exRomaji: "zouka no keikou ga arimasu", exPhonetic: "zoh-kah noh kay-koh gah ah-ree-mahss", exEn: "There is an upward trend." },
-      { key: "t3_kouzou", tier: 3, cat: "noun", kanji: "構造", kana: "こうぞう", romaji: "kouzou", phonetic: "koh-zoh", en: "Structure / Framework", exJa: "社会の構造を学ぶ。", exKana: "しゃかい の こうぞう を まなぶ。", exRomaji: "shakai no kouzou o manabu", exPhonetic: "shah-kye noh koh-zoh oh node-mah-nah-boo", exEn: "Learn the structure of society." },
+      { key: "t3_kouzou", tier: 3, cat: "noun", kanji: "構造", kana: "こうぞう", romaji: "kouzou", phonetic: "koh-zoh", en: "Structure / Framework", exJa: "社会の構造を学ぶ。", exKana: "しゃかい の こうぞう を まなぶ。", exRomaji: "shakai no kouzou o manabu", exPhonetic: "shah-kye noh koh-zoh oh mah-nah-boo", exEn: "Learn the structure of society." },
       { key: "t3_ronri", tier: 3, cat: "noun", kanji: "論理", kana: "ろんり", romaji: "ronri", phonetic: "ron-ree", en: "Logic / Reasoning", exJa: "論理的に考える。", exKana: "ろんりてき に かんがえる。", exRomaji: "ronriteki ni kangaeru", exPhonetic: "ron-ree-teh-kee nee kahn-gah-eh-roo", exEn: "Think logically." },
-      { key: "t3_mujun", tier: 3, cat: "noun", kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction", exJa: "矛盾が生じています。", exKana: "むじゅん が しょうじて います。", exRomaji: "mujun ga shoujite imasu", exPhonetic: "moo-joon gah shoh-jee-teh ee-mahss", exEn: "A contradiction has arisen." }
+      { key: "t3_mujun", tier: 3, cat: "noun", kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction", exJa: "矛盾が生じています。", exKana: "むじゅん が しょうじて います。", exRomaji: "mujun ga shoujite imasu", exPhonetic: "moo-joon gah shoh-jee-teh ee-mahss", exEn: "A contradiction has arisen." },
+      { key: "t3_ninshiki", tier: 3, cat: "noun", kanji: "認識", kana: "にんしき", romaji: "ninshiki", phonetic: "neen-shee-kee", en: "Recognition / Awareness", exJa: "共通の認識を持つ。", exKana: "きょうつう の にんしき を もつ。", exRomaji: "kyoutsuu no ninshiki o motsu", exPhonetic: "kyoh-tsoo noh neen-shee-kee oh moh-tsoo", exEn: "Hold a mutual awareness." },
+      { key: "t3_kokufuku", tier: 3, cat: "verb", kanji: "克服する", kana: "こくふくする", romaji: "kokufukusuru", phonetic: "koh-koo-foo-koo-soo-roo", en: "To overcome", exJa: "困難を克服しました。", exKana: "こんなん を こくふく しました。", exRomaji: "konnan o kokufuku shimashita", exPhonetic: "kon-nahn oh koh-koo-foo-koo shee-mah-shee-tah", exEn: "Overcame hardships." },
+      { key: "t3_yuusen", tier: 3, cat: "noun", kanji: "優先", kana: "ゆうせん", romaji: "yuusen", phonetic: "yoo-sen", en: "Priority / Precedence", exJa: "安全を最優先にします。", exKana: "あんぜん を さいゆうせん に します。", exRomaji: "anzen o saiyuusen ni shimasu", exPhonetic: "ahn-zen oh sye-yoo-sen nee shee-mahss", exEn: "Safety is top priority." },
+      { key: "t3_suishin", tier: 3, cat: "verb", kanji: "推進する", kana: "すいしんする", romaji: "suishinsuru", phonetic: "soo-ee-sheen-soo-roo", en: "To promote / To propel forward", exJa: "改革を推進します。", exKana: "かいかく を すいしん します。", exRomaji: "kaikaku o suishin shimasu", exPhonetic: "kye-kah-koo oh soo-ee-sheen shee-mahss", exEn: "Promote structural reform." },
+      { key: "t3_shinchou", tier: 3, cat: "adj", kanji: "慎重", kana: "しんちょう", romaji: "shinchou", phonetic: "sheen-choh", en: "Careful / Cautious", exJa: "慎重に対応します。", exKana: "しんちょう に たいおう します。", exRomaji: "shinchou ni taiou shimasu", exPhonetic: "sheen-choh nee tye-oh shee-mahss", exEn: "Respond with caution." },
+      { key: "t3_jinsoku", tier: 3, cat: "adj", kanji: "迅速", kana: "じんそく", romaji: "jinsoku", phonetic: "jeen-soh-koo", en: "Prompt / Rapid", exJa: "迅速な対応が求められます。", exKana: "じんそく な たいおう が もとめられます。", exRomaji: "jinsoku na taiou ga motomeraremasu", exPhonetic: "jeen-soh-koo nah tye-oh gah moh-toh-meh-rah-reh-mahss", exEn: "Prompt action is required." },
+      { key: "t3_fukaketsu", tier: 3, cat: "adj", kanji: "不可欠", kana: "ふかけつ", romaji: "fukaketsu", phonetic: "foo-kah-keh-tsoo", en: "Indispensable / Essential", exJa: "睡眠は健康に不可欠です。", exKana: "すいみん は けんこう に ふかけつ です。", exRomaji: "suimin wa kenkou ni fukaketsu desu", exPhonetic: "soo-ee-meen wah ken-koh nee foo-kah-keh-tsoo dess", exEn: "Sleep is indispensable to health." }
     ];
 
     const MASTER_VOCAB = [];
@@ -1994,7 +2023,7 @@
     }
 
     // =========================================================================
-    // AUDIO ENGINE (USER GESTURE UNLOCKED & ROBUST)
+    // AUDIO ENGINE
     // =========================================================================
     const AudioEngine = {
       voices: [],
@@ -2016,7 +2045,7 @@
             window.addEventListener('touchstart', unlock, { once: true });
           }
         } catch (err) {
-          console.warn("Speech API unavailable:", err);
+          console.warn("Speech API notice:", err);
         }
       },
 
@@ -2334,10 +2363,18 @@
 
     function getDueSRSWords() {
       const now = Date.now();
-      return Object.entries(state.learnedMap)
-        .filter(([key, data]) => (data.nextReview || 0) <= now)
-        .map(([key]) => VOCAB_BY_KEY.get(key))
-        .filter(Boolean);
+      const dueList = [];
+      const seen = new Set();
+      for (const [key, data] of Object.entries(state.learnedMap)) {
+        if ((data.nextReview || 0) <= now && !seen.has(key)) {
+          const w = VOCAB_BY_KEY.get(key);
+          if (w) {
+            dueList.push(w);
+            seen.add(key);
+          }
+        }
+      }
+      return dueList;
     }
 
     function isCohortAllMastered() {
@@ -2396,14 +2433,15 @@
       alert.style.background = isDanger ? 'rgba(225, 29, 72, 0.12)' : 'rgba(16, 185, 129, 0.12)';
       alert.style.borderColor = isDanger ? 'var(--danger)' : 'var(--accent-green)';
       alert.style.color = isDanger ? 'var(--danger)' : 'var(--accent-green)';
-      setTimeout(() => { alert.style.display = 'none'; }, 3400);
+      setTimeout(() => { alert.style.display = 'none'; }, 3400
+);
     }
 
     // =========================================================================
     // DASHBOARD ENGINE
     // =========================================================================
     function updateDashboard() {
-      const tierTitle = state.tierLimit === 1 ? "JLPT N5–N4 Daily Core" : state.tierLimit === 2 ? "JLPT N3 Fluency" : "JLPT N2–N1 Professional";
+      const tierTitle = state.tierLimit === 1 ? "JLPT N5–N4 Daily Core" : state.tierLimit === 2 ? "JLPT N5–N3 Expanded" : "JLPT N5–N1 Full Scope";
       document.getElementById('dashCourseTitle').textContent = tierTitle;
       document.getElementById('dashCourseDesc').textContent = `Curriculum Scope: Authentic Japanese Core (${MASTER_VOCAB.length} Items Active)`;
       document.getElementById('dashCohortLabel').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')} Active`;
@@ -2576,7 +2614,7 @@
     }
 
     // =========================================================================
-    // RAPID MEMORY FLUSH
+    // RAPID MEMORY FLUSH (ZERO MASTERED WORDS REPETITION)
     // =========================================================================
     let flushState = {
       batchSize: parseInt(SafeStorage.getItem('lex_flush_batch')) || 10,
@@ -2657,7 +2695,13 @@
         candidatePool = state.cohort.filter(w => !state.learnedMap[w.key]);
         if (candidatePool.length < flushState.batchSize) {
           const unlearnedInTier = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit && !state.learnedMap[w.key]);
-          candidatePool = Array.from(new Set([...candidatePool, ...unlearnedInTier]));
+          const seen = new Set(candidatePool.map(w => w.key));
+          for (const w of unlearnedInTier) {
+            if (!seen.has(w.key)) {
+              candidatePool.push(w);
+              seen.add(w.key);
+            }
+          }
         }
       } else if (source === 'tier-unlearned') {
         candidatePool = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit && !state.learnedMap[w.key]);
@@ -2665,13 +2709,16 @@
         candidatePool = MASTER_VOCAB.filter(w => !state.learnedMap[w.key]);
       }
 
+      // Hard enforcement: Absolutely zero mastered words can enter flush mode
+      candidatePool = candidatePool.filter(w => !state.learnedMap[w.key]);
+
       if (candidatePool.length === 0) {
-        showAlert("All words in selected scope are already mastered! Select another tier.", true);
+        showAlert("All words in selected scope are already mastered! Select another tier or reset scope.", true);
         return;
       }
 
       const shuffled = [...candidatePool].sort(() => 0.5 - Math.random());
-      flushState.words = shuffled.slice(0, flushState.batchSize);
+      flushState.words = shuffled.slice(0, Math.min(flushState.batchSize, shuffled.length));
       flushState.results = [];
       flushState.currentIndex = 0;
 
@@ -2870,7 +2917,7 @@
     }
 
     // =========================================================================
-    // RETENTION & VALIDATION TEST (NON-REPEATING OPTIONS)
+    // RETENTION & VALIDATION TEST (NON-REPEATING, STRICTLY DUE)
     // =========================================================================
     let testQueue = [];
     let currentTestWord = null;
@@ -2920,7 +2967,8 @@
       document.getElementById('testEmptyMessage').style.display = 'none';
       nextTestQuestion();
     }
-function nextTestQuestion() {
+
+    function nextTestQuestion() {
       testLocked = false;
       if (!testQueue || testQueue.length === 0) {
         document.getElementById('testArea').style.display = 'none';
@@ -2946,38 +2994,43 @@ function nextTestQuestion() {
 
       const curCleanEn = FuzzyEngine.clean(currentTestWord.en);
       const curKanji = currentTestWord.kanji;
+      const curKana = currentTestWord.kana;
 
       const candidateDistractors = MASTER_VOCAB.filter(w => {
         if (w.key === currentTestWord.key) return false;
-        if (w.kanji === curKanji || w.kana === currentTestWord.kana) return false;
+        if (w.kanji === curKanji || w.kana === curKana) return false;
         if (FuzzyEngine.clean(w.en) === curCleanEn) return false;
         return true;
       }).sort(() => 0.5 - Math.random());
 
       const picked = [];
       const usedMeanings = new Set([curCleanEn]);
+      const usedKeys = new Set([currentTestWord.key]);
+
       for (const dist of candidateDistractors) {
         const cleanMean = FuzzyEngine.clean(dist.en);
-        if (!usedMeanings.has(cleanMean)) {
+        if (!usedMeanings.has(cleanMean) && !usedKeys.has(dist.key)) {
           picked.push(dist);
           usedMeanings.add(cleanMean);
+          usedKeys.add(dist.key);
           if (picked.length === 3) break;
         }
       }
 
       if (picked.length < 3) {
         const fallbackDistractors = RAW_VOCAB_DB.filter(w => {
-          if (w.key === currentTestWord.key) return false;
-          if (w.kanji === curKanji || w.kana === currentTestWord.kana) return false;
+          if (w.key === currentTestWord.key || usedKeys.has(w.key)) return false;
+          if (w.kanji === curKanji || w.kana === curKana) return false;
           const cleanMean = FuzzyEngine.clean(w.en);
           return !usedMeanings.has(cleanMean);
         }).sort(() => 0.5 - Math.random());
 
         for (const dist of fallbackDistractors) {
           const cleanMean = FuzzyEngine.clean(dist.en);
-          if (!usedMeanings.has(cleanMean)) {
+          if (!usedMeanings.has(cleanMean) && !usedKeys.has(dist.key)) {
             picked.push(dist);
             usedMeanings.add(cleanMean);
+            usedKeys.add(dist.key);
             if (picked.length === 3) break;
           }
         }
@@ -3154,7 +3207,7 @@ function nextTestQuestion() {
     }
 
     // =========================================================================
-    // MATCH MODE (PRESERVED AS REQUESTED)
+    // MATCH MODE (ZERO DUPLICATE CARDS / UNTOUCHED CSS)
     // =========================================================================
     let matchFirst = null;
     let matchLock = false;
@@ -3176,17 +3229,32 @@ function nextTestQuestion() {
       grid.innerHTML = '';
       grid.className = `match-grid count-${state.matchCount}`;
 
-      const pairsNeeded = Math.min(state.matchCount / 2, MASTER_VOCAB.length);
+      const pairsNeeded = Math.min(Math.floor(state.matchCount / 2), MASTER_VOCAB.length);
+
+      // Prioritize unlearned words from cohort
       let unlearned = state.cohort.filter(w => !state.learnedMap[w.key]);
       if (unlearned.length < pairsNeeded) {
-        const remaining = MASTER_VOCAB.filter(w => !state.learnedMap[w.key]);
-        unlearned = Array.from(new Set([...unlearned, ...remaining]));
+        const moreUnlearned = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit && !state.learnedMap[w.key]);
+        const seen = new Set(unlearned.map(w => w.key));
+        for (const w of moreUnlearned) {
+          if (!seen.has(w.key)) {
+            unlearned.push(w);
+            seen.add(w.key);
+          }
+        }
       }
 
-      let sample = [...unlearned].sort(() => 0.5 - Math.random()).slice(0, pairsNeeded);
-      if (sample.length < pairsNeeded) {
-        const pool = [...MASTER_VOCAB].sort(() => 0.5 - Math.random());
-        sample = pool.slice(0, pairsNeeded);
+      let sample = [];
+      if (unlearned.length >= pairsNeeded) {
+        sample = [...unlearned].sort(() => 0.5 - Math.random()).slice(0, pairsNeeded);
+      } else {
+        sample = [...unlearned];
+        // Only if the unlearned pool is completely depleted, backfill unique mastered items
+        const fallback = MASTER_VOCAB.filter(w => !sample.some(s => s.key === w.key)).sort(() => 0.5 - Math.random());
+        for (const item of fallback) {
+          sample.push(item);
+          if (sample.length === pairsNeeded) break;
+        }
       }
 
       let tiles = [];
@@ -3387,7 +3455,7 @@ function nextTestQuestion() {
     }
 
     // =========================================================================
-    // APPLICATION BOOTSTRAP (SAFE FOR VS CODE EMBEDDED / SIMPLE BROWSER)
+    // APPLICATION BOOTSTRAP
     // =========================================================================
     function initApp() {
       buildCurriculum();
@@ -3419,4 +3487,3 @@ function nextTestQuestion() {
   </script>
 </body>
 </html>
-    
