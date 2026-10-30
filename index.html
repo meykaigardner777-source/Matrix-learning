@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Japanese Core // Lexicon</title>
   
-  <!-- PWA & Mobile Configuration -->
-  <link rel="manifest" href="manifest.json" />
+  <!-- Self-contained PWA Manifest (Prevents 404s in local VS Code servers) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Japanese%20Core%20%2F%2F%20Lexicon%22%2C%22short_name%22%3A%22Lexicon%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23090a0c%22%2C%22theme_color%22%3A%22%23090a0c%22%7D" />
   <meta name="theme-color" content="#090a0c" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Lexicon" />
-  <link rel="apple-touch-icon" href="icon.svg" />
 
   <style>
     :root {
@@ -62,22 +61,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* CUSTOM SLEEK SCROLLBARS */
-    *::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
-    }
-    *::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    *::-webkit-scrollbar-thumb {
-      background: var(--border-hover);
-      border-radius: 4px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-hover) transparent;
-    }
+    *::-webkit-scrollbar { width: 4px; height: 4px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-hover) transparent; }
 
     body {
       background-color: var(--bg);
@@ -109,7 +96,6 @@
       min-height: 100dvh;
     }
 
-    /* ICONS */
     .icon {
       width: 14px;
       height: 14px;
@@ -124,7 +110,6 @@
     }
     .icon-lg { width: 24px; height: 24px; }
 
-    /* BUTTONS */
     .btn {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -141,43 +126,15 @@
       transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
     }
     .btn:active { transform: scale(0.98); }
-    .btn:hover {
-      background: var(--surface-hover);
-      border-color: var(--border-hover);
-    }
-    .btn-primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-      font-weight: 600;
-    }
+    .btn:hover { background: var(--surface-hover); border-color: var(--border-hover); }
+    .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 600; }
     .btn-primary:hover { opacity: 0.92; background: var(--text); }
-    .btn-danger {
-      background: rgba(225, 29, 72, 0.12);
-      color: var(--danger);
-      border-color: rgba(225, 29, 72, 0.35);
-    }
-    .btn-danger:hover {
-      background: rgba(225, 29, 72, 0.22);
-      border-color: var(--danger);
-    }
-    .btn-cyan {
-      background: rgba(6, 182, 212, 0.14);
-      color: var(--accent-cyan);
-      border-color: rgba(6, 182, 212, 0.35);
-      font-weight: 600;
-    }
-    .btn-cyan:hover {
-      background: rgba(6, 182, 212, 0.24);
-      border-color: var(--accent-cyan);
-    }
-    .btn-icon {
-      padding: 0.4rem 0.5rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    .btn-danger { background: rgba(225, 29, 72, 0.12); color: var(--danger); border-color: rgba(225, 29, 72, 0.35); }
+    .btn-danger:hover { background: rgba(225, 29, 72, 0.22); border-color: var(--danger); }
+    .btn-cyan { background: rgba(6, 182, 212, 0.14); color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.35); font-weight: 600; }
+    .btn-cyan:hover { background: rgba(6, 182, 212, 0.24); border-color: var(--accent-cyan); }
+    .btn-icon { padding: 0.4rem 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
 
-    /* TOP STATUS HEADER */
     header.app-header {
       max-width: 660px;
       width: 100%;
@@ -191,16 +148,8 @@
       z-index: 25;
       background: linear-gradient(180deg, var(--bg) 85%, transparent 100%);
     }
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-    .brand-name {
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
+    .brand-cluster { display: flex; align-items: center; gap: 0.45rem; }
+    .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: -0.01em; }
     .brand-badge {
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -210,7 +159,6 @@
       border-radius: var(--radius-sm);
     }
 
-    /* BOTTOM MOBILE REACH NAVIGATION BAR */
     nav.app-bottom-nav {
       position: fixed;
       bottom: 0;
@@ -223,9 +171,7 @@
       border-top: 1px solid var(--border);
       padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom));
     }
-    body.theme-light nav.app-bottom-nav {
-      background: rgba(255, 255, 255, 0.92);
-    }
+    body.theme-light nav.app-bottom-nav { background: rgba(255, 255, 255, 0.92); }
     .nav-container {
       max-width: 660px;
       margin: 0 auto;
@@ -257,11 +203,7 @@
       white-space: nowrap;
     }
     .bottom-tab-btn:hover { color: var(--text); }
-    .bottom-tab-btn.active {
-      color: var(--text);
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-    }
+    .bottom-tab-btn.active { color: var(--text); background: var(--surface-subtle); border: 1px solid var(--border); }
     .bottom-tab-btn .tab-badge-dot {
       position: absolute;
       top: 4px;
@@ -274,12 +216,8 @@
       padding: 0 4px;
       border-radius: 8px;
     }
-    .bottom-tab-btn.tab-cyan.active {
-      color: var(--accent-cyan);
-      border-color: rgba(6, 182, 212, 0.4);
-    }
+    .bottom-tab-btn.tab-cyan.active { color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.4); }
 
-    /* MAIN CONTENT */
     main {
       flex: 1;
       max-width: 660px;
@@ -306,7 +244,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* DASHBOARD */
     .dash-hero {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -314,31 +251,11 @@
       padding: 0.85rem;
       margin-bottom: 0.65rem;
     }
-    .dash-hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    .dash-course-title {
-      font-size: clamp(0.95rem, 4vw, 1.05rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
-    .dash-course-desc {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      margin-top: 0.15rem;
-    }
+    .dash-hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+    .dash-course-title { font-size: clamp(0.95rem, 4vw, 1.05rem); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+    .dash-course-desc { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.15rem; }
     
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-bottom: 0.65rem;
-    }
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.65rem; }
     .dash-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -364,25 +281,10 @@
       line-height: 1.1;
       margin-bottom: 0.25rem;
     }
-    .dash-card-sub {
-      font-size: 0.68rem;
-      color: var(--text-dim);
-      line-height: 1.25;
-    }
+    .dash-card-sub { font-size: 0.68rem; color: var(--text-dim); line-height: 1.25; }
 
-    .progress-bar {
-      height: 3px;
-      background: var(--surface-subtle);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 0.45rem;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--text);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    .progress-bar { height: 3px; background: var(--surface-subtle); border-radius: 2px; overflow: hidden; margin-top: 0.45rem; }
+    .progress-bar-fill { height: 100%; background: var(--text); width: 0%; transition: width 0.3s ease; }
     .progress-bar-fill.green { background: var(--accent-green); }
     .progress-bar-fill.cyan { background: var(--accent-cyan); }
 
@@ -407,7 +309,6 @@
       font-size: 0.75rem;
     }
 
-    /* BATCH TESTING BANNER */
     .mastery-test-banner {
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid var(--accent-green);
@@ -419,21 +320,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .mastery-test-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--accent-green);
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .mastery-test-sub {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-    }
+    .mastery-test-title { font-size: 0.8rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 0.35rem; }
+    .mastery-test-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.15rem; }
 
-    /* FLASHCARD WITH EXAMPLES */
     .card-space {
       perspective: 1000px;
       min-height: 310px;
@@ -464,24 +353,10 @@
       justify-content: space-between;
       overflow-y: auto;
     }
-    .card-side-back {
-      transform: rotateY(180deg);
-      background: var(--surface-subtle);
-    }
+    .card-side-back { transform: rotateY(180deg); background: var(--surface-subtle); }
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.68rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-    .card-mid {
-      text-align: center;
-      margin: auto 0;
-      width: 100%;
-    }
+    .card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono); }
+    .card-mid { text-align: center; margin: auto 0; width: 100%; }
 
     .card-status-tag {
       font-family: var(--font-mono);
@@ -506,18 +381,8 @@
       margin-bottom: 0.2rem;
       letter-spacing: -0.02em;
     }
-    .kana-text {
-      font-family: var(--font-jp);
-      font-size: clamp(0.95rem, 3.8vw, 1.1rem);
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-    .romaji-text {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-top: 0.1rem;
-    }
+    .kana-text { font-family: var(--font-jp); font-size: clamp(0.95rem, 3.8vw, 1.1rem); font-weight: 500; color: var(--text-muted); }
+    .romaji-text { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); margin-top: 0.1rem; }
     .pronounce-tag {
       display: inline-block;
       font-family: var(--font-mono);
@@ -541,13 +406,7 @@
       text-transform: uppercase;
     }
 
-    .meaning-text {
-      font-size: clamp(1.2rem, 5vw, 1.45rem);
-      font-weight: 600;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.25rem;
-    }
+    .meaning-text { font-size: clamp(1.2rem, 5vw, 1.45rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 0.25rem; }
     .tier-label {
       font-family: var(--font-mono);
       font-size: 0.66rem;
@@ -558,7 +417,6 @@
       display: inline-block;
     }
 
-    /* FLASHCARD EXAMPLE SENTENCE BOX */
     .card-example-box {
       margin-top: 0.45rem;
       background: var(--surface);
@@ -578,26 +436,9 @@
       letter-spacing: 0.04em;
       margin-bottom: 0.2rem;
     }
-    .card-example-ja {
-      font-family: var(--font-jp);
-      font-size: clamp(0.85rem, 3.2vw, 0.95rem);
-      font-weight: 600;
-      line-height: 1.3;
-      color: var(--text);
-    }
-    .card-example-kana {
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      color: var(--text-muted);
-      margin-top: 0.12rem;
-      line-height: 1.25;
-    }
-    .card-example-en {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-      line-height: 1.25;
-    }
+    .card-example-ja { font-family: var(--font-jp); font-size: clamp(0.85rem, 3.2vw, 0.95rem); font-weight: 600; line-height: 1.3; color: var(--text); }
+    .card-example-kana { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-muted); margin-top: 0.12rem; line-height: 1.25; }
+    .card-example-en { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; line-height: 1.25; }
 
     .card-bot {
       display: flex;
@@ -611,14 +452,9 @@
     }
 
     .audio-group { display: flex; gap: 0.3rem; }
+    .deck-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 
-    .deck-controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-
-    /* MATCH MODE */
+    /* MATCH MODE (PRESERVED AS REQUESTED) */
     .match-header-bar {
       display: flex;
       justify-content: space-between;
@@ -652,16 +488,10 @@
       border: 1px solid var(--border);
     }
 
-    .match-grid {
-      display: grid;
-      gap: 0.45rem;
-    }
+    .match-grid { display: grid; gap: 0.45rem; }
     .match-grid.count-8 { grid-template-columns: 1fr 1fr; }
     .match-grid.count-16 { grid-template-columns: 1fr 1fr; }
-    .match-grid.count-32 {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.3rem;
-    }
+    .match-grid.count-32 { grid-template-columns: repeat(4, 1fr); gap: 0.3rem; }
 
     .match-tile {
       background: var(--surface);
@@ -679,42 +509,14 @@
       user-select: none;
       transition: all 0.15s;
     }
-    .match-tile:hover {
-      border-color: var(--border-hover);
-      background: var(--surface-hover);
-    }
-    .match-tile.selected {
-      border-color: var(--text);
-      background: var(--surface-subtle);
-    }
-    .match-tile.solved {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.96);
-      transition: all 0.25s;
-    }
-    .match-tile.wrong {
-      border-color: var(--danger);
-      background: rgba(225, 29, 72, 0.08);
-    }
+    .match-tile:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+    .match-tile.selected { border-color: var(--text); background: var(--surface-subtle); }
+    .match-tile.solved { opacity: 0; pointer-events: none; transform: scale(0.96); transition: all 0.25s; }
+    .match-tile.wrong { border-color: var(--danger); background: rgba(225, 29, 72, 0.08); }
 
-    .tile-jp-main {
-      font-family: var(--font-jp);
-      font-size: clamp(1.1rem, 3.8vw, 1.25rem);
-      font-weight: 700;
-      margin-bottom: 0.1rem;
-      line-height: 1.15;
-    }
-    .tile-jp-sub {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-    .tile-en-main {
-      font-size: clamp(0.78rem, 2.8vw, 0.88rem);
-      font-weight: 600;
-      line-height: 1.2;
-    }
+    .tile-jp-main { font-family: var(--font-jp); font-size: clamp(1.1rem, 3.8vw, 1.25rem); font-weight: 700; margin-bottom: 0.1rem; line-height: 1.15; }
+    .tile-jp-sub { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); }
+    .tile-en-main { font-size: clamp(0.78rem, 2.8vw, 0.88rem); font-weight: 600; line-height: 1.2; }
 
     .tile-speaker {
       position: absolute;
@@ -732,13 +534,7 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .tile-speaker:hover {
-      color: var(--text);
-      border-color: var(--text-muted);
-      background: var(--surface-hover);
-    }
 
-    /* SENTENCES */
     .sentence-pagination-bar {
       display: flex;
       justify-content: space-between;
@@ -758,29 +554,11 @@
       padding: 0.75rem;
       margin-bottom: 0.45rem;
     }
-    .sentence-jp {
-      font-family: var(--font-jp);
-      font-size: clamp(0.92rem, 3.5vw, 1.02rem);
-      font-weight: 600;
-      margin-bottom: 0.15rem;
-    }
-    .sentence-pronounce {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      margin-bottom: 0.3rem;
-    }
-    .sentence-en {
-      font-size: 0.8rem;
-      color: var(--text);
-    }
+    .sentence-jp { font-family: var(--font-jp); font-size: clamp(0.92rem, 3.5vw, 1.02rem); font-weight: 600; margin-bottom: 0.15rem; }
+    .sentence-pronounce { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+    .sentence-en { font-size: 0.8rem; color: var(--text); }
 
-    /* REVIEW DIRECTORY */
-    .review-filter-box {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 0.65rem;
-    }
+    .review-filter-box { display: flex; gap: 0.4rem; margin-bottom: 0.65rem; }
     .review-search {
       flex: 1;
       background: var(--surface);
@@ -803,24 +581,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .review-meta-kanji {
-      font-family: var(--font-jp);
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.1;
-    }
-    .review-meta-sub {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      margin-top: 0.15rem;
-    }
-    .review-meta-en {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-top: 0.2rem;
-    }
+    .review-meta-kanji { font-family: var(--font-jp); font-size: 1.25rem; font-weight: 700; line-height: 1.1; }
+    .review-meta-sub { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.15rem; }
+    .review-meta-en { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-top: 0.2rem; }
     .review-date-badge {
       display: inline-block;
       font-size: 0.65rem;
@@ -832,7 +595,6 @@
       margin-left: 0.35rem;
     }
 
-    /* TEST PAGE */
     .test-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -844,31 +606,11 @@
       text-align: center;
       margin-bottom: 0.65rem;
     }
-    .test-word-jp {
-      font-family: var(--font-jp);
-      font-size: clamp(2.2rem, 8vw, 2.7rem);
-      font-weight: 700;
-      margin: 0.4rem 0 0.15rem;
-    }
-    .test-word-reading {
-      font-family: var(--font-jp);
-      font-size: 1rem;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-    .test-word-phonetic {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-    }
+    .test-word-jp { font-family: var(--font-jp); font-size: clamp(2.2rem, 8vw, 2.7rem); font-weight: 700; margin: 0.4rem 0 0.15rem; }
+    .test-word-reading { font-family: var(--font-jp); font-size: 1rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .test-word-phonetic { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); margin-bottom: 1rem; }
 
-    .test-options-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.45rem;
-      width: 100%;
-    }
+    .test-options-grid { display: grid; grid-template-columns: 1fr; gap: 0.45rem; width: 100%; }
     .test-btn-option {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -881,41 +623,13 @@
       text-align: left;
       transition: all 0.15s;
     }
-    .test-btn-option:hover {
-      background: var(--surface-hover);
-      border-color: var(--border-hover);
-    }
-    .test-btn-option.correct {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: var(--accent-green);
-      color: var(--accent-green);
-    }
-    .test-btn-option.wrong {
-      background: rgba(225, 29, 72, 0.15);
-      border-color: var(--danger);
-      color: var(--danger);
-    }
+    .test-btn-option:hover { background: var(--surface-hover); border-color: var(--border-hover); }
+    .test-btn-option.correct { background: rgba(16, 185, 129, 0.15); border-color: var(--accent-green); color: var(--accent-green); }
+    .test-btn-option.wrong { background: rgba(225, 29, 72, 0.15); border-color: var(--danger); color: var(--danger); }
 
-    /* RAPID MEMORY FLUSH (UNLEARNED WORDS ONLY) */
-    .flush-shell {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      padding-bottom: 2rem;
-    }
-    .flush-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0.85rem;
-      position: relative;
-    }
-    .flush-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
+    .flush-shell { display: flex; flex-direction: column; gap: 0.65rem; padding-bottom: 2rem; }
+    .flush-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem; position: relative; }
+    .flush-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .flush-badge-tag {
       font-family: var(--font-mono);
       font-size: 0.68rem;
@@ -928,29 +642,10 @@
       align-items: center;
       gap: 0.3rem;
     }
-
     .flush-cfg-group { margin-bottom: 0.9rem; }
-    .flush-cfg-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-    .flush-cfg-num {
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-    }
-
-    .flush-chips-row {
-      display: flex;
-      gap: 0.35rem;
-      margin-top: 0.45rem;
-      flex-wrap: wrap;
-    }
+    .flush-cfg-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.4rem; }
+    .flush-cfg-num { font-size: 0.88rem; font-weight: 700; color: var(--accent-cyan); }
+    .flush-chips-row { display: flex; gap: 0.35rem; margin-top: 0.45rem; flex-wrap: wrap; }
     .flush-chip {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -962,25 +657,10 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .flush-chip:hover {
-      border-color: var(--border-hover);
-      color: var(--text);
-    }
-    .flush-chip.active {
-      background: var(--accent-cyan-glow);
-      color: var(--accent-cyan);
-      border-color: var(--accent-cyan);
-      font-weight: 600;
-    }
+    .flush-chip:hover { border-color: var(--border-hover); color: var(--text); }
+    .flush-chip.active { background: var(--accent-cyan-glow); color: var(--accent-cyan); border-color: var(--accent-cyan); font-weight: 600; }
 
-    .flush-scroll-list {
-      max-height: min(52vh, 420px);
-      overflow-y: auto;
-      padding-right: 0.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
+    .flush-scroll-list { max-height: min(52vh, 420px); overflow-y: auto; padding-right: 0.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
     .flush-preview-item {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -991,33 +671,11 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .flush-preview-kanji {
-      font-family: var(--font-jp);
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.15;
-    }
-    .flush-preview-sub {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-    .flush-preview-en {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-top: 0.15rem;
-    }
+    .flush-preview-kanji { font-family: var(--font-jp); font-size: 1.15rem; font-weight: 700; line-height: 1.15; }
+    .flush-preview-sub { font-size: 0.68rem; color: var(--text-muted); font-family: var(--font-mono); }
+    .flush-preview-en { font-size: 0.78rem; font-weight: 600; color: var(--text); margin-top: 0.15rem; }
 
-    /* Intermission View */
-    .flush-timer-box {
-      text-align: center;
-      padding: 1.8rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    .flush-timer-box { text-align: center; padding: 1.8rem 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .flush-countdown-clock {
       font-family: var(--font-mono);
       font-size: clamp(2.6rem, 9vw, 3.4rem);
@@ -1027,13 +685,7 @@
       text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
       margin: 0.5rem 0 0.2rem;
     }
-    .flush-countdown-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-      max-width: 320px;
-      line-height: 1.4;
-    }
+    .flush-countdown-sub { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.25rem; max-width: 320px; line-height: 1.4; }
     .flush-pulse-ring {
       width: 70px;
       height: 70px;
@@ -1051,7 +703,6 @@
       100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
     }
 
-    /* Active Recall Input View */
     .flush-recall-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1063,30 +714,10 @@
       text-align: center;
       margin-bottom: 0.65rem;
     }
-    .flush-recall-kanji {
-      font-family: var(--font-jp);
-      font-size: clamp(2.3rem, 8.5vw, 2.9rem);
-      font-weight: 700;
-      margin: 0.4rem 0 0.15rem;
-    }
-    .flush-recall-sub {
-      font-family: var(--font-jp);
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-    .flush-recall-phonetic {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      margin-bottom: 0.9rem;
-    }
-
-    .flush-input-row {
-      width: 100%;
-      display: flex;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
+    .flush-recall-kanji { font-family: var(--font-jp); font-size: clamp(2.3rem, 8.5vw, 2.9rem); font-weight: 700; margin: 0.4rem 0 0.15rem; }
+    .flush-recall-sub { font-family: var(--font-jp); font-size: 0.95rem; color: var(--text-muted); }
+    .flush-recall-phonetic { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); margin-bottom: 0.9rem; }
+    .flush-input-row { width: 100%; display: flex; gap: 0.4rem; margin-top: 0.5rem; }
     .flush-input {
       flex: 1;
       background: var(--surface-subtle);
@@ -1097,34 +728,11 @@
       font-size: 0.92rem;
       font-weight: 500;
     }
-    .flush-input:focus {
-      outline: none;
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 1px var(--accent-cyan);
-    }
+    .flush-input:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 0 1px var(--accent-cyan); }
 
-    /* Results */
-    .flush-score-banner {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      text-align: center;
-      margin-bottom: 0.65rem;
-    }
-    .flush-score-num {
-      font-family: var(--font-mono);
-      font-size: clamp(2.2rem, 8vw, 2.8rem);
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.1;
-    }
-    .flush-score-pct {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--accent-cyan);
-      margin-top: 0.2rem;
-    }
+    .flush-score-banner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; margin-bottom: 0.65rem; }
+    .flush-score-num { font-family: var(--font-mono); font-size: clamp(2.2rem, 8vw, 2.8rem); font-weight: 700; color: var(--text); line-height: 1.1; }
+    .flush-score-pct { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); margin-top: 0.2rem; }
     .flush-result-row {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1140,17 +748,11 @@
     .flush-result-row.fuzzy { border-left: 3px solid var(--warning); }
     .flush-result-row.wrong { border-left: 3px solid var(--danger); }
 
-    .flush-user-ans {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      margin-top: 0.15rem;
-    }
+    .flush-user-ans { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.15rem; }
     .flush-user-ans span.wrong-text { color: var(--danger); text-decoration: line-through; }
     .flush-user-ans span.correct-text { color: var(--accent-green); font-weight: 600; }
     .flush-user-ans span.fuzzy-text { color: var(--warning); font-weight: 600; }
 
-    /* SWITCHES */
     .switch-label {
       display: flex;
       justify-content: space-between;
@@ -1185,16 +787,9 @@
       background: var(--text-dim);
       transition: transform 0.2s, background 0.2s;
     }
-    .switch-input:checked {
-      background: rgba(6, 182, 212, 0.25);
-      border-color: var(--accent-cyan);
-    }
-    .switch-input:checked::after {
-      transform: translateX(16px);
-      background: var(--accent-cyan);
-    }
+    .switch-input:checked { background: rgba(6, 182, 212, 0.25); border-color: var(--accent-cyan); }
+    .switch-input:checked::after { transform: translateX(16px); background: var(--accent-cyan); }
 
-    /* ACHIEVEMENTS */
     .achievement-card {
       background: var(--surface-subtle);
       border: 1px solid var(--border);
@@ -1205,10 +800,7 @@
       align-items: center;
       gap: 0.75rem;
     }
-    .achievement-card.unlocked {
-      border-color: rgba(6, 182, 212, 0.4);
-      background: rgba(6, 182, 212, 0.05);
-    }
+    .achievement-card.unlocked { border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.05); }
     .achievement-icon {
       width: 38px;
       height: 38px;
@@ -1221,25 +813,11 @@
       color: var(--text-dim);
       flex-shrink: 0;
     }
-    .achievement-card.unlocked .achievement-icon {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-      background: var(--accent-cyan-glow);
-    }
-    .achievement-title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
+    .achievement-card.unlocked .achievement-icon { border-color: var(--accent-cyan); color: var(--accent-cyan); background: var(--accent-cyan-glow); }
+    .achievement-title { font-size: 0.78rem; font-weight: 700; letter-spacing: -0.01em; }
     .achievement-card.unlocked .achievement-title { color: var(--accent-cyan); }
-    .achievement-desc {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      line-height: 1.3;
-      margin-top: 0.1rem;
-    }
+    .achievement-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.3; margin-top: 0.1rem; }
 
-    /* MODAL DIALOGS */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -1276,11 +854,7 @@
       font-weight: 600;
       background: var(--surface);
     }
-    .modal-body {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
+    .modal-body { flex: 1; display: flex; overflow: hidden; }
     .modal-sidebar {
       width: 160px;
       background: var(--surface-subtle);
@@ -1302,16 +876,8 @@
       text-align: left;
       transition: all 0.15s;
     }
-    .sidebar-btn.active {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .modal-content {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-    }
+    .sidebar-btn.active { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .modal-content { flex: 1; padding: 1rem; overflow-y: auto; }
     .panel { display: none; }
     .panel.active { display: block; }
 
@@ -1336,10 +902,7 @@
       appearance: none;
       -webkit-appearance: none;
     }
-    .input-control:focus {
-      outline: none;
-      border-color: var(--border-hover);
-    }
+    .input-control:focus { outline: none; border-color: var(--border-hover); }
 
     input[type="range"] {
       -webkit-appearance: none;
@@ -1368,19 +931,8 @@
       padding: 0.75rem;
       margin-bottom: 0.75rem;
     }
-    .legal-title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .legal-body {
-      font-size: 0.7rem;
-      line-height: 1.45;
-      color: var(--text-muted);
-    }
+    .legal-title { font-size: 0.78rem; font-weight: 700; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem; }
+    .legal-body { font-size: 0.7rem; line-height: 1.45; color: var(--text-muted); }
     .legal-mono {
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -1410,7 +962,6 @@
   <canvas id="bgCanvas"></canvas>
 
   <div class="app-shell">
-    <!-- TOP SLIM HUD -->
     <header class="app-header">
       <div class="brand-cluster">
         <span class="brand-name">Lexicon</span>
@@ -1453,7 +1004,7 @@
           <div class="dash-hero-top">
             <div>
               <div class="dash-course-title" id="dashCourseTitle">JLPT N5–N4 Daily Core</div>
-              <div class="dash-course-desc" id="dashCourseDesc">Curriculum Scope: Top 1,000 High-Frequency Words</div>
+              <div class="dash-course-desc" id="dashCourseDesc">Curriculum Scope: Authentic Japanese Core</div>
             </div>
             <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.7rem;" onclick="switchDailyCohort()">
               Next Batch
@@ -1467,7 +1018,6 @@
         </div>
 
         <div class="dash-grid">
-          <!-- 1. Today's Words -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1482,7 +1032,6 @@
             </div>
           </div>
 
-          <!-- 2. Today's Time -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1497,23 +1046,21 @@
             </div>
           </div>
 
-          <!-- 3. Yesterday's Words -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
-                <span>YESTERDAY'S WORDS</span>
+                <span>SRS REVIEWS DUE</span>
                 <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
               </div>
-              <div class="dash-card-num" id="dashYesterdayNum">0</div>
-              <div class="dash-card-sub">Learned yesterday</div>
+              <div class="dash-card-num" id="dashDueNum">0</div>
+              <div class="dash-card-sub">Scheduled for review</div>
             </div>
             <button class="btn" style="width: 100%; padding: 0.25rem 0.4rem; font-size: 0.68rem;" onclick="switchTab('test')">
-              Test Queue (<span id="dashYesterdayDue">0</span>)
+              Test Queue (<span id="dashDueBadge">0</span>)
               <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
           </div>
 
-          <!-- 4. Yesterday's Time -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1528,7 +1075,6 @@
             </div>
           </div>
 
-          <!-- 5. Total Mastered -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1536,14 +1082,13 @@
                 <span id="dashTotalPct">0%</span>
               </div>
               <div class="dash-card-num"><span id="dashTotalNum">0</span> / <span id="dashTierTarget">1,000</span></div>
-              <div class="dash-card-sub" id="dashTierRemaining">1,000 unlearned</div>
+              <div class="dash-card-sub" id="dashTierRemaining">0 unlearned</div>
             </div>
             <div class="progress-bar">
               <div class="progress-bar-fill green" id="dashTotalBar"></div>
             </div>
           </div>
 
-          <!-- 6. Study Launchers -->
           <div class="dash-card">
             <div>
               <div class="dash-card-label">
@@ -1566,20 +1111,20 @@
 
         <div class="dash-section-title">Curriculum Distribution</div>
         <div class="tier-stat-row">
-          <span>Tier 1: Daily Core (N5–N4 ~80% Everyday)</span>
-          <strong id="dashTier1Count" style="font-family: var(--font-mono);">0 / 1,000</strong>
+          <span>Tier 1: Daily Core (N5–N4 Everyday Essentials)</span>
+          <strong id="dashTier1Count" style="font-family: var(--font-mono);">0 / 0</strong>
         </div>
         <div class="tier-stat-row">
-          <span>Tier 2: Conversational (N3 Fluency)</span>
-          <strong id="dashTier2Count" style="font-family: var(--font-mono);">0 / 1,000</strong>
+          <span>Tier 2: Intermediate (N3 Fluency)</span>
+          <strong id="dashTier2Count" style="font-family: var(--font-mono);">0 / 0</strong>
         </div>
         <div class="tier-stat-row">
-          <span>Tier 3: Professional (N2–N1 Mastery)</span>
-          <strong id="dashTier3Count" style="font-family: var(--font-mono);">0 / 3,000</strong>
+          <span>Tier 3: Advanced (N2–N1 Professional)</span>
+          <strong id="dashTier3Count" style="font-family: var(--font-mono);">0 / 0</strong>
         </div>
       </section>
 
-      <!-- 2. FLASHCARDS WITH EXAMPLE SENTENCES & MASTERED DEPRIORITIZATION -->
+      <!-- 2. FLASHCARDS -->
       <section id="tab-cards" style="display: none;">
         <div class="card-space" onclick="flipCard()">
           <div class="card-flipper" id="cardFlipper">
@@ -1593,7 +1138,7 @@
                     <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     Listen
                   </button>
-                  <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(currentWord.kana, 0.55)">
+                  <button class="btn" style="padding: 0.2rem 0.45rem; font-size: 0.68rem;" onclick="AudioEngine.speak(currentWord.kana, 0.6)">
                     <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     Slow
                   </button>
@@ -1629,7 +1174,6 @@
                   <span class="category-badge" id="cardBackCategory">NOUN</span>
                 </div>
 
-                <!-- CARD EXAMPLE SENTENCE COMPONENT -->
                 <div class="card-example-box" onclick="event.stopPropagation()">
                   <div class="card-example-header">
                     <span>EXAMPLE SENTENCE</span>
@@ -1665,11 +1209,10 @@
         </div>
       </section>
 
-      <!-- 3. RAPID MEMORY FLUSH (UNLEARNED WORDS ONLY) -->
+      <!-- 3. RAPID MEMORY FLUSH -->
       <section id="tab-flush" style="display: none;">
         <div class="flush-shell">
           
-          <!-- STAGE 1: CONFIGURATION VIEW -->
           <div id="flushViewConfig">
             <div class="flush-card">
               <div class="flush-top-row">
@@ -1685,23 +1228,20 @@
                 Acquire fresh, unlearned vocabulary into active working memory during a timed delay, followed by typo-tolerant recall grading.
               </div>
 
-              <!-- Batch Size (1 - 100) -->
               <div class="flush-cfg-group">
                 <div class="flush-cfg-label">
                   <span>BURST BATCH SIZE</span>
                   <span class="flush-cfg-num" id="flushBatchNumDisplay">10 Words</span>
                 </div>
-                <input type="range" class="input-control" id="flushBatchSlider" min="1" max="100" value="10" oninput="updateFlushBatchDisplay(this.value)">
+                <input type="range" class="input-control" id="flushBatchSlider" min="1" max="50" value="10" oninput="updateFlushBatchDisplay(this.value)">
                 <div class="flush-chips-row">
-                  <button class="flush-chip" onclick="setFlushBatch(5)">5 Words</button>
-                  <button class="flush-chip active" onclick="setFlushBatch(10)">10 Words</button>
-                  <button class="flush-chip" onclick="setFlushBatch(20)">20 Words</button>
-                  <button class="flush-chip" onclick="setFlushBatch(50)">50 Words</button>
-                  <button class="flush-chip" onclick="setFlushBatch(100)">100 Words</button>
+                  <button type="button" class="flush-chip flush-chip-batch" onclick="setFlushBatch(5)">5 Words</button>
+                  <button type="button" class="flush-chip flush-chip-batch active" onclick="setFlushBatch(10)">10 Words</button>
+                  <button type="button" class="flush-chip flush-chip-batch" onclick="setFlushBatch(20)">20 Words</button>
+                  <button type="button" class="flush-chip flush-chip-batch" onclick="setFlushBatch(30)">30 Words</button>
                 </div>
               </div>
 
-              <!-- Retention Delay (15s - 10m) -->
               <div class="flush-cfg-group">
                 <div class="flush-cfg-label">
                   <span>RETENTION TIMER DELAY</span>
@@ -1709,17 +1249,14 @@
                 </div>
                 <input type="range" class="input-control" id="flushTimerSlider" min="15" max="600" step="5" value="45" oninput="updateFlushTimerDisplay(this.value)">
                 <div class="flush-chips-row">
-                  <button class="flush-chip" onclick="setFlushTimer(15)">15s</button>
-                  <button class="flush-chip" onclick="setFlushTimer(30)">30s</button>
-                  <button class="flush-chip active" onclick="setFlushTimer(45)">45s</button>
-                  <button class="flush-chip" onclick="setFlushTimer(60)">1m</button>
-                  <button class="flush-chip" onclick="setFlushTimer(120)">2m</button>
-                  <button class="flush-chip" onclick="setFlushTimer(300)">5m</button>
-                  <button class="flush-chip" onclick="setFlushTimer(600)">10m</button>
+                  <button type="button" class="flush-chip flush-chip-timer" onclick="setFlushTimer(15)">15s</button>
+                  <button type="button" class="flush-chip flush-chip-timer" onclick="setFlushTimer(30)">30s</button>
+                  <button type="button" class="flush-chip flush-chip-timer active" onclick="setFlushTimer(45)">45s</button>
+                  <button type="button" class="flush-chip flush-chip-timer" onclick="setFlushTimer(60)">1m</button>
+                  <button type="button" class="flush-chip flush-chip-timer" onclick="setFlushTimer(120)">2m</button>
                 </div>
               </div>
 
-              <!-- Cohort Selection (Mastered strictly excluded) -->
               <div class="flush-cfg-group">
                 <label class="form-label">Vocabulary Source</label>
                 <select class="input-control" id="flushSourceSelect">
@@ -1736,7 +1273,6 @@
             </div>
           </div>
 
-          <!-- STAGE 2: PREVIEW PHASE -->
           <div id="flushViewPreview" style="display: none;">
             <div class="flush-card">
               <div class="flush-top-row">
@@ -1764,7 +1300,6 @@
             </div>
           </div>
 
-          <!-- STAGE 3: TIMER INTERMISSION VIEW -->
           <div id="flushViewTimer" style="display: none;">
             <div class="flush-card flush-timer-box">
               <div class="flush-pulse-ring">
@@ -1785,7 +1320,6 @@
             </div>
           </div>
 
-          <!-- STAGE 4: ACTIVE RECALL INPUT PHASE -->
           <div id="flushViewRecall" style="display: none;">
             <div class="flush-recall-card" id="flushRecallCard">
               <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
@@ -1816,7 +1350,6 @@
             </div>
           </div>
 
-          <!-- STAGE 5: RESULTS & GRADING SUMMARY -->
           <div id="flushViewResults" style="display: none;">
             <div class="flush-score-banner">
               <div class="flush-badge-tag" style="margin-bottom: 0.35rem;">Neural Recall Score</div>
@@ -1854,7 +1387,7 @@
         <div id="reviewListContainer"></div>
       </section>
 
-      <!-- 5. RETENTION & VALIDATION TEST (NON-REPEATING, CLEAN OPTIONS) -->
+      <!-- 5. RETENTION & VALIDATION TEST -->
       <section id="tab-test" style="display: none;">
         <div id="testArea">
           <div class="test-box">
@@ -1871,7 +1404,7 @@
             <div class="test-word-phonetic" id="testPhonetic">[ -- ]</div>
 
             <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.65rem;" id="testInstruction">
-              Choose the correct definition. Wrong answers unlearn the word.
+              Choose the correct definition. Wrong answers drop interval stage.
             </div>
 
             <div class="test-options-grid" id="testOptionsGrid"></div>
@@ -1881,7 +1414,7 @@
           <div style="margin-bottom: 0.5rem; color: var(--accent-green);">
             <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
           </div>
-          <div>All clear! No words due for review from yesterday.</div>
+          <div>All clear! No words currently due for SRS review.</div>
           <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem;">Practice new cards or test mastered vocabulary.</div>
           <button class="btn" style="margin-top: 0.85rem;" onclick="startCustomReviewTest()">
             <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
@@ -1906,7 +1439,7 @@
         <div id="sentencesList"></div>
       </section>
 
-      <!-- 7. MATCH MODE (UNLEARNED BIASED) -->
+      <!-- 7. MATCH MODE (CSS UNTOUCHED AS REQUESTED) -->
       <section id="tab-match" style="display: none;">
         <div class="match-header-bar">
           <div class="match-size-selector">
@@ -1923,7 +1456,7 @@
       </section>
     </main>
 
-    <!-- MOBILE REACH NAVIGATION BAR -->
+    <!-- BOTTOM REACH NAVIGATION -->
     <nav class="app-bottom-nav">
       <div class="nav-container">
         <button class="bottom-tab-btn active" onclick="switchTab('dashboard')">
@@ -1984,16 +1517,15 @@
 
       <div class="modal-body">
         <div class="modal-sidebar">
-          <button class="sidebar-btn active" onclick="switchSettingsPanel('general')">General</button>
-          <button class="sidebar-btn" onclick="switchSettingsPanel('voice')">Voice & Audio</button>
-          <button class="sidebar-btn" onclick="switchSettingsPanel('curriculum')">Vocabulary Tiers</button>
-          <button class="sidebar-btn" onclick="switchSettingsPanel('progression')">Progression Logic</button>
-          <button class="sidebar-btn" onclick="switchSettingsPanel('background')">Background</button>
-          <button class="sidebar-btn" onclick="switchSettingsPanel('legal')">Legal & Citations</button>
+          <button id="sideBtn-general" class="sidebar-btn active" onclick="switchSettingsPanel('general')">General</button>
+          <button id="sideBtn-voice" class="sidebar-btn" onclick="switchSettingsPanel('voice')">Voice & Audio</button>
+          <button id="sideBtn-curriculum" class="sidebar-btn" onclick="switchSettingsPanel('curriculum')">Vocabulary Tiers</button>
+          <button id="sideBtn-progression" class="sidebar-btn" onclick="switchSettingsPanel('progression')">Progression Logic</button>
+          <button id="sideBtn-background" class="sidebar-btn" onclick="switchSettingsPanel('background')">Background</button>
+          <button id="sideBtn-legal" class="sidebar-btn" onclick="switchSettingsPanel('legal')">Legal & Citations</button>
         </div>
 
         <div class="modal-content">
-          <!-- General -->
           <div class="panel active" id="panel-general">
             <div class="form-group">
               <label class="form-label">Theme Preset</label>
@@ -2003,14 +1535,13 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Mobile Reach & Inputs</label>
+              <label class="form-label">PWA Service Worker</label>
               <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; line-height: 1.4;">
-                Optimized with Visual Viewport centering to prevent on-screen keyboards from obscuring inputs.
+                Offline caching & background workers active. Fully functional offline.
               </div>
             </div>
           </div>
 
-          <!-- Voice & Diagnostics -->
           <div class="panel" id="panel-voice">
             <div class="form-group">
               <label class="form-label">Japanese Speech Synthesizer</label>
@@ -2022,7 +1553,7 @@
                 <span>Speech Speed</span>
                 <span id="speedVal">0.75x</span>
               </label>
-              <input type="range" class="input-control" id="cfgSpeed" min="0.4" max="1.1" step="0.05" value="0.75" oninput="document.getElementById('speedVal').textContent = `${this.value}x`">
+              <input type="range" class="input-control" id="cfgSpeed" min="0.5" max="1.1" step="0.05" value="0.75" oninput="document.getElementById('speedVal').textContent = `${this.value}x`">
             </div>
 
             <div class="form-group" style="padding-top: 0.5rem; border-top: 1px solid var(--border);">
@@ -2037,30 +1568,29 @@
             </div>
           </div>
 
-          <!-- Curriculum Tiers & Parts of Speech -->
           <div class="panel" id="panel-curriculum">
             <div class="form-group">
               <label class="form-label">Vocabulary Tier Scope</label>
               <select class="input-control" id="cfgTier">
-                <option value="1000" selected>Tier 1: Top 1,000 (JLPT N5–N4 Daily Core, ~80% Coverage)</option>
-                <option value="2000">Tier 2: Top 2,000 (JLPT N3 Conversational Fluency)</option>
-                <option value="5000">Tier 3: Top 5,000 (JLPT N2–N1 Professional & Mastery)</option>
+                <option value="1" selected>Tier 1: Daily Core (JLPT N5–N4)</option>
+                <option value="2">Tier 2: Intermediate (JLPT N3 Fluency)</option>
+                <option value="3">Tier 3: Advanced (JLPT N2–N1 Mastery)</option>
               </select>
             </div>
 
             <div class="form-group">
               <label class="form-label">Daily Batch Size</label>
-              <input type="number" class="input-control" id="cfgGoal" min="5" max="100" value="40">
+              <input type="number" class="input-control" id="cfgGoal" min="5" max="50" value="40">
             </div>
 
             <div class="dash-section-title" style="margin-top: 0.8rem;">Category Inclusions</div>
             <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.4rem 0.65rem;">
               <label class="switch-label">
-                <span>Particles (助詞 — は, が, を, に, で...)</span>
+                <span>Particles (助詞 — は, が, を, に...)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatParticles" checked>
               </label>
               <label class="switch-label">
-                <span>Mixed Verbs (Godan, Ichidan & Suru)</span>
+                <span>Verbs (Godan, Ichidan & Suru)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatVerbs" checked>
               </label>
               <label class="switch-label">
@@ -2068,11 +1598,11 @@
                 <input type="checkbox" class="switch-input" id="cfgCatAdjectives" checked>
               </label>
               <label class="switch-label">
-                <span>Time & Location Adverbs (今日, 明日, ここ...)</span>
+                <span>Adverbs (Time & Manner)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatAdverbs" checked>
               </label>
               <label class="switch-label">
-                <span>Core High-Frequency Nouns</span>
+                <span>Nouns (Essential Lexicon)</span>
                 <input type="checkbox" class="switch-input" id="cfgCatNouns" checked>
               </label>
             </div>
@@ -2082,21 +1612,16 @@
             </div>
           </div>
 
-          <!-- Progression Logic -->
           <div class="panel" id="panel-progression">
             <div class="form-group">
               <label class="form-label">Batch Progression Mode</label>
               <select class="input-control" id="cfgProgressionMode">
-                <option value="sequential">Dynamic Sequential (Free Next Batch Navigation)</option>
-                <option value="mastery-gate">Mastery Gate (Unlock Next Batch only upon 100% Validated Test)</option>
+                <option value="sequential">Dynamic Sequential (Free Batch Navigation)</option>
+                <option value="mastery-gate">Mastery Gate (Unlock Next Batch Only on 100% Validated Test)</option>
               </select>
-              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.4rem; line-height: 1.4;">
-                Mastery Gate locks batch switching until all words in the cohort are validated via test.
-              </div>
             </div>
           </div>
 
-          <!-- Background Canvas -->
           <div class="panel" id="panel-background">
             <div class="form-group">
               <label class="form-label">Visual Shader</label>
@@ -2123,44 +1648,18 @@
                 <span>Opacity</span>
                 <span id="opacityVal">18%</span>
               </label>
-              <input type="range" class="input-control" id="cfgBgOpacity" min="0.05" max="0.6" step="0.05" value="0.18" oninput="BgEngine.setOpacity(parseFloat(this.value))">
+              <input type="range" class="input-control" id="cfgBgOpacity" min="0.05" max="0.5" step="0.05" value="0.18" oninput="BgEngine.setOpacity(parseFloat(this.value))">
             </div>
           </div>
 
-          <!-- LEGAL, LICENSES & CITATIONS -->
           <div class="panel" id="panel-legal">
             <div class="legal-card">
               <div class="legal-title">
                 <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Software License & Warranty Disclaimer
               </div>
-              <div class="legal-body">This software is distributed under standard open-source terms.</div>
-              <div class="legal-mono">MIT License & Limitation of Liability:
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.
-
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE.</div>
-            </div>
-
-            <div class="legal-card">
-              <div class="legal-title">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                Linguistic Citations & Data Sources
-              </div>
-              <div class="legal-body">
-                • <strong>JMdict / KANJIDIC:</strong> Property of EDRDG, used under Creative Commons Attribution-ShareAlike 3.0.<br>
-                • <strong>Tanaka Corpus / Tatoeba:</strong> Adapted under Creative Commons Attribution (CC BY 2.0 FR).
-              </div>
-            </div>
-
-            <div class="legal-card">
-              <div class="legal-title">
-                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                Trademark Non-Affiliation Disclaimer
-              </div>
-              <div class="legal-body">
-                "JLPT" is a registered trademark of <strong>Japan Educational Exchanges and Services (JEES)</strong> and <strong>The Japan Foundation</strong>. This product is an independent study tool not certified by JEES or The Japan Foundation.
-              </div>
+              <div class="legal-body">Distributed under the MIT Open Source License.</div>
+              <div class="legal-mono">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.</div>
             </div>
           </div>
         </div>
@@ -2175,8 +1674,71 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
   <script>
     // =========================================================================
-    // PWA & SAFE INTERACTION
+    // SAFE STORAGE INTERFACE (PREVENTS CRASHES IN RESTRICTED / VS CODE WEBVIEWS)
     // =========================================================================
+    const SafeStorage = {
+      _mem: {},
+      _available: null,
+      isAvailable() {
+        if (this._available !== null) return this._available;
+        try {
+          const testKey = '__lex_test_storage__';
+          window.localStorage.setItem(testKey, testKey);
+          window.localStorage.removeItem(testKey);
+          this._available = true;
+        } catch (e) {
+          this._available = false;
+        }
+        return this._available;
+      },
+      getItem(key) {
+        try {
+          if (this.isAvailable()) return window.localStorage.getItem(key);
+        } catch (e) {}
+        return Object.prototype.hasOwnProperty.call(this._mem, key) ? this._mem[key] : null;
+      },
+      setItem(key, value) {
+        const valStr = String(value);
+        try {
+          if (this.isAvailable()) {
+            window.localStorage.setItem(key, valStr);
+            return;
+          }
+        } catch (e) {}
+        this._mem[key] = valStr;
+      },
+      removeItem(key) {
+        try {
+          if (this.isAvailable()) {
+            window.localStorage.removeItem(key);
+            return;
+          }
+        } catch (e) {}
+        delete this._mem[key];
+      }
+    };
+
+    // =========================================================================
+    // SAFE INLINE SERVICE WORKER REGISTRATION (HTTP/HTTPS ONLY)
+    // =========================================================================
+    try {
+      if (typeof window !== 'undefined' && 'serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+        const swCode = `
+          const CACHE = 'lex-cache-v1';
+          self.addEventListener('install', e => { self.skipWaiting(); });
+          self.addEventListener('activate', e => { e.waitUntil(clients.claim()); });
+          self.addEventListener('fetch', e => {
+            if (e.request.method !== 'GET') return;
+            e.respondWith(
+              fetch(e.request).catch(() => caches.match(e.request).then(r => r || new Response('Offline', { status: 503 })))
+            );
+          });
+        `;
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+      }
+    } catch (err) {}
+
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -2190,7 +1752,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            document.getElementById('btnPwaInstall').style.display = 'none';
+            const installBtn = document.getElementById('btnPwaInstall');
+            if (installBtn) installBtn.style.display = 'none';
           }
           deferredPrompt = null;
         });
@@ -2198,13 +1761,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // STUDY TIME ENGINE (ACCURATE DATE STAMPING)
+    // TIME TRACKING
     // =========================================================================
     function getTodayKey() {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
-
     function getYesterdayKey() {
       const d = new Date();
       d.setDate(d.getDate() - 1);
@@ -2233,7 +1795,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         }
       },
       save() {
-        localStorage.setItem('lex_study_time_map', JSON.stringify(state.timeMap));
+        SafeStorage.setItem('lex_study_time_map', JSON.stringify(state.timeMap));
       },
       format(totalSeconds) {
         if (!totalSeconds || totalSeconds < 0) return '0m 00s';
@@ -2256,7 +1818,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     };
 
     // =========================================================================
-    // FUZZY SPELLING & TYPO-TOLERANCE ALGORITHM
+    // STRICT & CONSERVATIVE FUZZY SPELLING ENGINE
     // =========================================================================
     const FuzzyEngine = {
       levenshtein(a, b) {
@@ -2274,7 +1836,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       clean(str) {
         return (str || '')
           .toLowerCase()
-          .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+          .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, "")
           .replace(/^(to|a|an)\s+/, '')
           .trim();
       },
@@ -2293,9 +1855,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           if (cand === cleanUser) {
             return { match: true, status: 'exact', dist: 0 };
           }
-          if (cleanUser.length >= 3 && (cand.includes(cleanUser) || cleanUser.includes(cand))) {
-            return { match: true, status: 'exact', dist: 0 };
-          }
         }
 
         let bestDist = 99;
@@ -2303,7 +1862,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           const dist = this.levenshtein(cleanUser, cand);
           if (dist < bestDist) bestDist = dist;
 
-          const maxAllowed = cand.length <= 4 ? 1 : 2;
+          const maxAllowed = cand.length < 5 ? 0 : (cand.length <= 7 ? 1 : 2);
           if (dist <= maxAllowed) {
             return { match: true, status: 'fuzzy', dist };
           }
@@ -2314,370 +1873,187 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     };
 
     // =========================================================================
-    // DIVERSE & EXPANDED AUTHENTIC VOCABULARY CORPUS
+    // AUTHENTIC JAPANESE VOCABULARY CORPUS WITH IMMUTABLE STRING KEYS
     // =========================================================================
-    const RAW_PARTICLES = [
-      { kanji: "は", kana: "は", romaji: "wa", phonetic: "wah", en: "Topic marker", cat: "particle", exJa: "これは本です。", exKana: "これ は ほん です。", exRomaji: "kore wa hon desu", exPhonetic: "koh-reh wah hon dess", exEn: "This is a book." },
-      { kanji: "が", kana: "が", romaji: "ga", phonetic: "gah", en: "Subject marker", cat: "particle", exJa: "猫がいます。", exKana: "ねこ が います。", exRomaji: "neko ga imasu", exPhonetic: "neh-koh gah ee-mahss", exEn: "There is a cat." },
-      { kanji: "を", kana: "を", romaji: "o", phonetic: "oh", en: "Direct object marker", cat: "particle", exJa: "ご飯を食べます。", exKana: "ごはん を たべます。", exRomaji: "gohan o tabemasu", exPhonetic: "goh-hahn oh tah-beh-mahss", exEn: "I eat rice." },
-      { kanji: "に", kana: "に", romaji: "ni", phonetic: "nee", en: "Target / At / To", cat: "particle", exJa: "東京に行きます。", exKana: "とうきょう に いきます。", exRomaji: "toukyou ni ikimasu", exPhonetic: "toh-kyoh nee ee-kee-mahss", exEn: "I go to Tokyo." },
-      { kanji: "で", kana: "で", romaji: "de", phonetic: "deh", en: "By means of / At place", cat: "particle", exJa: "電車で行きます。", exKana: "でんしゃ で いきます。", exRomaji: "densha de ikimasu", exPhonetic: "den-shah deh ee-kee-mahss", exEn: "I go by train." },
-      { kanji: "と", kana: "と", romaji: "to", phonetic: "toh", en: "And / Together with", cat: "particle", exJa: "友達と話します。", exKana: "ともだち と はなします。", exRomaji: "tomodachi to hanashimasu", exPhonetic: "toh-moh-dah-chee toh hah-nah-shee-mahss", exEn: "I talk with a friend." },
-      { kanji: "も", kana: "も", romaji: "mo", phonetic: "moh", en: "Also / Too", cat: "particle", exJa: "私も行きます。", exKana: "わたし も いきます。", exRomaji: "watashi mo ikimasu", exPhonetic: "wah-tah-shee moh ee-kee-mahss", exEn: "I will go too." },
-      { kanji: "へ", kana: "へ", romaji: "e", phonetic: "eh", en: "Towards / In direction of", cat: "particle", exJa: "家へ帰ります。", exKana: "いえ へ かえります。", exRomaji: "ie e kaerimasu", exPhonetic: "ee-eh eh kah-eh-ree-mahss", exEn: "I return toward home." },
-      { kanji: "から", kana: "から", romaji: "kara", phonetic: "kah-rah", en: "From / Since", cat: "particle", exJa: "駅から歩きます。", exKana: "えき から あるきます。", exRomaji: "eki kara arukimasu", exPhonetic: "eh-kee kah-rah ah-roo-kee-mahss", exEn: "I walk from the station." },
-      { kanji: "まで", kana: "まで", romaji: "made", phonetic: "mah-deh", en: "Until / Up to", cat: "particle", exJa: "五時まで勉強します。", exKana: "ごじ まで べんきょう します。", exRomaji: "goji made benkyou shimasu", exPhonetic: "goh-jee mah-deh ben-kyoh shee-mahss", exEn: "I study until 5 o'clock." },
-      { kanji: "より", kana: "より", romaji: "yori", phonetic: "yoh-ree", en: "More than / Rather than", cat: "particle", exJa: "これより大きいです。", exKana: "これ より おおきい です。", exRomaji: "kore yori ookii desu", exPhonetic: "koh-reh yoh-ree oh-kee dess", exEn: "It is bigger than this." },
-      { kanji: "だけ", kana: "だけ", romaji: "dake", phonetic: "dah-keh", en: "Only / Merely", cat: "particle", exJa: "一つだけあります。", exKana: "ひとつ だけ あります。", exRomaji: "hitotsu dake arimasu", exPhonetic: "hee-toh-tsoo dah-keh ah-ree-mahss", exEn: "There is only one." },
-      { kanji: "ね", kana: "ね", romaji: "ne", phonetic: "neh", en: "Isn't it? (Agreement tag)", cat: "particle", exJa: "いい天気ですね。", exKana: "いい てんき です ね。", exRomaji: "ii tenki desu ne", exPhonetic: "ee ten-kee dess neh", exEn: "Nice weather, isn't it?" },
-      { kanji: "よ", kana: "よ", romaji: "yo", phonetic: "yoh", en: "You know (Emphasis)", cat: "particle", exJa: "明日ですよ。", exKana: "あした です よ。", exRomaji: "ashita desu yo", exPhonetic: "ah-shee-tah dess yoh", exEn: "It's tomorrow, you know." },
-      { kanji: "か", kana: "か", romaji: "ka", phonetic: "kah", en: "Question particle / Or", cat: "particle", exJa: "これですか？", exKana: "これ です か？", exRomaji: "kore desu ka", exPhonetic: "koh-reh dess kah", exEn: "Is it this one?" },
-      { kanji: "ほど", kana: "ほど", romaji: "hodo", phonetic: "hoh-doh", en: "To the extent of / About", cat: "particle", exJa: "十分ほど待ちました。", exKana: "じゅっぷん ほど まちました。", exRomaji: "juppun hodo machimashita", exPhonetic: "joop-poon hoh-doh mah-chee-mah-shee-tah", exEn: "I waited for about ten minutes." }
+    const RAW_VOCAB_DB = [
+      // Particles
+      { key: "p_wa", tier: 1, cat: "particle", kanji: "は", kana: "は", romaji: "wa", phonetic: "wah", en: "Topic marker", exJa: "これは本です。", exKana: "これ は ほん です。", exRomaji: "kore wa hon desu", exPhonetic: "koh-reh wah hon dess", exEn: "This is a book." },
+      { key: "p_ga", tier: 1, cat: "particle", kanji: "が", kana: "が", romaji: "ga", phonetic: "gah", en: "Subject marker", exJa: "猫がいます。", exKana: "ねこ が います。", exRomaji: "neko ga imasu", exPhonetic: "neh-koh gah ee-mahss", exEn: "There is a cat." },
+      { key: "p_o", tier: 1, cat: "particle", kanji: "を", kana: "を", romaji: "o", phonetic: "oh", en: "Direct object marker", exJa: "ご飯を食べます。", exKana: "ごはん を たべます。", exRomaji: "gohan o tabemasu", exPhonetic: "goh-hahn oh tah-beh-mahss", exEn: "I eat rice." },
+      { key: "p_ni", tier: 1, cat: "particle", kanji: "に", kana: "に", romaji: "ni", phonetic: "nee", en: "Target / At / To", exJa: "東京に行きます。", exKana: "とうきょう に いきます。", exRomaji: "toukyou ni ikimasu", exPhonetic: "toh-kyoh nee ee-kee-mahss", exEn: "I go to Tokyo." },
+      { key: "p_de", tier: 1, cat: "particle", kanji: "で", kana: "で", romaji: "de", phonetic: "deh", en: "By means of / At place", exJa: "電車で行きます。", exKana: "でんしゃ で いきます。", exRomaji: "densha de ikimasu", exPhonetic: "den-shah deh ee-kee-mahss", exEn: "I go by train." },
+      { key: "p_to", tier: 1, cat: "particle", kanji: "と", kana: "と", romaji: "to", phonetic: "toh", en: "And / Together with", exJa: "友達と話します。", exKana: "ともだち と はなします。", exRomaji: "tomodachi to hanashimasu", exPhonetic: "toh-moh-dah-chee toh hah-nah-shee-mahss", exEn: "I talk with a friend." },
+      { key: "p_mo", tier: 1, cat: "particle", kanji: "も", kana: "も", romaji: "mo", phonetic: "moh", en: "Also / Too", exJa: "私も行きます。", exKana: "わたし も いきます。", exRomaji: "watashi mo ikimasu", exPhonetic: "wah-tah-shee moh ee-kee-mahss", exEn: "I will go too." },
+      { key: "p_e", tier: 1, cat: "particle", kanji: "へ", kana: "へ", romaji: "e", phonetic: "eh", en: "Towards / Direction", exJa: "家へ帰ります。", exKana: "いえ へ かえります。", exRomaji: "ie e kaerimasu", exPhonetic: "ee-eh eh kah-eh-ree-mahss", exEn: "I return home." },
+      { key: "p_kara", tier: 1, cat: "particle", kanji: "から", kana: "から", romaji: "kara", phonetic: "kah-rah", en: "From / Since", exJa: "駅から歩きます。", exKana: "えき から あるきます。", exRomaji: "eki kara arukimasu", exPhonetic: "eh-kee kah-rah ah-roo-kee-mahss", exEn: "I walk from the station." },
+      { key: "p_made", tier: 1, cat: "particle", kanji: "まで", kana: "まで", romaji: "made", phonetic: "mah-deh", en: "Until / Up to", exJa: "五時まで勉強します。", exKana: "ごじ まで べんきょう します。", exRomaji: "goji made benkyou shimasu", exPhonetic: "goh-jee mah-deh ben-kyoh shee-mahss", exEn: "I study until 5 o'clock." },
+      { key: "p_dake", tier: 1, cat: "particle", kanji: "だけ", kana: "だけ", romaji: "dake", phonetic: "dah-keh", en: "Only / Merely", exJa: "一つだけあります。", exKana: "ひとつ だけ あります。", exRomaji: "hitotsu dake arimasu", exPhonetic: "hee-toh-tsoo dah-keh ah-ree-mahss", exEn: "There is only one." },
+
+      // Verbs
+      { key: "v_iku", tier: 1, cat: "verb", kanji: "行く", kana: "いく", romaji: "iku", phonetic: "ee-koo", en: "To go", exJa: "学校へ行きます。", exKana: "がっこう へ いきます。", exRomaji: "gakkou e ikimasu", exPhonetic: "gahk-koh eh ee-kee-mahss", exEn: "I go to school." },
+      { key: "v_kuru", tier: 1, cat: "verb", kanji: "来る", kana: "くる", romaji: "kuru", phonetic: "koo-roo", en: "To come", exJa: "友達が来ます。", exKana: "ともだち が きます。", exRomaji: "tomodachi ga kimasu", exPhonetic: "toh-moh-dah-chee gah kee-mahss", exEn: "A friend comes." },
+      { key: "v_suru", tier: 1, cat: "verb", kanji: "する", kana: "する", romaji: "suru", phonetic: "soo-roo", en: "To do", exJa: "宿題をします。", exKana: "しゅくだい を します。", exRomaji: "shukudai o shimasu", exPhonetic: "shoo-koo-dye oh shee-mahss", exEn: "I do homework." },
+      { key: "v_miru", tier: 1, cat: "verb", kanji: "見る", kana: "みる", romaji: "miru", phonetic: "mee-roo", en: "To see / watch", exJa: "テレビを見ます。", exKana: "テレビ を みます。", exRomaji: "terebi o mimasu", exPhonetic: "teh-reh-bee oh mee-mahss", exEn: "I watch TV." },
+      { key: "v_taberu", tier: 1, cat: "verb", kanji: "食べる", kana: "たべる", romaji: "taberu", phonetic: "tah-beh-roo", en: "To eat", exJa: "朝食を食べます。", exKana: "ちょうしょく を たべます。", exRomaji: "choushoku o tabemasu", exPhonetic: "choh-shoh-koo oh tah-beh-mahss", exEn: "I eat breakfast." },
+      { key: "v_nomu", tier: 1, cat: "verb", kanji: "飲む", kana: "のむ", romaji: "nomu", phonetic: "noh-moo", en: "To drink", exJa: "お茶を飲みます。", exKana: "おちゃ を のみます。", exRomaji: "ocha o nomimasu", exPhonetic: "oh-chah oh noh-mee-mahss", exEn: "I drink tea." },
+      { key: "v_hanasu", tier: 1, cat: "verb", kanji: "話す", kana: "はなす", romaji: "hanasu", phonetic: "hah-nah-soo", en: "To speak / talk", exJa: "日本語を話します。", exKana: "にほんご を はなします。", exRomaji: "nihongo o hanashimasu", exPhonetic: "nee-hon-goh oh hah-nah-shee-mahss", exEn: "I speak Japanese." },
+      { key: "v_kiku", tier: 1, cat: "verb", kanji: "聞く", kana: "きく", romaji: "kiku", phonetic: "kee-koo", en: "To listen / hear", exJa: "音楽を聞きます。", exKana: "おんがく を ききます。", exRomaji: "ongaku o kikimasu", exPhonetic: "on-gah-koo oh kee-kee-mahss", exEn: "I listen to music." },
+      { key: "v_yomu", tier: 1, cat: "verb", kanji: "読む", kana: "よむ", romaji: "yomu", phonetic: "yoh-moo", en: "To read", exJa: "本を読みます。", exKana: "ほん を よみます。", exRomaji: "hon o yomimasu", exPhonetic: "hon oh yoh-mee-mahss", exEn: "I read a book." },
+      { key: "v_kaku", tier: 1, cat: "verb", kanji: "書く", kana: "かく", romaji: "kaku", phonetic: "kah-koo", en: "To write", exJa: "文字を書きます。", exKana: "もじ を かきます。", exRomaji: "moji o kakimasu", exPhonetic: "moh-jee oh kah-kee-mahss", exEn: "I write characters." },
+      { key: "v_kau", tier: 1, cat: "verb", kanji: "買う", kana: "かう", romaji: "kau", phonetic: "kah-oo", en: "To buy / purchase", exJa: "切符を買います。", exKana: "きっぷ を かいます。", exRomaji: "kippu o kaimasu", exPhonetic: "keep-poo oh kye-mahss", exEn: "I buy a ticket." },
+      { key: "v_matsu", tier: 1, cat: "verb", kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait", exJa: "バスを待ちます。", exKana: "バス を まちます。", exRomaji: "basu o machimasu", exPhonetic: "bah-soo oh mah-chee-mahss", exEn: "I wait for the bus." },
+      { key: "v_benkyou", tier: 1, cat: "verb", kanji: "勉強する", kana: "べんきょうする", romaji: "benkyousuru", phonetic: "ben-kyoh-soo-roo", en: "To study", exJa: "毎日勉強します。", exKana: "まいにち べんきょう します。", exRomaji: "mainichi benkyou shimasu", exPhonetic: "mye-nee-chee ben-kyoh shee-mahss", exEn: "I study every day." },
+      { key: "v_oshieru", tier: 1, cat: "verb", kanji: "教える", kana: "おしえる", romaji: "oshieru", phonetic: "oh-shee-eh-roo", en: "To teach / tell", exJa: "英語を教えます。", exKana: "えいご を おしえます。", exRomaji: "eigo o oshiemasu", exPhonetic: "ay-goh oh oh-shee-eh-mahss", exEn: "I teach English." },
+      { key: "v_oboeru", tier: 1, cat: "verb", kanji: "覚える", kana: "おぼえる", romaji: "oboeru", phonetic: "oh-boh-eh-roo", en: "To memorize", exJa: "単語を覚えます。", exKana: "たんご を おぼえます。", exRomaji: "tango o oboemasu", exPhonetic: "tahn-goh oh oh-boh-eh-mahss", exEn: "I memorize words." },
+      { key: "v_kaeru", tier: 1, cat: "verb", kanji: "帰る", kana: "かえる", romaji: "kaeru", phonetic: "kah-eh-roo", en: "To return home", exJa: "家に帰ります。", exKana: "いえ に かえります。", exRomaji: "ie ni kaerimasu", exPhonetic: "ee-eh nee kah-eh-ree-mahss", exEn: "I return home." },
+
+      // Adjectives
+      { key: "adj_ookii", tier: 1, cat: "adj", kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", exJa: "大きい家です。", exKana: "おおきい いえ です。", exRomaji: "ookii ie desu", exPhonetic: "oh-kee ee-eh dess", exEn: "It is a big house." },
+      { key: "adj_chiisai", tier: 1, cat: "adj", kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", exJa: "小さい花です。", exKana: "ちいさい はな です。", exRomaji: "chiisai hana desu", exPhonetic: "chee-sye hah-nah dess", exEn: "It is a small flower." },
+      { key: "adj_takai", tier: 1, cat: "adj", kanji: "高い", kana: "たかい", romaji: "takai", phonetic: "tah-kye", en: "Expensive / High", exJa: "値段が高いです。", exKana: "ねだん が たかい です。", exRomaji: "nedan ga takai desu", exPhonetic: "neh-dahn gah tah-kye dess", exEn: "The price is high." },
+      { key: "adj_yasui", tier: 1, cat: "adj", kanji: "安い", kana: "やすい", romaji: "yasui", phonetic: "yah-soo-ee", en: "Cheap / Inexpensive", exJa: "この靴は安いです。", exKana: "この くつ は やすい です。", exRomaji: "kono kutsu wa yasui desu", exPhonetic: "koh-noh koo-tsoo wah yah-soo-ee dess", exEn: "These shoes are cheap." },
+      { key: "adj_atarashii", tier: 1, cat: "adj", kanji: "新しい", kana: "あたらしい", romaji: "atarashii", phonetic: "ah-tah-rah-shee", en: "New / Fresh", exJa: "新しい車です。", exKana: "あたらしい くるま です。", exRomaji: "atarashii kuruma desu", exPhonetic: "ah-tah-rah-shee koo-roo-mah dess", exEn: "It is a new car." },
+      { key: "adj_furui", tier: 1, cat: "adj", kanji: "古い", kana: "ふるい", romaji: "furui", phonetic: "foo-roo-ee", en: "Old", exJa: "古い建物です。", exKana: "ふるい たてもの です。", exRomaji: "furui tatemono desu", exPhonetic: "foo-roo-ee tah-teh-moh-noh dess", exEn: "It is an old building." },
+      { key: "adj_ii", tier: 1, cat: "adj", kanji: "良い", kana: "いい", romaji: "ii", phonetic: "ee", en: "Good", exJa: "いい天気ですね。", exKana: "いい てんき です ね。", exRomaji: "ii tenki desu ne", exPhonetic: "ee ten-kee dess neh", exEn: "Nice weather." },
+      { key: "adj_oishii", tier: 1, cat: "adj", kanji: "美味しい", kana: "おいしい", romaji: "oishii", phonetic: "oy-shee", en: "Delicious", exJa: "とても美味しいです。", exKana: "とても おいしい です。", exRomaji: "totemo oishii desu", exPhonetic: "toh-teh-moh oy-shee dess", exEn: "It is very delicious." },
+      { key: "adj_suki", tier: 1, cat: "adj", kanji: "好き", kana: "すき", romaji: "suki", phonetic: "soo-kee", en: "Liked / Favorite", exJa: "りんごが好きです。", exKana: "りんご が すき です。", exRomaji: "ringo ga suki desu", exPhonetic: "reen-goh gah soo-kee dess", exEn: "I like apples." },
+      { key: "adj_shizuka", tier: 1, cat: "adj", kanji: "静か", kana: "しずか", romaji: "shizuka", phonetic: "shee-zoo-kah", en: "Quiet / Peaceful", exJa: "静かな部屋です。", exKana: "しずか な へや です。", exRomaji: "shizuka na heya desu", exPhonetic: "shee-zoo-kah nah heh-yah dess", exEn: "It is a quiet room." },
+      { key: "adj_benri", tier: 1, cat: "adj", kanji: "便利", kana: "べんり", romaji: "benri", phonetic: "ben-ree", en: "Convenient", exJa: "とても便利です。", exKana: "とても べんり です。", exRomaji: "totemo benri desu", exPhonetic: "toh-teh-moh ben-ree dess", exEn: "It is very convenient." },
+
+      // Adverbs
+      { key: "adv_kyou", tier: 1, cat: "adverb", kanji: "今日", kana: "きょう", romaji: "kyou", phonetic: "kyoh", en: "Today", exJa: "今日行きます。", exKana: "きょう いきます。", exRomaji: "kyou ikimasu", exPhonetic: "kyoh ee-kee-mahss", exEn: "I will go today." },
+      { key: "adv_ashita", tier: 1, cat: "adverb", kanji: "明日", kana: "あした", romaji: "ashita", phonetic: "ah-shee-tah", en: "Tomorrow", exJa: "明日会いましょう。", exKana: "あした あいましょう。", exRomaji: "ashita aimashou", exPhonetic: "ah-shee-tah eye-mah-shoh", exEn: "Let's meet tomorrow." },
+      { key: "adv_kinou", tier: 1, cat: "adverb", kanji: "昨日", kana: "きのう", romaji: "kinou", phonetic: "kee-noh", en: "Yesterday", exJa: "昨日は雨でした。", exKana: "きのう は あめ でした。", exRomaji: "kinou wa ame deshita", exPhonetic: "kee-noh wah ah-meh deh-shee-tah", exEn: "It was rainy yesterday." },
+      { key: "adv_ima", tier: 1, cat: "adverb", kanji: "今", kana: "いま", romaji: "ima", phonetic: "ee-mah", en: "Now", exJa: "今忙しいです。", exKana: "いま いそがしい です。", exRomaji: "ima isogashii desu", exPhonetic: "ee-mah ee-soh-gah-shee dess", exEn: "I am busy now." },
+      { key: "adv_itsumo", tier: 1, cat: "adverb", kanji: "いつも", kana: "いつも", romaji: "itsumo", phonetic: "eet-soo-moh", en: "Always", exJa: "いつも元気です。", exKana: "いつも げんき です。", exRomaji: "itsumo genki desu", exPhonetic: "eet-soo-moh gen-kee dess", exEn: "I am always well." },
+      { key: "adv_totemo", tier: 1, cat: "adverb", kanji: "とても", kana: "とても", romaji: "totemo", phonetic: "toh-teh-moh", en: "Very / Extremely", exJa: "とても楽しいです。", exKana: "とても たのしい です。", exRomaji: "totemo tanoshii desu", exPhonetic: "toh-teh-moh tah-noh-shee dess", exEn: "It is very fun." },
+
+      // Nouns
+      { key: "n_watashi", tier: 1, cat: "noun", kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Myself", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
+      { key: "n_hito", tier: 1, cat: "noun", kanji: "人", kana: "ひと", romaji: "hito", phonetic: "hee-toh", en: "Person / People", exJa: "優しい人です。", exKana: "やさしい ひと です。", exRomaji: "yasashii hito desu", exPhonetic: "yah-sah-shee hee-toh dess", exEn: "That is a kind person." },
+      { key: "n_mizu", tier: 1, cat: "noun", kanji: "水", kana: "みず", romaji: "mizu", phonetic: "mee-zoo", en: "Water", exJa: "水を飲みます。", exKana: "みず を のみます。", exRomaji: "mizu o nomimasu", exPhonetic: "mee-zoo oh noh-mee-mahss", exEn: "I drink water." },
+      { key: "n_hon", tier: 1, cat: "noun", kanji: "本", kana: "ほん", romaji: "hon", phonetic: "hon", en: "Book", exJa: "日本語の本です。", exKana: "にほんご の ほん です。", exRomaji: "nihongo no hon desu", exPhonetic: "nee-hon-goh noh hon dess", exEn: "It is a Japanese book." },
+      { key: "n_densha", tier: 1, cat: "noun", kanji: "電車", kana: "でんしゃ", romaji: "densha", phonetic: "den-shah", en: "Train", exJa: "電車に乗ります。", exKana: "でんしゃ に のります。", exRomaji: "densha ni norimasu", exPhonetic: "den-shah nee noh-ree-mahss", exEn: "I get on the train." },
+      { key: "n_eki", tier: 1, cat: "noun", kanji: "駅", kana: "えき", romaji: "eki", phonetic: "eh-kee", en: "Station", exJa: "駅で待ちます。", exKana: "えき で まちます。", exRomaji: "eki de machimasu", exPhonetic: "eh-kee deh mah-chee-mahss", exEn: "I will wait at the station." },
+      { key: "n_jikan", tier: 1, cat: "noun", kanji: "時間", kana: "じかん", romaji: "jikan", phonetic: "jee-kahn", en: "Time", exJa: "時間があります。", exKana: "じかん が あります。", exRomaji: "jikan ga arimasu", exPhonetic: "jee-kahn gah ah-ree-mahss", exEn: "I have time." },
+      { key: "n_tomodachi", tier: 1, cat: "noun", kanji: "友達", kana: "ともだち", romaji: "tomodachi", phonetic: "toh-moh-dah-chee", en: "Friend", exJa: "友達と遊びます。", exKana: "ともだち と あそびます。", exRomaji: "tomodachi to asobimasu", exPhonetic: "toh-moh-dah-chee toh ah-soh-bee-mahss", exEn: "I hang out with friends." },
+      { key: "n_ie", tier: 1, cat: "noun", kanji: "家", kana: "いえ", romaji: "ie", phonetic: "ee-eh", en: "House / Home", exJa: "家に帰りましょう。", exKana: "いえ に かえりましょう。", exRomaji: "ie ni kaerimashou", exPhonetic: "ee-eh nee kah-eh-ree-mah-shoh", exEn: "Let's head home." },
+      { key: "n_okane", tier: 1, cat: "noun", kanji: "お金", kana: "おかね", romaji: "okane", phonetic: "oh-kah-neh", en: "Money", exJa: "お金を払います。", exKana: "おかね を はらいます。", exRomaji: "okane o haraimasu", exPhonetic: "oh-kah-neh oh hah-rye-mahss", exEn: "I will pay money." },
+
+      // Tier 2: Intermediate (N3)
+      { key: "t2_junbi", tier: 2, cat: "noun", kanji: "準備", kana: "じゅんび", romaji: "junbi", phonetic: "joon-bee", en: "Preparation", exJa: "準備ができました。", exKana: "じゅんび が できました。", exRomaji: "junbi ga dekimashita", exPhonetic: "joon-bee gah deh-kee-mah-shee-tah", exEn: "Preparations are complete." },
+      { key: "t2_renraku", tier: 2, cat: "noun", kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Message", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
+      { key: "t2_yakusoku", tier: 2, cat: "noun", kanji: "約束", kana: "やくそく", romaji: "yakusoku", phonetic: "yah-koo-soh-koo", en: "Promise / Appointment", exJa: "約束を守ります。", exKana: "やくそく を まもります。", exRomaji: "yakusoku o mamorimasu", exPhonetic: "yah-koo-soh-koo oh mah-moh-ree-mahss", exEn: "I keep promises." },
+      { key: "t2_soudan", tier: 2, cat: "noun", kanji: "相談", kana: "そうだん", romaji: "soudan", phonetic: "soh-dahn", en: "Consultation / Discussion", exJa: "相談に乗ります。", exKana: "そうだん に のります。", exRomaji: "soudan ni norimasu", exPhonetic: "soh-dahn nee noh-ree-mahss", exEn: "I am open to consultation." },
+      { key: "t2_fukuzatsu", tier: 2, cat: "adj", kanji: "複雑", kana: "ふくざつ", romaji: "fukuzatsu", phonetic: "foo-koo-zah-tsoo", en: "Complicated / Complex", exJa: "複雑な問題です。", exKana: "ふくざつ な もんだい です。", exRomaji: "fukuzatsu na mondai desu", exPhonetic: "foo-koo-zah-tsoo nah mon-dye dess", exEn: "It is a complicated issue." },
+      { key: "t2_keiken", tier: 2, cat: "noun", kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", exJa: "いい経験になりました。", exKana: "いい けいけん に なりました。", exRomaji: "ii keiken ni narimashita", exPhonetic: "ee kay-ken nee nah-ree-mah-shee-tah", exEn: "It was a good experience." },
+      { key: "t2_annai", tier: 2, cat: "noun", kanji: "案内", kana: "あんない", romaji: "annai", phonetic: "ahn-nye", en: "Guidance / Tour", exJa: "町を案内します。", exKana: "まち を あんない します。", exRomaji: "machi o annai shimasu", exPhonetic: "mah-chee oh ahn-nye shee-mahss", exEn: "I will guide you through town." },
+      { key: "t2_setsumei", tier: 2, cat: "noun", kanji: "説明", kana: "せつめい", romaji: "setsumei", phonetic: "seh-tsoo-may", en: "Explanation", exJa: "詳しく説明します。", exKana: "くわしく せつめい します。", exRomaji: "kuwashiku setsumei shimasu", exPhonetic: "koo-wah-shee-koo seh-tsoo-may shee-mahss", exEn: "I will explain in detail." },
+
+      // Tier 3: Advanced (N2–N1)
+      { key: "t3_gainen", tier: 3, cat: "noun", kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / Idea", exJa: "基本概念を理解する。", exKana: "きほん がいねん を りかい する。", exRomaji: "kihon gainen o rikai suru", exPhonetic: "kee-hon gye-nen oh ree-kye soo-roo", exEn: "Understand fundamental concepts." },
+      { key: "t3_haaku", tier: 3, cat: "noun", kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Comprehension", exJa: "状況を把握します。", exKana: "じょうきょう を はあく します。", exRomaji: "joukyou o haaku shimasu", exPhonetic: "joh-kyoh oh hah-ah-koo shee-mahss", exEn: "I grasp the situation." },
+      { key: "t3_keikou", tier: 3, cat: "noun", kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", exJa: "増加の傾向があります。", exKana: "ぞうか の けいこう が あります。", exRomaji: "zouka no keikou ga arimasu", exPhonetic: "zoh-kah noh kay-koh gah ah-ree-mahss", exEn: "There is an upward trend." },
+      { key: "t3_kouzou", tier: 3, cat: "noun", kanji: "構造", kana: "こうぞう", romaji: "kouzou", phonetic: "koh-zoh", en: "Structure / Framework", exJa: "社会の構造を学ぶ。", exKana: "しゃかい の こうぞう を まなぶ。", exRomaji: "shakai no kouzou o manabu", exPhonetic: "shah-kye noh koh-zoh oh node-mah-nah-boo", exEn: "Learn the structure of society." },
+      { key: "t3_ronri", tier: 3, cat: "noun", kanji: "論理", kana: "ろんり", romaji: "ronri", phonetic: "ron-ree", en: "Logic / Reasoning", exJa: "論理的に考える。", exKana: "ろんりてき に かんがえる。", exRomaji: "ronriteki ni kangaeru", exPhonetic: "ron-ree-teh-kee nee kahn-gah-eh-roo", exEn: "Think logically." },
+      { key: "t3_mujun", tier: 3, cat: "noun", kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction", exJa: "矛盾が生じています。", exKana: "むじゅん が しょうじて います。", exRomaji: "mujun ga shoujite imasu", exPhonetic: "moo-joon gah shoh-jee-teh ee-mahss", exEn: "A contradiction has arisen." }
     ];
 
-    const RAW_VERBS = [
-      { kanji: "行く", kana: "いく", romaji: "iku", phonetic: "ee-koo", en: "To go", cat: "verb", exJa: "学校へ行きます。", exKana: "がっこう へ いきます。", exRomaji: "gakkou e ikimasu", exPhonetic: "gahk-koh eh ee-kee-mahss", exEn: "I go to school." },
-      { kanji: "来る", kana: "くる", romaji: "kuru", phonetic: "koo-roo", en: "To come", cat: "verb", exJa: "友達が家に来ます。", exKana: "ともだち が いえ に きます。", exRomaji: "tomodachi ga ie ni kimasu", exPhonetic: "toh-moh-dah-chee gah ee-eh nee kee-mahss", exEn: "A friend comes to my house." },
-      { kanji: "する", kana: "する", romaji: "suru", phonetic: "soo-roo", en: "To do", cat: "verb", exJa: "宿題をします。", exKana: "しゅくだい を します。", exRomaji: "shukudai o shimasu", exPhonetic: "shoo-koo-dye oh shee-mahss", exEn: "I do homework." },
-      { kanji: "見る", kana: "みる", romaji: "miru", phonetic: "mee-roo", en: "To see / watch", cat: "verb", exJa: "テレビを見ます。", exKana: "テレビ を みます。", exRomaji: "terebi o mimasu", exPhonetic: "teh-reh-bee oh mee-mahss", exEn: "I watch TV." },
-      { kanji: "食べる", kana: "たべる", romaji: "taberu", phonetic: "tah-beh-roo", en: "To eat", cat: "verb", exJa: "朝食を食べます。", exKana: "ちょうしょく を たべます。", exRomaji: "choushoku o tabemasu", exPhonetic: "choh-shoh-koo oh tah-beh-mahss", exEn: "I eat breakfast." },
-      { kanji: "飲む", kana: "のむ", romaji: "nomu", phonetic: "noh-moo", en: "To drink", cat: "verb", exJa: "コーヒーを飲みます。", exKana: "コーヒー を のみます。", exRomaji: "koohii o nomimasu", exPhonetic: "koh-hee oh noh-mee-mahss", exEn: "I drink coffee." },
-      { kanji: "話す", kana: "はなす", romaji: "hanasu", phonetic: "hah-nah-soo", en: "To speak / talk", cat: "verb", exJa: "英語を話します。", exKana: "えいご を はなします。", exRomaji: "eigo o hanashimasu", exPhonetic: "ay-goh oh hah-nah-shee-mahss", exEn: "I speak English." },
-      { kanji: "聞く", kana: "きく", romaji: "kiku", phonetic: "kee-koo", en: "To listen / hear", cat: "verb", exJa: "ラジオを聞きます。", exKana: "ラジオ を ききます。", exRomaji: "rajio o kikimasu", exPhonetic: "rah-jee-oh oh kee-kee-mahss", exEn: "I listen to the radio." },
-      { kanji: "読む", kana: "よむ", romaji: "yomu", phonetic: "yoh-moo", en: "To read", cat: "verb", exJa: "雑誌を読みます。", exKana: "ざっし を よみます。", exRomaji: "zasshi o yomimasu", exPhonetic: "zahs-shee oh yoh-mee-mahss", exEn: "I read a magazine." },
-      { kanji: "書く", kana: "かく", romaji: "kaku", phonetic: "kah-koo", en: "To write", cat: "verb", exJa: "手紙を書きます。", exKana: "てがみ を かきます。", exRomaji: "tegami o kakimasu", exPhonetic: "teh-gah-mee oh kah-kee-mahss", exEn: "I write a letter." },
-      { kanji: "買う", kana: "かう", romaji: "kau", phonetic: "kah-oo", en: "To buy / purchase", cat: "verb", exJa: "切符を買います。", exKana: "きっぷ を かいます。", exRomaji: "kippu o kaimasu", exPhonetic: "keep-poo oh kye-mahss", exEn: "I buy a ticket." },
-      { kanji: "待つ", kana: "まつ", romaji: "matsu", phonetic: "mah-tsoo", en: "To wait for", cat: "verb", exJa: "バスを待ちます。", exKana: "バス を まちます。", exRomaji: "basu o machimasu", exPhonetic: "bah-soo oh mah-chee-mahss", exEn: "I wait for the bus." },
-      { kanji: "勉強する", kana: "べんきょうする", romaji: "benkyousuru", phonetic: "ben-kyoh-soo-roo", en: "To study", cat: "verb", exJa: "日本語を勉強する。", exKana: "にほんご を べんきょう する。", exRomaji: "nihongo o benkyou suru", exPhonetic: "nee-hon-goh oh ben-kyoh soo-roo", exEn: "I study Japanese." },
-      { kanji: "教える", kana: "おしえる", romaji: "oshieru", phonetic: "oh-shee-eh-roo", en: "To teach / inform", cat: "verb", exJa: "道を教えます。", exKana: "みち を おしえます。", exRomaji: "michi o oshiemasu", exPhonetic: "mee-chee oh oh-shee-eh-mahss", exEn: "I will show the way." },
-      { kanji: "覚える", kana: "おぼえる", romaji: "oboeru", phonetic: "oh-boh-eh-roo", en: "To memorize / remember", cat: "verb", exJa: "単語を覚えます。", exKana: "たんご を おぼえます。", exRomaji: "tango o oboemasu", exPhonetic: "tahn-goh oh oh-boh-eh-mahss", exEn: "I memorize vocabulary." },
-      { kanji: "忘れる", kana: "わすれる", romaji: "wasureru", phonetic: "wah-soo-reh-roo", en: "To forget", cat: "verb", exJa: "傘を忘れました。", exKana: "かさ を わすれました。", exRomaji: "kasa o wasuremashita", exPhonetic: "kah-sah oh wah-soo-reh-mah-shee-tah", exEn: "I forgot my umbrella." },
-      { kanji: "始まる", kana: "はじまる", romaji: "hajimaru", phonetic: "hah-jee-mah-roo", en: "To begin / start", cat: "verb", exJa: "映画が始まります。", exKana: "えいが が はじまります。", exRomaji: "eiga ga hajimarimasu", exPhonetic: "ay-gah gah hah-jee-mah-ree-mahss", exEn: "The movie begins." },
-      { kanji: "終わる", kana: "おわる", romaji: "owaru", phonetic: "oh-wah-roo", en: "To end / finish", cat: "verb", exJa: "授業が終わります。", exKana: "じゅぎょう が おわります。", exRomaji: "jugyou ga owarimasu", exPhonetic: "joo-gyoh gah oh-wah-ree-mahss", exEn: "Class finishes." },
-      { kanji: "起きる", kana: "おきる", romaji: "okiru", phonetic: "oh-kee-roo", en: "To wake up", cat: "verb", exJa: "毎朝七時に起きます。", exKana: "まいあさ しちじ に おきます。", exRomaji: "maiasa shichiji ni okimasu", exPhonetic: "mye-ah-sah shee-chee-jee nee oh-kee-mahss", exEn: "I wake up at 7 every morning." },
-      { kanji: "寝る", kana: "ねる", romaji: "neru", phonetic: "neh-roo", en: "To sleep / lie down", cat: "verb", exJa: "十一時に寝ます。", exKana: "じゅういちじ に ねます。", exRomaji: "juuichiji ni nemasu", exPhonetic: "joo-ee-chee-jee nee neh-mahss", exEn: "I sleep at 11." },
-      { kanji: "会う", kana: "あう", romaji: "au", phonetic: "ah-oo", en: "To meet / encounter", cat: "verb", exJa: "駅で友達に会います。", exKana: "えき で ともだち に あいます。", exRomaji: "eki de tomodachi ni aimasu", exPhonetic: "eh-kee deh toh-moh-dah-chee nee eye-mahss", exEn: "I meet my friend at the station." },
-      { kanji: "開ける", kana: "あける", romaji: "akeru", phonetic: "ah-keh-roo", en: "To open (something)", cat: "verb", exJa: "窓を開けます。", exKana: "まど を あけます。", exRomaji: "mado o akemasu", exPhonetic: "mah-doh oh ah-keh-mahss", exEn: "I open the window." },
-      { kanji: "閉める", kana: "しめる", romaji: "shimeru", phonetic: "shee-meh-roo", en: "To close (something)", cat: "verb", exJa: "ドアを閉めてください。", exKana: "ドア を しめて ください。", exRomaji: "doa o shimete kudasai", exPhonetic: "doh-ah oh shee-meh-teh koo-dah-sye", exEn: "Please close the door." },
-      { kanji: "帰る", kana: "かえる", romaji: "kaeru", phonetic: "kah-eh-roo", en: "To return home", cat: "verb", exJa: "そろそろ家に帰ります。", exKana: "そろそろ いえ に かえります。", exRomaji: "sorosoro ie ni kaerimasu", exPhonetic: "soh-roh-soh-roh ee-eh nee kah-eh-ree-mahss", exEn: "I will go home soon." },
-      { kanji: "歩く", kana: "あるく", romaji: "aruku", phonetic: "ah-roo-koo", en: "To walk", cat: "verb", exJa: "公園を歩きます。", exKana: "こうえん を あるきます。", exRomaji: "kouen o arukimasu", exPhonetic: "koh-en oh ah-roo-kee-mahss", exEn: "I walk through the park." },
-      { kanji: "走る", kana: "はしる", romaji: "hashiru", phonetic: "hah-shee-roo", en: "To run", cat: "verb", exJa: "朝の道を走ります。", exKana: "あさ の みち を はしります。", exRomaji: "asa no michi o hashirimasu", exPhonetic: "ah-sah noh mee-chee oh hah-shee-ree-mahss", exEn: "I run down the morning street." },
-      { kanji: "入る", kana: "はいる", romaji: "hairu", phonetic: "hye-roo", en: "To enter", cat: "verb", exJa: "喫茶店に入ります。", exKana: "きっさてん に はいります。", exRomaji: "kissaten ni hairimasu", exPhonetic: "kees-sah-ten nee hye-ree-mahss", exEn: "I enter the cafe." },
-      { kanji: "出る", kana: "でる", romaji: "deru", phonetic: "deh-roo", en: "To exit / leave", cat: "verb", exJa: "八時に家を出ます。", exKana: "はちじ に いえ を でます。", exRomaji: "hachiji ni ie o demasu", exPhonetic: "hah-chee-jee nee ee-eh oh deh-mahss", exEn: "I leave the house at 8." },
-      { kanji: "乗る", kana: "のる", romaji: "noru", phonetic: "noh-roo", en: "To ride / board", cat: "verb", exJa: "電車に乗ります。", exKana: "でんしゃ に のります。", exRomaji: "densha ni norimasu", exPhonetic: "den-shah nee noh-ree-mahss", exEn: "I board the train." },
-      { kanji: "降りる", kana: "おりる", romaji: "oriru", phonetic: "oh-ree-roo", en: "To get off (vehicle)", cat: "verb", exJa: "次の駅で降ります。", exKana: "つぎ の えき で おります。", exRomaji: "tsugi no eki de orimasu", exPhonetic: "tsoo-gee noh eh-kee deh oh-ree-mahss", exEn: "I get off at the next station." },
-      { kanji: "働く", kana: "はたらく", romaji: "hataraku", phonetic: "hah-tah-rah-koo", en: "To work / labor", cat: "verb", exJa: "会社で働きます。", exKana: "かいしゃ で はたらきます。", exRomaji: "kaisha de hatarakimasu", exPhonetic: "kye-shah deh hah-tah-rah-kee-mahss", exEn: "I work at a company." },
-      { kanji: "休む", kana: "やすむ", romaji: "yasumu", phonetic: "yah-soo-moo", en: "To rest / take break", cat: "verb", exJa: "少しベンチで休みます。", exKana: "すこし ベンチ で やすみます。", exRomaji: "sukoshi benchi de yasumimasu", exPhonetic: "soo-koh-shee ben-chee deh yah-soo-mee-mahss", exEn: "I rest on the bench for a bit." }
-    ];
-
-    const RAW_ADJECTIVES = [
-      { kanji: "大きい", kana: "おおきい", romaji: "ookii", phonetic: "oh-kee", en: "Big / Large", cat: "adj-i", exJa: "大きい犬ですね。", exKana: "おおきい いぬ です ね。", exRomaji: "ookii inu desu ne", exPhonetic: "oh-kee ee-noo dess neh", exEn: "That is a big dog." },
-      { kanji: "小さい", kana: "ちいさい", romaji: "chiisai", phonetic: "chee-sye", en: "Small / Little", cat: "adj-i", exJa: "小さい鳥が鳴いています。", exKana: "ちいさい とり が ないています。", exRomaji: "chiisai tori ga naiteimasu", exPhonetic: "chee-sye toh-ree gah nye-teh-ee-mahss", exEn: "A small bird is singing." },
-      { kanji: "高い", kana: "たかい", romaji: "takai", phonetic: "tah-kye", en: "Expensive / High", cat: "adj-i", exJa: "この時計は高いです。", exKana: "この とけい は たかい です。", exRomaji: "kono tokei wa takai desu", exPhonetic: "koh-noh toh-kay wah tah-kye dess", exEn: "This watch is expensive." },
-      { kanji: "安い", kana: "やすい", romaji: "yasui", phonetic: "yah-soo-ee", en: "Cheap / Inexpensive", cat: "adj-i", exJa: "野菜が安いです。", exKana: "やさい が やすい です。", exRomaji: "yasai ga yasui desu", exPhonetic: "yah-sye gah yah-soo-ee dess", exEn: "Vegetables are cheap." },
-      { kanji: "新しい", kana: "あたらしい", romaji: "atarashii", phonetic: "ah-tah-rah-shee", en: "New / Fresh", cat: "adj-i", exJa: "新しい靴を買いました。", exKana: "あたらしい くつ を かいました。", exRomaji: "atarashii kutsu o kaimashita", exPhonetic: "ah-tah-rah-shee koo-tsoo oh kye-mah-shee-tah", exEn: "I bought new shoes." },
-      { kanji: "古い", kana: "ふるい", romaji: "furui", phonetic: "foo-roo-ee", en: "Old (objects)", cat: "adj-i", exJa: "古いお寺を訪ねます。", exKana: "ふるい おてら を たずねます。", exRomaji: "furui otera o tazunemasu", exPhonetic: "foo-roo-ee oh-teh-rah oh tah-zoo-neh-mahss", exEn: "I visit an old temple." },
-      { kanji: "良い", kana: "いい / よい", romaji: "ii / yoi", phonetic: "ee", en: "Good / Nice", cat: "adj-i", exJa: "とてもいい考えです。", exKana: "とても いい かんがえ です。", exRomaji: "totemo ii kangae desu", exPhonetic: "toh-teh-moh ee kahn-gah-eh dess", exEn: "That is a very good idea." },
-      { kanji: "悪い", kana: "わるい", romaji: "warui", phonetic: "wah-roo-ee", en: "Bad / Poor", cat: "adj-i", exJa: "天気が悪いです。", exKana: "てんき が わるい です。", exRomaji: "tenki ga warui desu", exPhonetic: "ten-kee gah wah-roo-ee dess", exEn: "The weather is bad." },
-      { kanji: "美味しい", kana: "おいしい", romaji: "oishii", phonetic: "oy-shee", en: "Delicious / Tasty", cat: "adj-i", exJa: "日本の果物は美味しい。", exKana: "にほん の くだもの は おいしい。", exRomaji: "nihon no kudamono wa oishii", exPhonetic: "nee-hon noh koo-dah-moh-noh wah oy-shee", exEn: "Japanese fruit is delicious." },
-      { kanji: "面白い", kana: "おもしろい", romaji: "omoshiroi", phonetic: "oh-moh-shee-roy", en: "Interesting / Funny", cat: "adj-i", exJa: "この小説は面白いです。", exKana: "この しょうせつ は おもしろい です。", exRomaji: "kono shousetsu wa omoshiroi desu", exPhonetic: "koh-noh shoh-seh-tsoo wah oh-moh-shee-roy dess", exEn: "This novel is interesting." },
-      { kanji: "暑い", kana: "あつい", romaji: "atsui", phonetic: "ah-tsoo-ee", en: "Hot (climate)", cat: "adj-i", exJa: "夏はとても暑いです。", exKana: "なつ は とても あつい です。", exRomaji: "natsu wa totemo atsui desu", exPhonetic: "nah-tsoo wah toh-teh-moh ah-tsoo-ee dess", exEn: "Summer is very hot." },
-      { kanji: "寒い", kana: "さむい", romaji: "samui", phonetic: "sah-moo-ee", en: "Cold (weather)", cat: "adj-i", exJa: "冬の夜は寒い。", exKana: "ふゆ の よる は さむい。", exRomaji: "fuyu no yoru wa samui", exPhonetic: "foo-yoo noh yoh-roo wah sah-moo-ee", exEn: "Winter nights are cold." },
-      { kanji: "難しい", kana: "むずかしい", romaji: "muzukashii", phonetic: "moo-zoo-kah-shee", en: "Difficult / Hard", cat: "adj-i", exJa: "漢字は難しいです。", exKana: "かんじ は むずかしい です。", exRomaji: "kanji wa muzukashii desu", exPhonetic: "kahn-jee wah moo-zoo-kah-shee dess", exEn: "Kanji is difficult." },
-      { kanji: "易しい", kana: "やさしい", romaji: "yasashii", phonetic: "yah-sah-shee", en: "Easy / Simple", cat: "adj-i", exJa: "このテストは易しいです。", exKana: "この テスト は やさしい です。", exRomaji: "kono tesuto wa yasashii desu", exPhonetic: "koh-noh teh-soo-toh wah yah-sah-shee dess", exEn: "This test is easy." },
-      { kanji: "好き", kana: "すき", romaji: "suki", phonetic: "soo-kee", en: "Liked / Favorite", cat: "adj-na", exJa: "和食が好きです。", exKana: "わしょく が すき です。", exRomaji: "washoku ga suki desu", exPhonetic: "wah-shoh-koo gah soo-kee dess", exEn: "I like Japanese cuisine." },
-      { kanji: "静か", kana: "しずか", romaji: "shizuka", phonetic: "shee-zoo-kah", en: "Quiet / Peaceful", cat: "adj-na", exJa: "図書館は静かです。", exKana: "としょかん は しずか です。", exRomaji: "toshokan wa shizuka desu", exPhonetic: "toh-shoh-kahn wah shee-zoo-kah dess", exEn: "The library is quiet." },
-      { kanji: "便利", kana: "べんり", romaji: "benri", phonetic: "ben-ree", en: "Convenient / Useful", cat: "adj-na", exJa: "地下鉄は便利です。", exKana: "ちかてつ は べんり です。", exRomaji: "chikatetsu wa benri desu", exPhonetic: "chee-kah-teh-tsoo wah ben-ree dess", exEn: "The subway is convenient." },
-      { kanji: "元気", kana: "げんき", romaji: "genki", phonetic: "gen-kee", en: "Healthy / Energetic", cat: "adj-na", exJa: "お元気ですか？", exKana: "おげんき です か？", exRomaji: "ogenki desu ka", exPhonetic: "oh-gen-kee dess kah", exEn: "How are you? / Are you well?" },
-      { kanji: "綺麗", kana: "きれい", romaji: "kirei", phonetic: "kee-ray", en: "Pretty / Clean", cat: "adj-na", exJa: "部屋が綺麗ですね。", exKana: "へや が きれい です ね。", exRomaji: "heya ga kirei desu ne", exPhonetic: "heh-yah gah kee-ray dess neh", exEn: "The room is very clean." },
-      { kanji: "有名", kana: "ゆうめい", romaji: "yuumei", phonetic: "yoo-may", en: "Famous / Well-known", cat: "adj-na", exJa: "京都は有名なお寺が多い。", exKana: "きょうと は ゆうめい な おてら が おおい。", exRomaji: "kyouto wa yuumei na otera ga ooi", exPhonetic: "kyoh-toh wah yoo-may nah oh-teh-rah gah oh-oy", exEn: "Kyoto has many famous temples." }
-    ];
-
-    const RAW_ADVERBS = [
-      { kanji: "今日", kana: "きょう", romaji: "kyou", phonetic: "kyoh", en: "Today", cat: "adverb", exJa: "今日出かけます。", exKana: "きょう でかけます。", exRomaji: "kyou dekakemasu", exPhonetic: "kyoh deh-kah-keh-mahss", exEn: "I am going out today." },
-      { kanji: "明日", kana: "あした", romaji: "ashita", phonetic: "ah-shee-tah", en: "Tomorrow", cat: "adverb", exJa: "明日晴れるでしょう。", exKana: "あした はれる でしょう。", exRomaji: "ashita hareru deshou", exPhonetic: "ah-shee-tah hah-reh-roo deh-shoh", exEn: "It will likely be clear tomorrow." },
-      { kanji: "昨日", kana: "きのう", romaji: "kinou", phonetic: "kee-noh", en: "Yesterday", cat: "adverb", exJa: "昨日は雨でした。", exKana: "きのう は あめ でした。", exRomaji: "kinou wa ame deshita", exPhonetic: "kee-noh wah ah-meh deh-shee-tah", exEn: "Yesterday was rainy." },
-      { kanji: "今", kana: "いま", romaji: "ima", phonetic: "ee-mah", en: "Now / Present moment", cat: "adverb", exJa: "今何時ですか？", exKana: "いま なんじ です か？", exRomaji: "ima nanji desu ka", exPhonetic: "ee-mah nahn-jee dess kah", exEn: "What time is it right now?" },
-      { kanji: "毎日", kana: "まいにち", romaji: "mainichi", phonetic: "mye-nee-chee", en: "Every day", cat: "adverb", exJa: "毎日走ります。", exKana: "まいにち はしります。", exRomaji: "mainichi hashirimasu", exPhonetic: "mye-nee-chee hah-shee-ree-mahss", exEn: "I run every day." },
-      { kanji: "いつも", kana: "いつも", romaji: "itsumo", phonetic: "eet-soo-moh", en: "Always / Habitually", cat: "adverb", exJa: "いつもここで買います。", exKana: "いつも ここ で かいます。", exRomaji: "itsumo koko de kaimasu", exPhonetic: "eet-soo-moh koh-koh deh kye-mahss", exEn: "I always buy here." },
-      { kanji: "ここ", kana: "ここ", romaji: "koko", phonetic: "koh-koh", en: "Here / This place", cat: "adverb", exJa: "ここに座ってください。", exKana: "ここ に すわって ください。", exRomaji: "koko ni suwatte kudasai", exPhonetic: "koh-koh nee soo-waht-teh koo-dah-sye", exEn: "Please sit here." },
-      { kanji: "そこ", kana: "そこ", romaji: "soko", phonetic: "soh-koh", en: "There (near listener)", cat: "adverb", exJa: "そこに置いてください。", exKana: "そこ に おいて ください。", exRomaji: "soko ni oite kudasai", exPhonetic: "soh-koh nee oy-teh koo-dah-sye", exEn: "Please place it there." },
-      { kanji: "どこ", kana: "どこ", romaji: "doko", phonetic: "doh-koh", en: "Where / Which place", cat: "adverb", exJa: "出口はどこですか？", exKana: "でぐち は どこ です か？", exRomaji: "deguchi wa doko desu ka", exPhonetic: "deh-goo-chee wah doh-koh dess kah", exEn: "Where is the exit?" },
-      { kanji: "前", kana: "まえ", romaji: "mae", phonetic: "mah-eh", en: "In front / Before", cat: "adverb", exJa: "駅の前で待ちます。", exKana: "えき の まえ で まちます。", exRomaji: "eki no mae de machimasu", exPhonetic: "eh-kee noh mah-eh deh mah-chee-mahss", exEn: "I will wait in front of the station." },
-      { kanji: "後ろ", kana: "うしろ", romaji: "ushiro", phonetic: "oo-shee-roh", en: "Behind / Back", cat: "adverb", exJa: "私の後ろにいます。", exKana: "わたし の うしろ に います。", exRomaji: "watashi no ushiro ni imasu", exPhonetic: "wah-tah-shee noh oo-shee-roh nee ee-mahss", exEn: "They are behind me." },
-      { kanji: "すぐ", kana: "すぐ", romaji: "sugu", phonetic: "soo-goo", en: "Immediately / Right away", cat: "adverb", exJa: "すぐ戻ります。", exKana: "すぐ もどります。", exRomaji: "sugu modorimasu", exPhonetic: "soo-goo moh-doh-ree-mahss", exEn: "I will be back right away." },
-      { kanji: "とても", kana: "とても", romaji: "totemo", phonetic: "toh-teh-moh", en: "Very / Extremely", cat: "adverb", exJa: "とても楽しかったです。", exKana: "とても たのしかった です。", exRomaji: "totemo tanoshikatta desu", exPhonetic: "toh-teh-moh tah-noh-shee-kaht-tah dess", exEn: "It was very fun." },
-      { kanji: "少し", kana: "すこし", romaji: "sukoshi", phonetic: "soo-koh-shee", en: "A little / Slightly", cat: "adverb", exJa: "少し待ってください。", exKana: "すこし まって ください。", exRomaji: "sukoshi matte kudasai", exPhonetic: "soo-koh-shee maht-teh koo-dah-sye", exEn: "Please wait a little bit." },
-      { kanji: "一緒に", kana: "いっしょに", romaji: "isshoni", phonetic: "ees-shoh-nee", en: "Together", cat: "adverb", exJa: "一緒に行きましょう。", exKana: "いっしょ に いきましょう。", exRomaji: "isshoni ikimashou", exPhonetic: "ees-shoh-nee ee-kee-mah-shoh", exEn: "Let's go together." }
-    ];
-
-    const RAW_NOUNS = [
-      { kanji: "私", kana: "わたし", romaji: "watashi", phonetic: "wah-tah-shee", en: "I / Myself", cat: "noun", exJa: "私は学生です。", exKana: "わたし は がくせい です。", exRomaji: "watashi wa gakusei desu", exPhonetic: "wah-tah-shee wah gahk-say dess", exEn: "I am a student." },
-      { kanji: "人", kana: "ひと", romaji: "hito", phonetic: "hee-toh", en: "Person / People", cat: "noun", exJa: "あの人は優しいです。", exKana: "あの ひと は やさしい です。", exRomaji: "ano hito wa yasashii desu", exPhonetic: "ah-noh hee-toh wah yah-sah-shee dess", exEn: "That person is kind." },
-      { kanji: "水", kana: "みず", romaji: "mizu", phonetic: "mee-zoo", en: "Water", cat: "noun", exJa: "冷たい水を飲みます。", exKana: "つめたい みず を のみます。", exRomaji: "tsumetai mizu o nomimasu", exPhonetic: "tsoo-meh-tye mee-zoo oh noh-mee-mahss", exEn: "I drink cold water." },
-      { kanji: "本", kana: "ほん", romaji: "hon", phonetic: "hon", en: "Book / Volume", cat: "noun", exJa: "本棚に本を並べます。", exKana: "ほんだな に ほん を ならべます。", exRomaji: "hondana ni hon o narabemasu", exPhonetic: "hon-dah-nah nee hon oh nah-rah-beh-mahss", exEn: "I line up books on the bookshelf." },
-      { kanji: "電車", kana: "でんしゃ", romaji: "densha", phonetic: "den-shah", en: "Electric train", cat: "noun", exJa: "電車に乗ります。", exKana: "でんしゃ に のります。", exRomaji: "densha ni norimasu", exPhonetic: "den-shah nee noh-ree-mahss", exEn: "I get on the train." },
-      { kanji: "駅", kana: "えき", romaji: "eki", phonetic: "eh-kee", en: "Railway station", cat: "noun", exJa: "駅の近くに住んでいます。", exKana: "えき の ちかく に すんでいます。", exRomaji: "eki no chikaku ni sundeimasu", exPhonetic: "eh-kee noh chee-kah-koo nee soon-deh-ee-mahss", exEn: "I live near the station." },
-      { kanji: "時間", kana: "じかん", romaji: "jikan", phonetic: "jee-kahn", en: "Time / Hours", cat: "noun", exJa: "時間を大切にします。", exKana: "じかん を たいせつ に します。", exRomaji: "jikan o taisetsu ni shimasu", exPhonetic: "jee-kahn oh tye-seh-tsoo nee shee-mahss", exEn: "I value time." },
-      { kanji: "友達", kana: "ともだち", romaji: "tomodachi", phonetic: "toh-moh-dah-chee", en: "Friend / Companion", cat: "noun", exJa: "友達と遊びます。", exKana: "ともだち と あそびます。", exRomaji: "tomodachi to asobimasu", exPhonetic: "toh-moh-dah-chee toh ah-soh-bee-mahss", exEn: "I hang out with friends." },
-      { kanji: "家", kana: "いえ", romaji: "ie", phonetic: "ee-eh", en: "House / Home", cat: "noun", exJa: "家に帰りましょう。", exKana: "いえ に かえりましょう。", exRomaji: "ie ni kaerimashou", exPhonetic: "ee-eh nee kah-eh-ree-mah-shoh", exEn: "Let's head back home." },
-      { kanji: "お金", kana: "おかね", romaji: "okane", phonetic: "oh-kah-neh", en: "Money / Currency", cat: "noun", exJa: "財布にお金が入っています。", exKana: "さいふ に おかね が はいっています。", exRomaji: "saifu ni okane ga haitteimasu", exPhonetic: "sye-foo nee oh-kah-neh gah hye-teh-ee-mahss", exEn: "There is money in the wallet." },
-      { kanji: "国", kana: "くに", romaji: "kuni", phonetic: "koo-nee", en: "Country / Nation", cat: "noun", exJa: "いろいろな国を旅したい。", exKana: "いろいろな くに を たび したい。", exRomaji: "iroirona kuni o tabi shitai", exPhonetic: "ee-roh-ee-roh-nah koo-nee oh tah-bee shee-tye", exEn: "I want to travel to various countries." },
-      { kanji: "車", kana: "くるま", romaji: "kuruma", phonetic: "koo-roo-mah", en: "Car / Automobile", cat: "noun", exJa: "青い車を運転します。", exKana: "あおい くるま を うんてん します。", exRomaji: "aoi kuruma o unten shimasu", exPhonetic: "ah-oy koo-roo-mah oh oon-ten shee-mahss", exEn: "I drive a blue car." },
-      { kanji: "学校", kana: "がっこう", romaji: "gakkou", phonetic: "gahk-koh", en: "School", cat: "noun", exJa: "学校へ歩いて通います。", exKana: "がっこう へ あるいて かよいます。", exRomaji: "gakkou e aruite kayoimasu", exPhonetic: "gahk-koh eh ah-roo-ee-teh kah-yoy-mahss", exEn: "I commute to school on foot." },
-      { kanji: "先生", kana: "せんせい", romaji: "sensei", phonetic: "sen-say", en: "Teacher / Instructor", cat: "noun", exJa: "先生に質問をします。", exKana: "せんせい に しつもん を します。", exRomaji: "sensei ni shitsumon o shimasu", exPhonetic: "sen-say nee sheet-soo-mon oh shee-mahss", exEn: "I ask the teacher a question." },
-      { kanji: "学生", kana: "がくせい", romaji: "gakusei", phonetic: "gahk-say", en: "Student / Pupil", cat: "noun", exJa: "多くの学生が集まりました。", exKana: "おおく の がくせい が あつまりました。", exRomaji: "ooku no gakusei ga atsumarimashita", exPhonetic: "oh-koo noh gahk-say gah ah-tsoo-mah-ree-mah-shee-tah", exEn: "Many students gathered." },
-      { kanji: "部屋", kana: "へや", romaji: "heya", phonetic: "heh-yah", en: "Room / Chamber", cat: "noun", exJa: "明るい部屋が好きです。", exKana: "あかるい へや が すき です。", exRomaji: "akarui heya ga suki desu", exPhonetic: "ah-kah-roo-ee heh-yah gah soo-kee dess", exEn: "I like bright rooms." },
-      { kanji: "机", kana: "つくえ", romaji: "tsukue", phonetic: "tsoo-koo-eh", en: "Desk", cat: "noun", exJa: "机の上にノートを置きます。", exKana: "つくえ の うえ に ノート を おきます。", exRomaji: "tsukue no ue ni nooto o okimasu", exPhonetic: "tsoo-koo-eh noh oo-eh nee noh-toh oh oh-kee-mahss", exEn: "I place a notebook on the desk." },
-      { kanji: "天気", kana: "てんき", romaji: "tenki", phonetic: "ten-kee", en: "Weather", cat: "noun", exJa: "明日の天気が気になります。", exKana: "あした の てんき が き に なります。", exRomaji: "ashita no tenki ga ki ni narimasu", exPhonetic: "ah-shee-tah noh ten-kee gah kee nee nah-ree-mahss", exEn: "I'm curious about tomorrow's weather." },
-      { kanji: "家族", kana: "かぞく", romaji: "kazoku", phonetic: "kah-zoh-koo", en: "Family / Household", cat: "noun", exJa: "家族と一緒に食事をします。", exKana: "かぞく と いっしょ に しょくじ を します。", exRomaji: "kazoku to isshoni shokuji o shimasu", exPhonetic: "kah-zoh-koo toh ees-shoh-nee shoh-koo-jee oh shee-mahss", exEn: "I eat a meal together with family." },
-      { kanji: "仕事", kana: "しごと", romaji: "shigoto", phonetic: "shee-goh-toh", en: "Work / Job", cat: "noun", exJa: "新しい仕事を始めました。", exKana: "あたらしい しごと を はじめました。", exRomaji: "atarashii shigoto o hajimemashita", exPhonetic: "ah-tah-rah-shee shee-goh-toh oh hah-jee-meh-mah-shee-tah", exEn: "I started a new job." },
-      { kanji: "問題", kana: "もんだい", romaji: "mondai", phonetic: "mon-dye", en: "Problem / Question", cat: "noun", exJa: "難しい問題を解きます。", exKana: "むずかしい もんだい を ときます。", exRomaji: "muzukashii mondai o tokimasu", exPhonetic: "moo-zoo-kah-shee mon-dye oh toh-kee-mahss", exEn: "I solve a difficult problem." }
-    ];
-
-    const INTERMEDIATE_N3_VOCAB = [
-      { kanji: "準備", kana: "じゅんび", romaji: "junbi", phonetic: "joon-bee", en: "Preparation / Arrangement", cat: "noun", exJa: "会議の準備をします。", exKana: "かいぎ の じゅんび を します。", exRomaji: "kaigi no junbi o shimasu", exPhonetic: "kye-gee noh joon-bee oh shee-mahss", exEn: "I prepare for the meeting." },
-      { kanji: "連絡", kana: "れんらく", romaji: "renraku", phonetic: "ren-rah-koo", en: "Contact / Communication", cat: "noun", exJa: "後で連絡します。", exKana: "あと で れんらく します。", exRomaji: "ato de renraku shimasu", exPhonetic: "ah-toh deh ren-rah-koo shee-mahss", exEn: "I will contact you later." },
-      { kanji: "約束", kana: "やくそく", romaji: "yakusoku", phonetic: "yah-koo-soh-koo", en: "Promise / Appointment", cat: "noun", exJa: "約束を守ります。", exKana: "やくそく を まもります。", exRomaji: "yakusoku o mamorimasu", exPhonetic: "yah-koo-soh-koo oh mah-moh-ree-mahss", exEn: "I keep my promise." },
-      { kanji: "相談", kana: "そうだん", romaji: "soudan", phonetic: "soh-dahn", en: "Consultation / Discussion", cat: "noun", exJa: "先生に相談します。", exKana: "せんせい に そうだん します。", exRomaji: "sensei ni soudan shimasu", exPhonetic: "sen-say nee soh-dahn shee-mahss", exEn: "I consult the teacher." },
-      { kanji: "複雑", kana: "ふくざつ", romaji: "fukuzatsu", phonetic: "foo-koo-zah-tsoo", en: "Complex / Complicated", cat: "adj-na", exJa: "この問題は複雑です。", exKana: "この もんだい は ふくざつ です。", exRomaji: "kono mondai wa fukuzatsu desu", exPhonetic: "koh-noh mon-dye wah foo-koo-zah-tsoo dess", exEn: "This issue is complicated." },
-      { kanji: "経験", kana: "けいけん", romaji: "keiken", phonetic: "kay-ken", en: "Experience", cat: "noun", exJa: "貴重な経験を積みました。", exKana: "きちょう な けいけん を つみました。", exRomaji: "kichou na keiken o tsumimashita", exPhonetic: "kee-choh nah kay-ken oh tsoo-mee-mah-shee-tah", exEn: "I gained valuable experience." },
-      { kanji: "案内", kana: "あんない", romaji: "annai", phonetic: "ahn-nye", en: "Guidance / Information", cat: "noun", exJa: "市内を案内してもらいました。", exKana: "しない を あんない して もらいました。", exRomaji: "shinai o annai shite moraimashita", exPhonetic: "shee-nye oh ahn-nye shee-teh moh-rye-mah-shee-tah", exEn: "I was guided through the city." },
-      { kanji: "説明", kana: "せつめい", romaji: "setsumei", phonetic: "seh-tsoo-may", en: "Explanation", cat: "noun", exJa: "図を使って説明します。", exKana: "ず を つかって せつめい します。", exRomaji: "zu o tsukatte setsumei shimasu", exPhonetic: "zoo oh tsoo-kaht-teh seh-tsoo-may shee-mahss", exEn: "I will explain using a diagram." },
-      { kanji: "参加", kana: "さんか", romaji: "sanka", phonetic: "sahn-kah", en: "Participation / Joining", cat: "noun", exJa: "ボランティアに参加します。", exKana: "ボランティア に さんか します。", exRomaji: "borantia ni sanka shimasu", exPhonetic: "boh-rahn-tee-ah nee sahn-kah shee-mahss", exEn: "I participate in volunteer work." },
-      { kanji: "計画", kana: "けいかく", romaji: "keikaku", phonetic: "kay-kah-koo", en: "Plan / Project", cat: "noun", exJa: "旅行の計画を立てます。", exKana: "りょこう の けいかく を たてます。", exRomaji: "ryokou no keikaku o tatemasu", exPhonetic: "ryoh-koh noh kay-kah-koo oh tah-teh-mahss", exEn: "I make plans for a trip." },
-      { kanji: "努力", kana: "どりょく", romaji: "doryoku", phonetic: "doh-ryoh-koo", en: "Effort / Diligence", cat: "noun", exJa: "毎日の努力が実を結びます。", exKana: "まいにち の どりょく が み を むすびます。", exRomaji: "mainichi no doryoku ga mi o musubimasu", exPhonetic: "mye-nee-chee noh doh-ryoh-koo gah mee oh moo-soo-bee-mahss", exEn: "Daily effort bears fruit." },
-      { kanji: "成功", kana: "せいこう", romaji: "seikou", phonetic: "say-koh", en: "Success", cat: "noun", exJa: "実験が無事に成功しました。", exKana: "じっけん が ぶじ に せいこう しました。", exRomaji: "jikken ga buji ni seikou shimashita", exPhonetic: "jeek-ken gah boo-jee nee say-koh shee-mah-shee-tah", exEn: "The experiment succeeded safely." },
-      { kanji: "失敗", kana: "しっぱい", romaji: "shippai", phonetic: "sheep-pye", en: "Failure / Mistake", cat: "noun", exJa: "失敗から多くを学びます。", exKana: "しっぱい から おおく を まなびます。", exRomaji: "shippai kara ooku o manabimasu", exPhonetic: "sheep-pye kah-rah oh-koo oh mah-nah-bee-mahss", exEn: "I learn much from failure." },
-      { kanji: "表現", kana: "ひょうげん", romaji: "hyougen", phonetic: "hyoh-gen", en: "Expression / Phrasing", cat: "noun", exJa: "自然な日本語の表現です。", exKana: "しぜん な にほんご の ひょうげん です。", exRomaji: "shizen na nihongo no hyougen desu", exPhonetic: "shee-zen nah nee-hon-goh noh hyoh-gen dess", exEn: "It is a natural Japanese expression." },
-      { kanji: "目的", kana: "もくてき", romaji: "mokuteki", phonetic: "moh-koo-teh-kee", en: "Purpose / Objective", cat: "noun", exJa: "留学の目的を明確にします。", exKana: "りゅうがく の もくてき を めいかく に します。", exRomaji: "ryuugaku no mokuteki o meikaku ni shimasu", exPhonetic: "ryoo-gah-koo noh moh-koo-teh-kee oh may-kah-koo nee shee-mahss", exEn: "Clarify the purpose of studying abroad." }
-    ];
-
-    const ADVANCED_N2_N1_VOCAB = [
-      { kanji: "概念", kana: "がいねん", romaji: "gainen", phonetic: "gye-nen", en: "Concept / General idea", cat: "noun", exJa: "基本概念を把握する。", exKana: "きほん がいねん を はあく する。", exRomaji: "kihon gainen o haaku suru", exPhonetic: "kee-hon gye-nen oh hah-ah-koo soo-roo", exEn: "Grasping fundamental concepts." },
-      { kanji: "把握", kana: "はあく", romaji: "haaku", phonetic: "hah-ah-koo", en: "Grasp / Full comprehension", cat: "noun", exJa: "現状を正確に把握する。", exKana: "げんじょう を せいかく に はあく する。", exRomaji: "genjou o seikaku ni haaku suru", exPhonetic: "gen-joh oh say-kah-koo nee hah-ah-koo soo-roo", exEn: "Accurately grasping the current situation." },
-      { kanji: "傾向", kana: "けいこう", romaji: "keikou", phonetic: "kay-koh", en: "Tendency / Trend", cat: "noun", exJa: "増加の傾向が見られます。", exKana: "ぞうか の けいこう が みられます。", exRomaji: "zouka no keikou ga miraremasu", exPhonetic: "zoh-kah noh kay-koh gah mee-rah-reh-mahss", exEn: "An upward trend is observed." },
-      { kanji: "構造", kana: "こうぞう", romaji: "kouzou", phonetic: "koh-zoh", en: "Structure / Framework", cat: "noun", exJa: "社会の基本構造を研究する。", exKana: "しゃかい の きほん こうぞう を けんきゅう する。", exRomaji: "shakai no kihon kouzou o kenkyuu suru", exPhonetic: "shah-kye noh kee-hon koh-zoh oh ken-kyoo soo-roo", exEn: "Studying the basic structure of society." },
-      { kanji: "論理", kana: "ろんり", romaji: "ronri", phonetic: "ron-ree", en: "Logic / Reasoning", cat: "noun", exJa: "明快な論理で主張を組み立てる。", exKana: "めいかい な ろんり で しゅちょう を くみたてる。", exRomaji: "meikai na ronri de shuchou o kumitateru", exPhonetic: "may-kye nah ron-ree deh shoo-choh oh koo-mee-tah-teh-roo", exEn: "Constructing arguments with clear logic." },
-      { kanji: "矛盾", kana: "むじゅん", romaji: "mujun", phonetic: "moo-joon", en: "Contradiction / Inconsistency", cat: "noun", exJa: "発言に明白な矛盾がある。", exKana: "はつげん に めいはく な むじゅん が ある。", exRomaji: "hatsugen ni meihaku na mujun ga aru", exPhonetic: "haht-soo-gen nee may-hah-koo nah moo-joon gah ah-roo", exEn: "There is an obvious contradiction in the statement." },
-      { kanji: "推進", kana: "すいしん", romaji: "suishin", phonetic: "soo-ee-sheen", en: "Promotion / Advancement", cat: "noun", exJa: "環境保護活動を推進する。", exKana: "かんきょう ほご かつどう を すいしん する。", exRomaji: "kankyou hogo katsudou o suishin suru", exPhonetic: "kahn-kyoh hoh-goh kaht-soo-doh oh soo-ee-sheen soo-roo", exEn: "Promoting environmental conservation." },
-      { kanji: "根拠", kana: "こんきょ", romaji: "konkyo", phonetic: "kon-kyoh", en: "Basis / Scientific ground", cat: "noun", exJa: "科学的な根拠に基づく。", exKana: "かがくてき な こんきょ に もとづく。", exRomaji: "kagakuteki na konkyo ni motozuku", exPhonetic: "kah-gah-koo-teh-kee nah kon-kyoh nee moh-toh-zoo-koo", exEn: "Based on solid scientific evidence." },
-      { kanji: "克服", kana: "こくふく", romaji: "kokufuku", phonetic: "koh-koo-foo-koo", en: "Conquest / Overcoming", cat: "noun", exJa: "様々な障害を克服しました。", exKana: "さまざま な しょうがい を こくふく しました。", exRomaji: "samazama na shougai o kokufuku shimashita", exPhonetic: "sah-mah-zah-mah nah shoh-gye oh koh-koo-foo-koo shee-mah-shee-tah", exEn: "We overcame various obstacles." },
-      { kanji: "妥協", kana: "だきょう", romaji: "dakyou", phonetic: "dah-kyoh", en: "Compromise / Mutual concession", cat: "noun", exJa: "双方の条件で妥協点を見出す。", exKana: "そうほう の じょうけん で だきょうてん を みいだす。", exRomaji: "souhou no jouken de dakyouten o miidasu", exPhonetic: "soh-hoh noh joh-ken deh dah-kyoh-ten oh mee-ee-dah-soo", exEn: "Finding a compromise under mutual terms." }
-    ];
-
-    // Systematic Lexicon Compounds for Scaling without Duplication
-    const PREFIXES = [
-      { ja: "新", kana: "しん", rom: "shin", phon: "sheen", en: "New / Modern" },
-      { ja: "大", kana: "だい", rom: "dai", phon: "dye", en: "Great / Large-scale" },
-      { ja: "最", kana: "さい", rom: "sai", phon: "sye", en: "Most / Utmost" },
-      { ja: "全", kana: "ぜん", rom: "zen", phon: "zen", en: "Total / Complete" },
-      { ja: "再", kana: "さい", rom: "sai", phon: "sye", en: "Re- / Again" },
-      { ja: "不", kana: "ふ", rom: "fu", phon: "foo", en: "Un- / Non-" },
-      { ja: "無", kana: "む", rom: "mu", phon: "moo", en: "Without / -less" },
-      { ja: "高", kana: "こう", rom: "kou", phon: "koh", en: "High / Advanced" }
-    ];
-
-    const SUFFIXES = [
-      { ja: "的", kana: "てき", rom: "teki", phon: "teh-kee", en: "-like / -ic" },
-      { ja: "力", kana: "りょく", rom: "ryoku", phon: "ryoh-koo", en: "Capacity / Power" },
-      { ja: "性", kana: "せい", rom: "sei", phon: "say", en: "-ity / Nature" },
-      { ja: "者", kana: "しゃ", rom: "sha", phon: "shah", en: "Person / Agent" },
-      { ja: "中", kana: "ちゅう", rom: "chuu", phon: "choo", en: "In progress / Amidst" },
-      { ja: "後", kana: "ご", rom: "go", phon: "goh", en: "After / Post-" }
-    ];
-
-    // =========================================================================
-    // DIVERSIFIED CURRICULUM COMPILER (STRICT DEDUPLICATION)
-    // =========================================================================
     const MASTER_VOCAB = [];
-    const VOCAB_BY_ID = new Map();
+    const VOCAB_BY_KEY = new Map();
 
     function buildCurriculum() {
       MASTER_VOCAB.length = 0;
-      VOCAB_BY_ID.clear();
-      let id = 1;
+      VOCAB_BY_KEY.clear();
 
-      const allowParticles = localStorage.getItem('lex_filter_particles') !== 'false';
-      const allowVerbs = localStorage.getItem('lex_filter_verbs') !== 'false';
-      const allowAdjectives = localStorage.getItem('lex_filter_adjectives') !== 'false';
-      const allowAdverbs = localStorage.getItem('lex_filter_adverbs') !== 'false';
-      const allowNouns = localStorage.getItem('lex_filter_nouns') !== 'false';
+      const allowParticles = SafeStorage.getItem('lex_filter_particles') !== 'false';
+      const allowVerbs = SafeStorage.getItem('lex_filter_verbs') !== 'false';
+      const allowAdjectives = SafeStorage.getItem('lex_filter_adjectives') !== 'false';
+      const allowAdverbs = SafeStorage.getItem('lex_filter_adverbs') !== 'false';
+      const allowNouns = SafeStorage.getItem('lex_filter_nouns') !== 'false';
 
-      let t1Pool = [];
-      if (allowParticles) t1Pool.push(...RAW_PARTICLES);
-      if (allowVerbs) t1Pool.push(...RAW_VERBS);
-      if (allowAdjectives) t1Pool.push(...RAW_ADJECTIVES);
-      if (allowAdverbs) t1Pool.push(...RAW_ADVERBS);
-      if (allowNouns) t1Pool.push(...RAW_NOUNS);
-      if (t1Pool.length === 0) t1Pool = [...RAW_NOUNS, ...RAW_VERBS];
+      RAW_VOCAB_DB.forEach(w => {
+        let ok = true;
+        if (w.cat === 'particle' && !allowParticles) ok = false;
+        if (w.cat === 'verb' && !allowVerbs) ok = false;
+        if (w.cat === 'adj' && !allowAdjectives) ok = false;
+        if (w.cat === 'adverb' && !allowAdverbs) ok = false;
+        if (w.cat === 'noun' && !allowNouns) ok = false;
+        if (ok) {
+          MASTER_VOCAB.push(w);
+          VOCAB_BY_KEY.set(w.key, w);
+        }
+      });
 
-      const seenKanji = new Set();
-      const seenEn = new Set();
-
-      function registerWord(entry) {
-        const cleanEn = FuzzyEngine.clean(entry.en);
-        if (seenKanji.has(entry.kanji) || seenEn.has(cleanEn)) return false;
-        seenKanji.add(entry.kanji);
-        seenEn.add(cleanEn);
-        MASTER_VOCAB.push(entry);
-        VOCAB_BY_ID.set(entry.id, entry);
-        return true;
-      }
-
-      // 1. Tier 1 Base Authentic Pool
-      for (const base of t1Pool) {
-        registerWord({ id: id++, tier: 1, ...base });
-      }
-
-      // Tier 1 Compound Syntheses
-      let pIdx = 0, bIdx = 0;
-      while (MASTER_VOCAB.filter(w => w.tier === 1).length < 1000) {
-        const base = t1Pool[bIdx % t1Pool.length];
-        const pref = PREFIXES[pIdx % PREFIXES.length];
-        const suff = SUFFIXES[pIdx % SUFFIXES.length];
-        const usePrefix = (pIdx % 2 === 0);
-
-        const newKanji = usePrefix ? `${pref.ja}${base.kanji}` : `${base.kanji}${suff.ja}`;
-        const newKana = usePrefix ? `${pref.kana}${base.kana}` : `${base.kana}${suff.kana}`;
-        const newRom = usePrefix ? `${pref.rom}${base.romaji}` : `${base.romaji}${suff.rom}`;
-        const newPhon = usePrefix ? `${pref.phon}-${base.phonetic}` : `${base.phonetic}-${suff.phon}`;
-        const newEn = usePrefix ? `${pref.en} ${base.en}` : `${base.en} (${suff.en})`;
-
-        registerWord({
-          id: id++,
-          tier: 1,
-          category: base.cat,
-          kanji: newKanji,
-          kana: newKana,
-          romaji: newRom,
-          phonetic: newPhon,
-          en: newEn,
-          exJa: `${newKanji}の重要性を学びます。`,
-          exKana: `${newKana} の じゅうようせい を まなびます。`,
-          exRomaji: `${newRom} no juuyousei o manabimasu`,
-          exPhonetic: `${newPhon} noh joo-yoh-say oh mah-nah-bee-mahss`,
-          exEn: `Learning the importance of ${newEn.toLowerCase()}.`
+      if (MASTER_VOCAB.length === 0) {
+        RAW_VOCAB_DB.forEach(w => {
+          MASTER_VOCAB.push(w);
+          VOCAB_BY_KEY.set(w.key, w);
         });
-
-        pIdx++;
-        bIdx++;
-      }
-
-      // 2. Tier 2 (1,001 - 2,000)
-      for (const base of INTERMEDIATE_N3_VOCAB) {
-        registerWord({ id: id++, tier: 2, ...base });
-      }
-      let n3Idx = 0;
-      while (MASTER_VOCAB.filter(w => w.tier === 2).length < 1000) {
-        const base = INTERMEDIATE_N3_VOCAB[n3Idx % INTERMEDIATE_N3_VOCAB.length];
-        const pref = PREFIXES[n3Idx % PREFIXES.length];
-        const newKanji = `${pref.ja}${base.kanji}`;
-        const newKana = `${pref.kana}${base.kana}`;
-        const newRom = `${pref.rom}${base.romaji}`;
-        const newPhon = `${pref.phon}-${base.phonetic}`;
-        const newEn = `${pref.en} ${base.en}`;
-
-        registerWord({
-          id: id++,
-          tier: 2,
-          category: base.cat,
-          kanji: newKanji,
-          kana: newKana,
-          romaji: newRom,
-          phonetic: newPhon,
-          en: newEn,
-          exJa: `${newKanji}を速やかに実行します。`,
-          exKana: `${newKana} を すみやか に じっこう します。`,
-          exRomaji: `${newRom} o sumiyaka ni jikkou shimasu`,
-          exPhonetic: `${newPhon} oh soo-mee-yah-kah nee jeek-koh shee-mahss`,
-          exEn: `Executing the ${newEn.toLowerCase()} promptly.`
-        });
-        n3Idx++;
-      }
-
-      // 3. Tier 3 (2,001 - 5,000)
-      for (const base of ADVANCED_N2_N1_VOCAB) {
-        registerWord({ id: id++, tier: 3, ...base });
-      }
-      let n1Idx = 0;
-      while (MASTER_VOCAB.filter(w => w.tier === 3).length < 3000) {
-        const base = ADVANCED_N2_N1_VOCAB[n1Idx % ADVANCED_N2_N1_VOCAB.length];
-        const pref = PREFIXES[n1Idx % PREFIXES.length];
-        const suff = SUFFIXES[n1Idx % SUFFIXES.length];
-        const newKanji = `${pref.ja}${base.kanji}${suff.ja}`;
-        const newKana = `${pref.kana}${base.kana}${suff.kana}`;
-        const newRom = `${pref.rom}${base.romaji}${suff.rom}`;
-        const newPhon = `${pref.phon}-${base.phonetic}-${suff.phon}`;
-        const newEn = `${pref.en} ${base.en} (${suff.en})`;
-
-        registerWord({
-          id: id++,
-          tier: 3,
-          category: base.cat,
-          kanji: newKanji,
-          kana: newKana,
-          romaji: newRom,
-          phonetic: newPhon,
-          en: newEn,
-          exJa: `${newKanji}に関する論文を検討する。`,
-          exKana: `${newKana} に かんする ろんぶん を けんとう する。`,
-          exRomaji: `${newRom} ni kansuru ronbun o kentou suru`,
-          exPhonetic: `${newPhon} nee kahn-soo-roo ron-boon oh ken-toh soo-roo`,
-          exEn: `Examining academic treatises concerning ${newEn.toLowerCase()}.`
-        });
-        n1Idx++;
       }
     }
-    buildCurriculum();
 
     // =========================================================================
-    // AUDIO ENGINE (NO CORS ISSUES, ROBUST WEB SPEECH)
+    // AUDIO ENGINE (USER GESTURE UNLOCKED & ROBUST)
     // =========================================================================
     const AudioEngine = {
       voices: [],
-      selectedURI: localStorage.getItem('lex_voice_uri') || 'auto',
+      selectedURI: SafeStorage.getItem('lex_voice_uri') || 'auto',
+      unlocked: false,
 
       init() {
-        this.loadVoices();
-        if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
-          window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+        try {
+          if ('speechSynthesis' in window && window.speechSynthesis) {
+            this.loadVoices();
+            window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+            const unlock = () => {
+              if (!this.unlocked) {
+                try { window.speechSynthesis.resume(); } catch (e) {}
+                this.unlocked = true;
+              }
+            };
+            window.addEventListener('click', unlock, { once: true });
+            window.addEventListener('touchstart', unlock, { once: true });
+          }
+        } catch (err) {
+          console.warn("Speech API unavailable:", err);
         }
       },
 
       loadVoices() {
-        if (!('speechSynthesis' in window)) return;
-        const all = window.speechSynthesis.getVoices();
-        this.voices = all.filter(v => (v.lang || '').toLowerCase().replace('_', '-').startsWith('ja'));
-        
-        const sel = document.getElementById('cfgVoiceSelect');
-        if (sel) {
-          sel.innerHTML = '<option value="auto">Auto-Select Best Japanese Engine</option>';
-          this.voices.forEach(v => {
-            const opt = document.createElement('option');
-            opt.value = v.voiceURI;
-            opt.textContent = `${v.name} (${v.lang})`;
-            if (v.voiceURI === this.selectedURI) opt.selected = true;
-            sel.appendChild(opt);
-          });
-        }
+        if (!('speechSynthesis' in window) || !window.speechSynthesis) return;
+        try {
+          const all = window.speechSynthesis.getVoices();
+          this.voices = all.filter(v => (v.lang || '').toLowerCase().replace('_', '-').startsWith('ja'));
+          
+          const sel = document.getElementById('cfgVoiceSelect');
+          if (sel) {
+            sel.innerHTML = '<option value="auto">Auto-Select Best Japanese Engine</option>';
+            this.voices.forEach(v => {
+              const opt = document.createElement('option');
+              opt.value = v.voiceURI;
+              opt.textContent = `${v.name} (${v.lang})`;
+              if (v.voiceURI === this.selectedURI) opt.selected = true;
+              sel.appendChild(opt);
+            });
+          }
+        } catch (e) {}
       },
 
       setVoice(uri) {
         this.selectedURI = uri;
-        localStorage.setItem('lex_voice_uri', uri);
+        SafeStorage.setItem('lex_voice_uri', uri);
       },
 
       speak(text, speed = 0.75) {
-        if (!text || !('speechSynthesis' in window)) return;
-
+        if (!text || !('speechSynthesis' in window) || !window.speechSynthesis) return;
         try {
           if (window.speechSynthesis.paused) window.speechSynthesis.resume();
           window.speechSynthesis.cancel();
 
           const utter = new SpeechSynthesisUtterance(text);
           utter.lang = 'ja-JP';
-          utter.rate = speed || 0.75;
+          utter.rate = Math.max(0.5, Math.min(1.5, speed || 0.75));
 
           let chosen = null;
           if (this.selectedURI && this.selectedURI !== 'auto') {
@@ -2688,60 +2064,80 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           }
           if (chosen) utter.voice = chosen;
 
-          utter.onerror = () => {
-            try {
-              const fallbackUtter = new SpeechSynthesisUtterance(text);
-              fallbackUtter.lang = 'ja';
-              window.speechSynthesis.speak(fallbackUtter);
-            } catch (err) {}
-          };
-
           window.speechSynthesis.speak(utter);
         } catch (e) {
-          console.warn("Audio synthesis error catch:", e);
+          console.warn("Speech synthesis notice:", e);
         }
       }
     };
 
     // =========================================================================
-    // BACKGROUND CANVAS SHADER
+    // BACKGROUND CANVAS ENGINE
     // =========================================================================
     const BgEngine = {
       canvas: null,
       ctx: null,
-      preset: localStorage.getItem('lex_bg_preset') || 'subtle-rain',
-      color: localStorage.getItem('lex_bg_color') || '#a1a1aa',
-      opacity: parseFloat(localStorage.getItem('lex_bg_opacity')) || 0.18,
+      preset: SafeStorage.getItem('lex_bg_preset') || 'subtle-rain',
+      color: SafeStorage.getItem('lex_bg_color') || '#a1a1aa',
+      opacity: parseFloat(SafeStorage.getItem('lex_bg_opacity')) || 0.18,
       particles: [],
+      animId: null,
+      running: false,
 
       init() {
         this.canvas = document.getElementById('bgCanvas');
+        if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
+        if (!this.ctx) return;
+
         this.resize();
         window.addEventListener('resize', () => this.resize());
+        
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            this.stop();
+          } else {
+            this.start();
+          }
+        });
+
         this.setColor(this.color);
         this.setOpacity(this.opacity);
         this.setup();
-        this.loop();
+        this.start();
+      },
+
+      start() {
+        if (!this.running) {
+          this.running = true;
+          this.loop();
+        }
+      },
+
+      stop() {
+        this.running = false;
+        if (this.animId) cancelAnimationFrame(this.animId);
       },
 
       resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth || document.documentElement.clientWidth || 660;
+        this.canvas.height = window.innerHeight || document.documentElement.clientHeight || 800;
         this.setup();
       },
 
       hexToRgb(hex) {
-        let c = hex.replace('#', '');
+        let c = (hex || '#a1a1aa').replace('#', '');
         if (c.length === 3) c = c.split('').map(x => x + x).join('');
         const num = parseInt(c, 16);
+        if (isNaN(num)) return { r: 161, g: 161, b: 170 };
         return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
       },
 
       setColor(hex) {
-        if (!/^#([0-9A-Fa-f]{3}){1,2}$/.test(hex)) return;
+        if (!hex || !/^#([0-9A-Fa-f]{3}){1,2}$/.test(hex)) return;
         this.color = hex;
-        localStorage.setItem('lex_bg_color', hex);
+        SafeStorage.setItem('lex_bg_color', hex);
         const lbl = document.getElementById('colorHexLabel');
         const picker = document.getElementById('cfgColorPicker');
         const txt = document.getElementById('cfgHexInput');
@@ -2752,25 +2148,26 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
       setPreset(preset) {
         this.preset = preset;
-        localStorage.setItem('lex_bg_preset', preset);
+        SafeStorage.setItem('lex_bg_preset', preset);
         this.setup();
       },
 
       setOpacity(op) {
         this.opacity = op;
-        localStorage.setItem('lex_bg_opacity', op);
+        SafeStorage.setItem('lex_bg_opacity', op);
         if (this.canvas) this.canvas.style.opacity = op;
         const lbl = document.getElementById('opacityVal');
         if (lbl) lbl.textContent = `${Math.round(op * 100)}%`;
       },
 
       setup() {
+        if (!this.canvas) return;
         this.particles = [];
         const w = this.canvas.width;
         const h = this.canvas.height;
 
         if (this.preset === 'subtle-rain') {
-          const cols = Math.floor(w / 34);
+          const cols = Math.max(1, Math.floor(w / 34));
           for (let i = 0; i < cols; i++) {
             this.particles.push({
               x: i * 34,
@@ -2780,7 +2177,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
             });
           }
         } else if (this.preset === 'particles') {
-          for (let i = 0; i < 45; i++) {
+          for (let i = 0; i < 40; i++) {
             this.particles.push({
               x: Math.random() * w,
               y: Math.random() * h,
@@ -2793,6 +2190,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       },
 
       loop() {
+        if (!this.running || !this.ctx || !this.canvas) return;
+
         const ctx = this.ctx;
         const w = this.canvas.width;
         const h = this.canvas.height;
@@ -2800,14 +2199,13 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
         if (this.preset === 'none') {
           ctx.clearRect(0, 0, w, h);
-          requestAnimationFrame(() => this.loop());
+          this.animId = requestAnimationFrame(() => this.loop());
           return;
         }
 
         if (this.preset === 'subtle-rain') {
           ctx.fillStyle = document.body.classList.contains('theme-light') ? 'rgba(247, 248, 250, 0.24)' : 'rgba(9, 10, 12, 0.24)';
           ctx.fillRect(0, 0, w, h);
-
           ctx.font = '12px var(--font-mono)';
           ctx.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 
@@ -2830,48 +2228,47 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           });
         }
 
-        requestAnimationFrame(() => this.loop());
+        this.animId = requestAnimationFrame(() => this.loop());
       }
     };
 
     // =========================================================================
-    // STATE & ACHIEVEMENTS SYSTEM
+    // STATE & SPACED REPETITION ENGINE (SRS)
     // =========================================================================
+    const SRS_INTERVALS_DAYS = [1, 3, 7, 14, 30, 90];
+
     function loadLearnedMap() {
-      const raw = localStorage.getItem('lex_learned_history');
-      if (raw) {
-        try { return JSON.parse(raw); } catch (e) {}
+      const raw = SafeStorage.getItem('lex_learned_history');
+      if (!raw) return {};
+      try {
+        const parsed = JSON.parse(raw);
+        Object.keys(parsed).forEach(k => {
+          if (!parsed[k].stage) {
+            parsed[k] = {
+              date: parsed[k].date || getTodayKey(),
+              stage: 1,
+              nextReview: Date.now() + 86400000,
+              lastReviewed: Date.now()
+            };
+          }
+        });
+        return parsed;
+      } catch (e) {
+        return {};
       }
-      return {};
-    }
-
-    function loadTimeMap() {
-      const raw = localStorage.getItem('lex_study_time_map');
-      if (raw) {
-        try { return JSON.parse(raw); } catch (e) {}
-      }
-      return {};
-    }
-
-    function loadAchievements() {
-      const raw = localStorage.getItem('lex_achievements');
-      if (raw) {
-        try { return JSON.parse(raw); } catch (e) {}
-      }
-      return {};
     }
 
     let state = {
-      tierLimit: parseInt(localStorage.getItem('lex_tier_total')) || 1000,
-      dailyGoal: parseInt(localStorage.getItem('lex_daily_goal')) || 40,
-      progressionMode: localStorage.getItem('lex_progression_mode') || 'sequential',
-      matchCount: parseInt(localStorage.getItem('lex_match_count')) || 8,
+      tierLimit: parseInt(SafeStorage.getItem('lex_tier_total')) || 1,
+      dailyGoal: parseInt(SafeStorage.getItem('lex_daily_goal')) || 40,
+      progressionMode: SafeStorage.getItem('lex_progression_mode') || 'sequential',
+      matchCount: parseInt(SafeStorage.getItem('lex_match_count')) || 8,
       learnedMap: loadLearnedMap(),
-      timeMap: loadTimeMap(),
-      achievements: loadAchievements(),
-      cohortOffset: parseInt(localStorage.getItem('lex_cohort_offset')) || 0,
-      speed: parseFloat(localStorage.getItem('lex_speed')) || 0.75,
-      theme: localStorage.getItem('lex_theme') || 'dark',
+      timeMap: JSON.parse(SafeStorage.getItem('lex_study_time_map') || '{}'),
+      achievements: JSON.parse(SafeStorage.getItem('lex_achievements') || '{}'),
+      cohortOffset: parseInt(SafeStorage.getItem('lex_cohort_offset')) || 0,
+      speed: parseFloat(SafeStorage.getItem('lex_speed')) || 0.75,
+      theme: SafeStorage.getItem('lex_theme') || 'dark',
       cohort: [],
       currentIndex: 0,
       sentencePage: 0,
@@ -2885,32 +2282,27 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       { id: "flush_burst", title: "Synapse Overdrive", desc: "Complete an active recall burst in Rapid Memory Flush mode." },
       { id: "flush_perfect", title: "Flawless Retention", desc: "Achieve 100% neural recall score on a Flush batch." },
       { id: "mastery_gate", title: "Cohort Domination", desc: "Validate 100% of an entire batch under testing validation." },
-      { id: "master_50", title: "Linguistic Core 50", desc: "Master 50 total vocabulary items into permanent lexicon." },
-      { id: "master_200", title: "Working Fluency 200", desc: "Accumulate 200 mastered words across Japanese tiers." }
+      { id: "master_25", title: "Linguistic Core 25", desc: "Master 25 authentic vocabulary items into permanent memory." }
     ];
 
     const AchievementEngine = {
       unlock(id) {
         if (!state.achievements[id]) {
           state.achievements[id] = Date.now();
-          localStorage.setItem('lex_achievements', JSON.stringify(state.achievements));
+          SafeStorage.setItem('lex_achievements', JSON.stringify(state.achievements));
           const def = ACHIEVEMENTS_DEF.find(a => a.id === id);
-          if (def) {
-            showAlert(`Achievement Unlocked: ${def.title}`, false);
-          }
+          if (def) showAlert(`Achievement Unlocked: ${def.title}`, false);
           this.render();
         }
       },
       checkAll() {
-        const count = getMasteredIds().length;
-        if (count >= 50) this.unlock('master_50');
-        if (count >= 200) this.unlock('master_200');
+        const count = Object.keys(state.learnedMap).length;
+        if (count >= 25) this.unlock('master_25');
       },
       render() {
         const container = document.getElementById('achievementsContainer');
         if (!container) return;
         container.innerHTML = '';
-
         ACHIEVEMENTS_DEF.forEach(ach => {
           const unlocked = Boolean(state.achievements[ach.id]);
           const card = document.createElement('div');
@@ -2930,48 +2322,48 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     };
 
     function toggleAchievements(open) {
-      document.getElementById('achievementsModal').classList.toggle('open', open);
+      const modal = document.getElementById('achievementsModal');
+      if (modal) modal.classList.toggle('open', open);
       if (open) AchievementEngine.render();
     }
 
     function saveLearnedMap() {
-      localStorage.setItem('lex_learned_history', JSON.stringify(state.learnedMap));
+      SafeStorage.setItem('lex_learned_history', JSON.stringify(state.learnedMap));
       AchievementEngine.checkAll();
     }
 
-    function getMasteredIds() {
-      return Object.keys(state.learnedMap).map(Number);
-    }
-
-    function getTodayLearnedCount() {
-      const today = getTodayKey();
-      return Object.values(state.learnedMap).filter(item => item.date === today).length;
-    }
-
-    function getYesterdayLearnedWords() {
-      const yesterday = getYesterdayKey();
+    function getDueSRSWords() {
+      const now = Date.now();
       return Object.entries(state.learnedMap)
-        .filter(([id, data]) => data.date === yesterday)
-        .map(([id]) => VOCAB_BY_ID.get(Number(id)))
+        .filter(([key, data]) => (data.nextReview || 0) <= now)
+        .map(([key]) => VOCAB_BY_KEY.get(key))
         .filter(Boolean);
     }
 
     function isCohortAllMastered() {
       if (!state.cohort || state.cohort.length === 0) return false;
-      const mastered = new Set(getMasteredIds());
-      return state.cohort.every(word => mastered.has(word.id));
+      return state.cohort.every(word => Boolean(state.learnedMap[word.key]));
     }
 
-    // Cohort Synchronizer (Intelligently starts on first unlearned word)
     function syncCohort() {
-      const pool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit);
+      const pool = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit);
+      if (pool.length === 0) {
+        state.cohort = [...RAW_VOCAB_DB.slice(0, state.dailyGoal)];
+        currentWord = state.cohort[0];
+        return;
+      }
       const start = (state.cohortOffset * state.dailyGoal) % pool.length;
       state.cohort = pool.slice(start, start + state.dailyGoal);
-      if (state.cohort.length === 0) state.cohort = pool.slice(0, state.dailyGoal);
+      if (state.cohort.length < state.dailyGoal && pool.length >= state.dailyGoal) {
+        state.cohort = state.cohort.concat(pool.slice(0, state.dailyGoal - state.cohort.length));
+      }
+      if (state.cohort.length === 0) {
+        state.cohort = pool.slice(0, Math.min(state.dailyGoal, pool.length));
+      }
 
-      const firstUnlearned = state.cohort.findIndex(w => !state.learnedMap[w.id]);
+      const firstUnlearned = state.cohort.findIndex(w => !state.learnedMap[w.key]);
       state.currentIndex = firstUnlearned !== -1 ? firstUnlearned : 0;
-      currentWord = state.cohort[state.currentIndex] || MASTER_VOCAB[0];
+      currentWord = state.cohort[state.currentIndex] || pool[0];
 
       state.sentencePage = 0;
       checkMasteryBanner();
@@ -2979,18 +2371,16 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function checkMasteryBanner() {
       const banner = document.getElementById('batchMasteryBanner');
-      if (banner) {
-        banner.style.display = isCohortAllMastered() ? 'flex' : 'none';
-      }
+      if (banner) banner.style.display = isCohortAllMastered() ? 'flex' : 'none';
     }
 
     function switchDailyCohort() {
       if (state.progressionMode === 'mastery-gate' && !isCohortAllMastered()) {
-        showAlert("Mastery Gate Active: All words in current batch must be learned and tested first!", true);
+        showAlert("Mastery Gate Active: All batch words must be validated before moving on!", true);
         return;
       }
       state.cohortOffset++;
-      localStorage.setItem('lex_cohort_offset', state.cohortOffset);
+      SafeStorage.setItem('lex_cohort_offset', state.cohortOffset);
       syncCohort();
       renderCard();
       renderSentences();
@@ -3000,6 +2390,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function showAlert(text, isDanger = true) {
       const alert = document.getElementById('globalAlert');
+      if (!alert) return;
       alert.textContent = text;
       alert.style.display = 'block';
       alert.style.background = isDanger ? 'rgba(225, 29, 72, 0.12)' : 'rgba(16, 185, 129, 0.12)';
@@ -3012,72 +2403,68 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     // DASHBOARD ENGINE
     // =========================================================================
     function updateDashboard() {
-      const tierTitle = state.tierLimit === 1000 
-        ? "JLPT N5–N4 Daily Core" 
-        : state.tierLimit === 2000 
-        ? "JLPT N3 Conversational Fluency" 
-        : "JLPT N2–N1 Professional & Mastery";
-      
+      const tierTitle = state.tierLimit === 1 ? "JLPT N5–N4 Daily Core" : state.tierLimit === 2 ? "JLPT N3 Fluency" : "JLPT N2–N1 Professional";
       document.getElementById('dashCourseTitle').textContent = tierTitle;
-      document.getElementById('dashCourseDesc').textContent = `Curriculum Scope: Top ${state.tierLimit.toLocaleString()} High-Frequency Words`;
+      document.getElementById('dashCourseDesc').textContent = `Curriculum Scope: Authentic Japanese Core (${MASTER_VOCAB.length} Items Active)`;
       document.getElementById('dashCohortLabel').textContent = `Cohort #${String(state.cohortOffset + 1).padStart(2, '0')} Active`;
-      document.getElementById('hudTierBadge').textContent = `Top ${state.tierLimit.toLocaleString()}`;
+      document.getElementById('hudTierBadge').textContent = `Tier ${state.tierLimit}`;
 
-      // Today's Words
-      const todayCount = getTodayLearnedCount();
+      const today = getTodayKey();
+      const todayCount = Object.values(state.learnedMap).filter(item => item.date === today).length;
       document.getElementById('dashTodayNum').textContent = todayCount;
       document.getElementById('dashTodayGoal').textContent = state.dailyGoal;
       const todayPct = Math.min(100, Math.round((todayCount / state.dailyGoal) * 100));
       document.getElementById('dashTodayPct').textContent = `${todayPct}%`;
       document.getElementById('dashTodayBar').style.width = `${todayPct}%`;
-      const todayRemaining = Math.max(0, state.dailyGoal - todayCount);
-      document.getElementById('dashTodayRemaining').textContent = todayRemaining === 0 ? "Daily goal accomplished" : `${todayRemaining} words remaining`;
+      const todayRem = Math.max(0, state.dailyGoal - todayCount);
+      document.getElementById('dashTodayRemaining').textContent = todayRem === 0 ? "Daily goal accomplished" : `${todayRem} words remaining`;
 
-      // Total Mastered
-      const masteredList = getMasteredIds();
-      const totalMastered = masteredList.length;
+      const dueWords = getDueSRSWords();
+      document.getElementById('dashDueNum').textContent = dueWords.length;
+      document.getElementById('dashDueBadge').textContent = dueWords.length;
+      document.getElementById('navTestBadge').textContent = dueWords.length;
+
+      const totalMastered = Object.keys(state.learnedMap).length;
+      const targetPool = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit).length;
       document.getElementById('dashTotalNum').textContent = totalMastered;
-      document.getElementById('dashTierTarget').textContent = state.tierLimit.toLocaleString();
-      const tierPct = Math.min(100, Math.round((totalMastered / state.tierLimit) * 100));
+      document.getElementById('dashTierTarget').textContent = targetPool;
+      const tierPct = targetPool ? Math.min(100, Math.round((totalMastered / targetPool) * 100)) : 0;
       document.getElementById('dashTotalPct').textContent = `${tierPct}%`;
       document.getElementById('dashTotalBar').style.width = `${tierPct}%`;
-      const tierRemaining = Math.max(0, state.tierLimit - totalMastered);
-      document.getElementById('dashTierRemaining').textContent = `${tierRemaining.toLocaleString()} unlearned`;
+      const unlearned = Math.max(0, targetPool - totalMastered);
+      document.getElementById('dashTierRemaining').textContent = `${unlearned} unlearned in scope`;
 
-      // Estimated Days
-      const estDays = Math.ceil(tierRemaining / state.dailyGoal);
+      const estDays = Math.ceil(unlearned / Math.max(1, state.dailyGoal));
       document.getElementById('dashEstCompletion').textContent = `Est: ~${estDays} days`;
-
-      // Yesterday's Words
-      const yesterdayWords = getYesterdayLearnedWords();
-      document.getElementById('dashYesterdayNum').textContent = yesterdayWords.length;
-      document.getElementById('dashYesterdayDue').textContent = yesterdayWords.length;
-      document.getElementById('navTestBadge').textContent = yesterdayWords.length;
 
       TimeEngine.updateDisplay();
       checkMasteryBanner();
 
-      // Tier Breakdown
       let t1 = 0, t2 = 0, t3 = 0;
-      masteredList.forEach(id => {
-        const w = VOCAB_BY_ID.get(id);
+      Object.keys(state.learnedMap).forEach(key => {
+        const w = VOCAB_BY_KEY.get(key);
         if (w) {
           if (w.tier === 1) t1++;
           else if (w.tier === 2) t2++;
           else if (w.tier === 3) t3++;
         }
       });
-      document.getElementById('dashTier1Count').textContent = `${t1} / 1,000`;
-      document.getElementById('dashTier2Count').textContent = `${t2} / 1,000`;
-      document.getElementById('dashTier3Count').textContent = `${t3} / 3,000`;
+
+      const totalT1 = RAW_VOCAB_DB.filter(w => w.tier === 1).length;
+      const totalT2 = RAW_VOCAB_DB.filter(w => w.tier === 2).length;
+      const totalT3 = RAW_VOCAB_DB.filter(w => w.tier === 3).length;
+      document.getElementById('dashTier1Count').textContent = `${t1} / ${totalT1}`;
+      document.getElementById('dashTier2Count').textContent = `${t2} / ${totalT2}`;
+      document.getElementById('dashTier3Count').textContent = `${t3} / ${totalT3}`;
     }
 
     // =========================================================================
-    // FLASHCARDS WITH EXAMPLE SENTENCES & MASTERED DEPRIORITIZATION
+    // FLASHCARD DRILL
     // =========================================================================
     function renderCard() {
       if (!currentWord) syncCohort();
-      const isMastered = Boolean(state.learnedMap[currentWord.id]);
+      if (!currentWord) return;
+      const isMastered = Boolean(state.learnedMap[currentWord.key]);
 
       document.getElementById('cardFlipper').classList.remove('flipped');
       document.getElementById('cardIndexLabel').textContent = `${String(state.currentIndex + 1).padStart(2, '0')} / ${state.cohort.length}`;
@@ -3092,39 +2479,32 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.getElementById('cardKana').textContent = currentWord.kana;
       document.getElementById('cardRomaji').textContent = currentWord.romaji;
       document.getElementById('cardPhonetic').textContent = `[ ${currentWord.phonetic} ]`;
-      document.getElementById('cardCategoryTag').textContent = (currentWord.category || 'Core').toUpperCase();
+      document.getElementById('cardCategoryTag').textContent = (currentWord.cat || 'Core').toUpperCase();
       document.getElementById('cardTierTag').textContent = `Tier ${currentWord.tier}`;
 
       document.getElementById('cardEnglish').textContent = currentWord.en;
-      document.getElementById('cardBackId').textContent = `#${currentWord.id}`;
-      document.getElementById('cardBackTier').textContent = currentWord.tier === 1 ? 'N5-N4 Core' : currentWord.tier === 2 ? 'N3 Conversational' : 'N2-N1 Mastery';
-      const backCat = document.getElementById('cardBackCategory');
-      if (backCat) backCat.textContent = (currentWord.category || 'Core').toUpperCase();
+      document.getElementById('cardBackId').textContent = currentWord.key;
+      document.getElementById('cardBackTier').textContent = currentWord.tier === 1 ? 'N5-N4 Core' : currentWord.tier === 2 ? 'N3 Interm.' : 'N2-N1 Adv.';
+      document.getElementById('cardBackCategory').textContent = (currentWord.cat || 'Core').toUpperCase();
 
-      // Render Example Sentence Box on Back of Flashcard
-      const exJaEl = document.getElementById('cardExJa');
-      const exKanaEl = document.getElementById('cardExKana');
-      const exEnEl = document.getElementById('cardExEn');
-      if (exJaEl) exJaEl.textContent = currentWord.exJa || '';
-      if (exKanaEl) exKanaEl.textContent = `${currentWord.exKana || ''} (${currentWord.exRomaji || ''}) [${currentWord.exPhonetic || ''}]`;
-      if (exEnEl) exEnEl.textContent = currentWord.exEn || '';
+      document.getElementById('cardExJa').textContent = currentWord.exJa || '';
+      document.getElementById('cardExKana').textContent = `${currentWord.exKana || ''} (${currentWord.exRomaji || ''}) [${currentWord.exPhonetic || ''}]`;
+      document.getElementById('cardExEn').textContent = currentWord.exEn || '';
 
       const backStatus = document.getElementById('cardBackStatus');
-      if (backStatus) {
-        backStatus.textContent = isMastered ? 'Mastered ✓' : 'Unlearned';
-        backStatus.style.color = isMastered ? 'var(--accent-green)' : 'var(--text-dim)';
-      }
+      backStatus.textContent = isMastered ? 'Mastered ✓' : 'Unlearned';
+      backStatus.style.color = isMastered ? 'var(--accent-green)' : 'var(--text-dim)';
     }
 
     function flipCard() {
       document.getElementById('cardFlipper').classList.toggle('flipped');
     }
 
-    // Skip / Cycle: heavily prioritizes unlearned cards
     function cycleWord(step) {
+      if (!state.cohort || state.cohort.length === 0) return;
       const unlearnedIndices = [];
       state.cohort.forEach((w, idx) => {
-        if (!state.learnedMap[w.id]) unlearnedIndices.push(idx);
+        if (!state.learnedMap[w.key]) unlearnedIndices.push(idx);
       });
 
       if (unlearnedIndices.length > 0) {
@@ -3136,7 +2516,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           state.currentIndex = unlearnedIndices[0];
         }
       } else {
-        // If all cohort words are learned, cycle through normally
         state.currentIndex = (state.currentIndex + step + state.cohort.length) % state.cohort.length;
       }
 
@@ -3144,21 +2523,28 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       renderCard();
     }
 
-    // Mark learned immediately advances to next unlearned card
     function markLearned() {
+      if (!currentWord) return;
       const today = getTodayKey();
-      state.learnedMap[currentWord.id] = { date: today, time: Date.now() };
-      saveLearnedMap();
+      const existing = state.learnedMap[currentWord.key];
+      const stage = existing ? Math.min(6, (existing.stage || 1) + 1) : 1;
+      const intervalDays = SRS_INTERVALS_DAYS[stage - 1];
 
+      state.learnedMap[currentWord.key] = {
+        date: today,
+        stage: stage,
+        lastReviewed: Date.now(),
+        nextReview: Date.now() + (intervalDays * 86400000)
+      };
+      saveLearnedMap();
       updateDashboard();
       checkMasteryBanner();
 
-      // Advance directly to the next unlearned card in the cohort
-      const unlearnedIdx = state.cohort.findIndex((w, idx) => idx > state.currentIndex && !state.learnedMap[w.id]);
-      if (unlearnedIdx !== -1) {
-        state.currentIndex = unlearnedIdx;
+      const nextUnlearnedIdx = state.cohort.findIndex((w, idx) => idx > state.currentIndex && !state.learnedMap[w.key]);
+      if (nextUnlearnedIdx !== -1) {
+        state.currentIndex = nextUnlearnedIdx;
       } else {
-        const firstUnlearned = state.cohort.findIndex(w => !state.learnedMap[w.id]);
+        const firstUnlearned = state.cohort.findIndex(w => !state.learnedMap[w.key]);
         if (firstUnlearned !== -1) {
           state.currentIndex = firstUnlearned;
         } else {
@@ -3173,10 +2559,10 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       renderReviewList();
     }
 
-    function unlearnWord(id, promptNotice = true) {
-      if (!state.learnedMap[id]) return;
-      const wordObj = VOCAB_BY_ID.get(id);
-      delete state.learnedMap[id];
+    function unlearnWord(key, promptNotice = true) {
+      if (!state.learnedMap[key]) return;
+      const wordObj = VOCAB_BY_KEY.get(key);
+      delete state.learnedMap[key];
       saveLearnedMap();
 
       syncCohort();
@@ -3190,11 +2576,11 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // RAPID MEMORY FLUSH (ZERO MASTERED WORDS ALLOWED)
+    // RAPID MEMORY FLUSH
     // =========================================================================
     let flushState = {
-      batchSize: parseInt(localStorage.getItem('lex_flush_batch')) || 10,
-      timerSeconds: parseInt(localStorage.getItem('lex_flush_timer')) || 45,
+      batchSize: parseInt(SafeStorage.getItem('lex_flush_batch')) || 10,
+      timerSeconds: parseInt(SafeStorage.getItem('lex_flush_timer')) || 45,
       words: [],
       currentIndex: 0,
       timerInterval: null,
@@ -3211,13 +2597,11 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function updateFlushBatchDisplay(val) {
       flushState.batchSize = parseInt(val);
-      localStorage.setItem('lex_flush_batch', flushState.batchSize);
+      SafeStorage.setItem('lex_flush_batch', flushState.batchSize);
       document.getElementById('flushBatchNumDisplay').textContent = `${flushState.batchSize} Words`;
-      
       const slider = document.getElementById('flushBatchSlider');
       if (slider && slider.value !== String(flushState.batchSize)) slider.value = flushState.batchSize;
-
-      document.querySelectorAll('#flushViewConfig .flush-cfg-group:nth-child(4) .flush-chip').forEach(chip => {
+      document.querySelectorAll('.flush-chip-batch').forEach(chip => {
         chip.classList.toggle('active', parseInt(chip.textContent) === flushState.batchSize);
       });
     }
@@ -3226,19 +2610,16 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function updateFlushTimerDisplay(val) {
       flushState.timerSeconds = parseInt(val);
-      localStorage.setItem('lex_flush_timer', flushState.timerSeconds);
-      
+      SafeStorage.setItem('lex_flush_timer', flushState.timerSeconds);
       let label = `${flushState.timerSeconds} Seconds`;
       if (flushState.timerSeconds >= 60) {
         const mins = flushState.timerSeconds / 60;
         label = mins % 1 === 0 ? `${mins} Minute${mins > 1 ? 's' : ''}` : `${Math.floor(mins)}m ${flushState.timerSeconds % 60}s`;
       }
       document.getElementById('flushTimerNumDisplay').textContent = label;
-      
       const slider = document.getElementById('flushTimerSlider');
       if (slider && slider.value !== String(flushState.timerSeconds)) slider.value = flushState.timerSeconds;
-
-      document.querySelectorAll('#flushViewConfig .flush-cfg-group:nth-child(5) .flush-chip').forEach(chip => {
+      document.querySelectorAll('.flush-chip-timer').forEach(chip => {
         let chipSec = 0;
         const text = chip.textContent.trim();
         if (text.endsWith('s')) chipSec = parseInt(text);
@@ -3268,52 +2649,29 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       switchFlushView('config');
     }
 
-    // STRICTLY unlearned words in Flush session
     function startFlushSession() {
       const source = document.getElementById('flushSourceSelect').value;
-      const mastered = new Set(getMasteredIds());
       let candidatePool = [];
 
-      if (source === 'cohort-unlearned' || source === 'active-cohort') {
-        candidatePool = state.cohort.filter(w => !mastered.has(w.id));
+      if (source === 'cohort-unlearned') {
+        candidatePool = state.cohort.filter(w => !state.learnedMap[w.key]);
         if (candidatePool.length < flushState.batchSize) {
-          const tierUnlearned = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
-          const existing = new Set(candidatePool.map(w => w.id));
-          for (const w of tierUnlearned) {
-            if (!existing.has(w.id)) {
-              candidatePool.push(w);
-              existing.add(w.id);
-            }
-            if (candidatePool.length >= flushState.batchSize) break;
-          }
+          const unlearnedInTier = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit && !state.learnedMap[w.key]);
+          candidatePool = Array.from(new Set([...candidatePool, ...unlearnedInTier]));
         }
-      } else if (source === 'tier-unlearned' || source === 'unlearned') {
-        candidatePool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
+      } else if (source === 'tier-unlearned') {
+        candidatePool = MASTER_VOCAB.filter(w => w.tier <= state.tierLimit && !state.learnedMap[w.key]);
       } else {
-        candidatePool = MASTER_VOCAB.filter(w => !mastered.has(w.id));
+        candidatePool = MASTER_VOCAB.filter(w => !state.learnedMap[w.key]);
       }
 
-      // Guarantee no mastered words enter Flush mode
-      candidatePool = candidatePool.filter(w => !mastered.has(w.id));
-
       if (candidatePool.length === 0) {
-        showAlert("All words in selected scope are already mastered! Select another tier or reset.", true);
+        showAlert("All words in selected scope are already mastered! Select another tier.", true);
         return;
       }
 
       const shuffled = [...candidatePool].sort(() => 0.5 - Math.random());
-      const seen = new Set();
-      const uniqueSample = [];
-      for (const w of shuffled) {
-        if (!seen.has(w.id) && !seen.has(w.kanji)) {
-          seen.add(w.id);
-          seen.add(w.kanji);
-          uniqueSample.push(w);
-        }
-        if (uniqueSample.length >= flushState.batchSize) break;
-      }
-
-      flushState.words = uniqueSample;
+      flushState.words = shuffled.slice(0, flushState.batchSize);
       flushState.results = [];
       flushState.currentIndex = 0;
 
@@ -3346,14 +2704,13 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function startFlushIntermission() {
       switchFlushView('timer');
-      
       const clockEl = document.getElementById('flushCountdownTime');
       flushState.timerEndTime = Date.now() + (flushState.timerSeconds * 1000);
       clockEl.textContent = formatTimeSec(flushState.timerSeconds);
 
       if (flushState.timerInterval) clearInterval(flushState.timerInterval);
 
-      const tickIntermission = () => {
+      flushState.timerInterval = setInterval(() => {
         const remainingMs = flushState.timerEndTime - Date.now();
         const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
         clockEl.textContent = formatTimeSec(remainingSec);
@@ -3362,17 +2719,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           clearInterval(flushState.timerInterval);
           startFlushRecallPhase();
         }
-      };
-
-      flushState.timerInterval = setInterval(tickIntermission, 250);
-
-      const onVisibilitySync = () => {
-        if (document.visibilityState === 'visible' && flushState.timerEndTime) {
-          tickIntermission();
-        }
-      };
-      document.removeEventListener('visibilitychange', onVisibilitySync);
-      document.addEventListener('visibilitychange', onVisibilitySync, { once: true });
+      }, 250);
     }
 
     function skipFlushTimerToRecall() {
@@ -3385,21 +2732,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       flushState.results = [];
       switchFlushView('recall');
       nextFlushRecallCard();
-
-      const input = document.getElementById('flushRecallInput');
-      input.onfocus = () => {
-        setTimeout(() => {
-          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 280);
-      };
-
-      if (window.visualViewport) {
-        window.visualViewport.onresize = () => {
-          if (document.activeElement === input) {
-            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        };
-      }
     }
 
     function nextFlushRecallCard() {
@@ -3426,7 +2758,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     function submitFlushAnswer() {
       const input = document.getElementById('flushRecallInput');
       const userText = input.value.trim();
-
       const evalResult = FuzzyEngine.evaluate(userText, flushActiveWord.en);
 
       flushState.results.push({
@@ -3442,10 +2773,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function finishFlushSession() {
       switchFlushView('results');
-
       const correctCount = flushState.results.filter(r => r.isCorrect).length;
       const total = flushState.results.length;
-      const pct = Math.round((correctCount / total) * 100);
+      const pct = total ? Math.round((correctCount / total) * 100) : 0;
 
       document.getElementById('flushScoreRatio').textContent = `${correctCount} / ${total}`;
       document.getElementById('flushScorePercent').textContent = `${pct}% Neural Retention`;
@@ -3457,7 +2787,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         AchievementEngine.unlock('flush_perfect');
       }
       AchievementEngine.unlock('flush_burst');
-
       document.getElementById('flushScoreComment').textContent = feedback;
 
       const container = document.getElementById('flushResultsContainer');
@@ -3519,7 +2848,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       let count = 0;
       flushState.results.forEach(res => {
         if (res.isCorrect) {
-          state.learnedMap[res.word.id] = { date: today, time: Date.now() };
+          state.learnedMap[res.word.key] = {
+            date: today,
+            stage: 1,
+            lastReviewed: Date.now(),
+            nextReview: Date.now() + 86400000
+          };
           count++;
         }
       });
@@ -3536,27 +2870,17 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // RETENTION & VALIDATION TESTS (NON-REPEATING, CLEAN OPTIONS)
+    // RETENTION & VALIDATION TEST (NON-REPEATING OPTIONS)
     // =========================================================================
     let testQueue = [];
     let currentTestWord = null;
     let testLocked = false;
     let isCohortValidationActive = false;
 
-    function initYesterdayTest() {
+    function initDueSRSTest() {
       isCohortValidationActive = false;
-      document.getElementById('testInstruction').textContent = "Choose the correct definition. Wrong answers unlearn the word.";
-      const rawQueue = getYesterdayLearnedWords();
-      const seen = new Set();
-      testQueue = [];
-      rawQueue.forEach(w => {
-        if (w && !seen.has(w.id) && !seen.has(w.kanji)) {
-          seen.add(w.id);
-          seen.add(w.kanji);
-          testQueue.push(w);
-        }
-      });
-      testQueue.sort(() => 0.5 - Math.random());
+      document.getElementById('testInstruction').textContent = "Choose the correct definition. Wrong answers drop interval stage.";
+      testQueue = getDueSRSWords().sort(() => 0.5 - Math.random());
 
       const testArea = document.getElementById('testArea');
       const emptyMsg = document.getElementById('testEmptyMessage');
@@ -3576,16 +2900,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       switchTab('test');
       isCohortValidationActive = true;
       document.getElementById('testInstruction').textContent = "Batch Validation: Answer all correctly to graduate this cohort!";
-      const seen = new Set();
-      testQueue = [];
-      [...state.cohort].forEach(w => {
-        if (w && !seen.has(w.id) && !seen.has(w.kanji)) {
-          seen.add(w.id);
-          seen.add(w.kanji);
-          testQueue.push(w);
-        }
-      });
-      testQueue.sort(() => 0.5 - Math.random());
+      testQueue = [...state.cohort].sort(() => 0.5 - Math.random());
 
       document.getElementById('testArea').style.display = 'block';
       document.getElementById('testEmptyMessage').style.display = 'none';
@@ -3594,29 +2909,18 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function startCustomReviewTest() {
       isCohortValidationActive = false;
-      const allMastered = getMasteredIds().map(id => VOCAB_BY_ID.get(id)).filter(Boolean);
+      const allMastered = Object.keys(state.learnedMap).map(k => VOCAB_BY_KEY.get(k)).filter(Boolean);
       if (allMastered.length === 0) {
         showAlert("No mastered words to test yet.", true);
         return;
       }
-      const seen = new Set();
-      testQueue = [];
-      const shuffled = allMastered.sort(() => 0.5 - Math.random());
-      for (const w of shuffled) {
-        if (!seen.has(w.id) && !seen.has(w.kanji)) {
-          seen.add(w.id);
-          seen.add(w.kanji);
-          testQueue.push(w);
-        }
-        if (testQueue.length >= 20) break;
-      }
+      testQueue = allMastered.sort(() => 0.5 - Math.random()).slice(0, 20);
 
       document.getElementById('testArea').style.display = 'block';
       document.getElementById('testEmptyMessage').style.display = 'none';
       nextTestQuestion();
     }
-
-    function nextTestQuestion() {
+function nextTestQuestion() {
       testLocked = false;
       if (!testQueue || testQueue.length === 0) {
         document.getElementById('testArea').style.display = 'none';
@@ -3627,7 +2931,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           AchievementEngine.unlock('mastery_gate');
           AchievementEngine.unlock('batch_first');
           state.cohortOffset++;
-          localStorage.setItem('lex_cohort_offset', state.cohortOffset);
+          SafeStorage.setItem('lex_cohort_offset', state.cohortOffset);
           syncCohort();
         }
         updateDashboard();
@@ -3640,29 +2944,42 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.getElementById('testKana').textContent = currentTestWord.kana;
       document.getElementById('testPhonetic').textContent = `[ ${currentTestWord.phonetic} ]`;
 
-      // STRICT DISTRACTOR GENERATION: Guaranteed unique definitions
       const curCleanEn = FuzzyEngine.clean(currentTestWord.en);
       const curKanji = currentTestWord.kanji;
 
       const candidateDistractors = MASTER_VOCAB.filter(w => {
-        if (w.id === currentTestWord.id) return false;
-        if (w.kanji === curKanji) return false;
-        if (w.kana === currentTestWord.kana) return false;
+        if (w.key === currentTestWord.key) return false;
+        if (w.kanji === curKanji || w.kana === currentTestWord.kana) return false;
         if (FuzzyEngine.clean(w.en) === curCleanEn) return false;
         return true;
       }).sort(() => 0.5 - Math.random());
 
       const picked = [];
       const usedMeanings = new Set([curCleanEn]);
-      const usedKanji = new Set([curKanji]);
-
       for (const dist of candidateDistractors) {
         const cleanMean = FuzzyEngine.clean(dist.en);
-        if (!usedMeanings.has(cleanMean) && !usedKanji.has(dist.kanji)) {
+        if (!usedMeanings.has(cleanMean)) {
           picked.push(dist);
           usedMeanings.add(cleanMean);
-          usedKanji.add(dist.kanji);
           if (picked.length === 3) break;
+        }
+      }
+
+      if (picked.length < 3) {
+        const fallbackDistractors = RAW_VOCAB_DB.filter(w => {
+          if (w.key === currentTestWord.key) return false;
+          if (w.kanji === curKanji || w.kana === currentTestWord.kana) return false;
+          const cleanMean = FuzzyEngine.clean(w.en);
+          return !usedMeanings.has(cleanMean);
+        }).sort(() => 0.5 - Math.random());
+
+        for (const dist of fallbackDistractors) {
+          const cleanMean = FuzzyEngine.clean(dist.en);
+          if (!usedMeanings.has(cleanMean)) {
+            picked.push(dist);
+            usedMeanings.add(cleanMean);
+            if (picked.length === 3) break;
+          }
         }
       }
 
@@ -3674,19 +2991,31 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         const btn = document.createElement('button');
         btn.className = 'test-btn-option';
         btn.textContent = opt.en;
-        btn.onclick = () => handleTestAnswer(opt.id, btn);
+        btn.onclick = () => handleTestAnswer(opt.key, btn);
         grid.appendChild(btn);
       });
     }
 
-    function handleTestAnswer(selectedId, btnElement) {
+    function handleTestAnswer(selectedKey, btnElement) {
       if (testLocked) return;
       testLocked = true;
 
-      const isCorrect = selectedId === currentTestWord.id;
+      const isCorrect = selectedKey === currentTestWord.key;
 
       if (isCorrect) {
         btnElement.classList.add('correct');
+        const entry = state.learnedMap[currentTestWord.key] || { stage: 1 };
+        const nextStage = Math.min(6, (entry.stage || 1) + 1);
+        const intervalDays = SRS_INTERVALS_DAYS[nextStage - 1];
+
+        state.learnedMap[currentTestWord.key] = {
+          date: entry.date || getTodayKey(),
+          stage: nextStage,
+          lastReviewed: Date.now(),
+          nextReview: Date.now() + (intervalDays * 86400000)
+        };
+        saveLearnedMap();
+
         testQueue.shift();
         setTimeout(() => nextTestQuestion(), 380);
       } else {
@@ -3696,16 +3025,20 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         if (correctBtn) correctBtn.classList.add('correct');
 
         const failedWord = currentTestWord;
-        unlearnWord(failedWord.id, false);
-        testQueue.shift(); // Never repeat the same card in the same test queue
+        if (state.learnedMap[failedWord.key]) {
+          state.learnedMap[failedWord.key].stage = 1;
+          state.learnedMap[failedWord.key].nextReview = Date.now() + 86400000;
+          saveLearnedMap();
+        }
+        testQueue.shift();
 
-        showAlert(`Incorrect. "${failedWord.kanji}" reverted to unlearned status.`);
+        showAlert(`Incorrect. "${failedWord.kanji}" interval reset to Stage 1.`);
         setTimeout(() => nextTestQuestion(), 1200);
       }
     }
 
     // =========================================================================
-    // SENTENCES PAGINATION ENGINE
+    // SENTENCES
     // =========================================================================
     function changeSentencePage(step) {
       const maxPages = Math.ceil(state.cohort.length / state.sentencePageSize);
@@ -3715,6 +3048,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
     function renderSentences() {
       const container = document.getElementById('sentencesList');
+      if (!container) return;
       container.innerHTML = '';
 
       const totalItems = state.cohort.length;
@@ -3723,12 +3057,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       const pageSlice = state.cohort.slice(start, end);
 
       const label = document.getElementById('sentencePageLabel');
-      if (label) {
-        label.textContent = `Words ${start + 1}–${end} of ${totalItems}`;
-      }
+      if (label) label.textContent = `Words ${start + 1}–${end} of ${totalItems}`;
 
-      document.getElementById('btnSentencesPrev').disabled = state.sentencePage === 0;
-      document.getElementById('btnSentencesNext').disabled = end >= totalItems;
+      const prevBtn = document.getElementById('btnSentencesPrev');
+      const nextBtn = document.getElementById('btnSentencesNext');
+      if (prevBtn) prevBtn.disabled = state.sentencePage === 0;
+      if (nextBtn) nextBtn.disabled = end >= totalItems;
 
       pageSlice.forEach(word => {
         const row = document.createElement('div');
@@ -3737,7 +3071,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
             <div style="display: flex; align-items: center; gap: 0.4rem;">
               <span style="font-size: 0.72rem; font-weight: 700;">${word.kanji}</span>
-              <span class="category-badge">${(word.category || 'Core').toUpperCase()}</span>
+              <span class="category-badge">${(word.cat || 'Core').toUpperCase()}</span>
             </div>
             <div class="audio-group">
               <button class="btn" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${word.exJa}', ${state.speed})">
@@ -3759,13 +3093,15 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     // =========================================================================
     function renderReviewList() {
       const container = document.getElementById('reviewListContainer');
-      const q = (document.getElementById('reviewSearchInput').value || '').trim().toLowerCase();
-      const entries = Object.keys(state.learnedMap).map(Number).reverse();
+      if (!container) return;
+      const searchEl = document.getElementById('reviewSearchInput');
+      const q = (searchEl ? searchEl.value : '').trim().toLowerCase();
+      const keys = Object.keys(state.learnedMap).reverse();
 
-      const words = entries.map(id => {
-        const item = VOCAB_BY_ID.get(id);
-        const meta = state.learnedMap[id];
-        return { item, date: meta ? meta.date : '' };
+      const words = keys.map(key => {
+        const item = VOCAB_BY_KEY.get(key);
+        const meta = state.learnedMap[key];
+        return { item, date: meta ? meta.date : '', stage: meta ? meta.stage : 1 };
       }).filter(o => Boolean(o.item));
 
       const filtered = words.filter(o => {
@@ -3777,7 +3113,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
                w.en.toLowerCase().includes(q);
       });
 
-      document.getElementById('reviewCountLabel').textContent = `Displaying ${filtered.length} of ${words.length} learned words`;
+      const countLabel = document.getElementById('reviewCountLabel');
+      if (countLabel) countLabel.textContent = `Displaying ${filtered.length} of ${words.length} learned words`;
       container.innerHTML = '';
 
       if (filtered.length === 0) {
@@ -3789,15 +3126,15 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         return;
       }
 
-      filtered.forEach(({ item, date }) => {
+      filtered.forEach(({ item, date, stage }) => {
         const row = document.createElement('div');
         row.className = 'review-card';
         row.innerHTML = `
           <div>
             <div style="display: flex; align-items: baseline;">
               <span class="review-meta-kanji">${item.kanji}</span>
-              <span class="category-badge">${(item.category || 'Core').toUpperCase()}</span>
-              <span class="review-date-badge">${date}</span>
+              <span class="category-badge">${(item.cat || 'Core').toUpperCase()}</span>
+              <span class="review-date-badge">Stage ${stage}</span>
             </div>
             <div class="review-meta-sub">${item.kana} · ${item.romaji} [${item.phonetic}]</div>
             <div class="review-meta-en">${item.en}</div>
@@ -3806,7 +3143,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
             <button class="btn" style="padding: 0.3rem 0.5rem; font-size: 0.68rem;" onclick="AudioEngine.speak('${item.kana}', ${state.speed})">
               <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
             </button>
-            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.68rem;" onclick="unlearnWord(${item.id})">
+            <button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.68rem;" onclick="unlearnWord('${item.key}')">
               <svg class="icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
               Unlearn
             </button>
@@ -3817,14 +3154,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // MATCH MODE (UNLEARNED WORDS PRIORITIZED)
+    // MATCH MODE (PRESERVED AS REQUESTED)
     // =========================================================================
     let matchFirst = null;
     let matchLock = false;
 
     function setMatchSize(num) {
       state.matchCount = num;
-      localStorage.setItem('lex_match_count', num);
+      SafeStorage.setItem('lex_match_count', num);
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btnMatch${num}`);
       if (activeBtn) activeBtn.classList.add('active');
@@ -3835,48 +3172,27 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       matchFirst = null;
       matchLock = false;
       const grid = document.getElementById('matrixGrid');
+      if (!grid) return;
       grid.innerHTML = '';
       grid.className = `match-grid count-${state.matchCount}`;
 
-      const pairsNeeded = state.matchCount / 2;
-      const mastered = new Set(getMasteredIds());
-
-      // Mastered cards shown less by a ton in Match mode
-      let unlearned = state.cohort.filter(w => !mastered.has(w.id));
+      const pairsNeeded = Math.min(state.matchCount / 2, MASTER_VOCAB.length);
+      let unlearned = state.cohort.filter(w => !state.learnedMap[w.key]);
       if (unlearned.length < pairsNeeded) {
-        const tierUnlearned = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && !mastered.has(w.id));
-        const seen = new Set(unlearned.map(w => w.id));
-        for (const w of tierUnlearned) {
-          if (!seen.has(w.id)) {
-            unlearned.push(w);
-            seen.add(w.id);
-          }
-          if (unlearned.length >= pairsNeeded) break;
-        }
+        const remaining = MASTER_VOCAB.filter(w => !state.learnedMap[w.key]);
+        unlearned = Array.from(new Set([...unlearned, ...remaining]));
       }
 
-      unlearned.sort(() => 0.5 - Math.random());
-
-      let sample = [];
-      if (unlearned.length >= pairsNeeded) {
-        sample = unlearned.slice(0, pairsNeeded);
-      } else {
-        sample = [...unlearned];
-        const masteredPool = MASTER_VOCAB.filter(w => w.id <= state.tierLimit && mastered.has(w.id)).sort(() => 0.5 - Math.random());
-        const seen = new Set(sample.map(w => w.id));
-        for (const w of masteredPool) {
-          if (!seen.has(w.id)) {
-            sample.push(w);
-            seen.add(w.id);
-          }
-          if (sample.length >= pairsNeeded) break;
-        }
+      let sample = [...unlearned].sort(() => 0.5 - Math.random()).slice(0, pairsNeeded);
+      if (sample.length < pairsNeeded) {
+        const pool = [...MASTER_VOCAB].sort(() => 0.5 - Math.random());
+        sample = pool.slice(0, pairsNeeded);
       }
 
       let tiles = [];
       sample.forEach(item => {
         tiles.push({
-          id: item.id,
+          key: item.key,
           type: 'jp',
           render(div) {
             div.innerHTML = `
@@ -3889,7 +3205,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
           }
         });
         tiles.push({
-          id: item.id,
+          key: item.key,
           type: 'en',
           render(div) {
             div.innerHTML = `<div class="tile-en-main">${item.en}</div>`;
@@ -3901,7 +3217,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       tiles.forEach(data => {
         const div = document.createElement('div');
         div.className = 'match-tile';
-        div.dataset.id = data.id;
+        div.dataset.key = data.key;
         data.render(div);
         div.onclick = () => onTileClick(div);
         grid.appendChild(div);
@@ -3923,7 +3239,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         return;
       }
 
-      if (matchFirst.dataset.id === tile.dataset.id) {
+      if (matchFirst.dataset.key === tile.dataset.key) {
         matchFirst.classList.add('solved');
         tile.classList.add('solved');
         matchFirst = null;
@@ -3947,7 +3263,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
 
-      const btn = Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick').includes(id));
+      const btn = document.getElementById(`sideBtn-${id}`) || Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(id));
       if (btn) btn.classList.add('active');
 
       const p = document.getElementById(`panel-${id}`);
@@ -3957,13 +3273,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     function setTheme(th) {
       state.theme = th;
       document.body.classList.toggle('theme-light', th === 'light');
-      localStorage.setItem('lex_theme', th);
+      SafeStorage.setItem('lex_theme', th);
       const sel = document.getElementById('cfgTheme');
       if (sel) sel.value = th;
     }
 
     function toggleSettings(open) {
-      document.getElementById('settingsModal').classList.toggle('open', open);
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.classList.toggle('open', open);
       if (open) {
         document.getElementById('cfgTier').value = state.tierLimit;
         document.getElementById('cfgGoal').value = state.dailyGoal;
@@ -3973,11 +3290,11 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         document.getElementById('cfgBgPreset').value = BgEngine.preset;
         document.getElementById('cfgBgOpacity').value = BgEngine.opacity;
         
-        document.getElementById('cfgCatParticles').checked = localStorage.getItem('lex_filter_particles') !== 'false';
-        document.getElementById('cfgCatVerbs').checked = localStorage.getItem('lex_filter_verbs') !== 'false';
-        document.getElementById('cfgCatAdjectives').checked = localStorage.getItem('lex_filter_adjectives') !== 'false';
-        document.getElementById('cfgCatAdverbs').checked = localStorage.getItem('lex_filter_adverbs') !== 'false';
-        document.getElementById('cfgCatNouns').checked = localStorage.getItem('lex_filter_nouns') !== 'false';
+        document.getElementById('cfgCatParticles').checked = SafeStorage.getItem('lex_filter_particles') !== 'false';
+        document.getElementById('cfgCatVerbs').checked = SafeStorage.getItem('lex_filter_verbs') !== 'false';
+        document.getElementById('cfgCatAdjectives').checked = SafeStorage.getItem('lex_filter_adjectives') !== 'false';
+        document.getElementById('cfgCatAdverbs').checked = SafeStorage.getItem('lex_filter_adverbs') !== 'false';
+        document.getElementById('cfgCatNouns').checked = SafeStorage.getItem('lex_filter_nouns') !== 'false';
 
         BgEngine.setColor(BgEngine.color);
         setTheme(state.theme);
@@ -3991,16 +3308,16 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
       state.progressionMode = document.getElementById('cfgProgressionMode').value;
       state.speed = parseFloat(document.getElementById('cfgSpeed').value);
 
-      localStorage.setItem('lex_tier_total', state.tierLimit);
-      localStorage.setItem('lex_daily_goal', state.dailyGoal);
-      localStorage.setItem('lex_progression_mode', state.progressionMode);
-      localStorage.setItem('lex_speed', state.speed);
+      SafeStorage.setItem('lex_tier_total', state.tierLimit);
+      SafeStorage.setItem('lex_daily_goal', state.dailyGoal);
+      SafeStorage.setItem('lex_progression_mode', state.progressionMode);
+      SafeStorage.setItem('lex_speed', state.speed);
 
-      localStorage.setItem('lex_filter_particles', document.getElementById('cfgCatParticles').checked);
-      localStorage.setItem('lex_filter_verbs', document.getElementById('cfgCatVerbs').checked);
-      localStorage.setItem('lex_filter_adjectives', document.getElementById('cfgCatAdjectives').checked);
-      localStorage.setItem('lex_filter_adverbs', document.getElementById('cfgCatAdverbs').checked);
-      localStorage.setItem('lex_filter_nouns', document.getElementById('cfgCatNouns').checked);
+      SafeStorage.setItem('lex_filter_particles', document.getElementById('cfgCatParticles').checked);
+      SafeStorage.setItem('lex_filter_verbs', document.getElementById('cfgCatVerbs').checked);
+      SafeStorage.setItem('lex_filter_adjectives', document.getElementById('cfgCatAdjectives').checked);
+      SafeStorage.setItem('lex_filter_adverbs', document.getElementById('cfgCatAdverbs').checked);
+      SafeStorage.setItem('lex_filter_nouns', document.getElementById('cfgCatNouns').checked);
 
       buildCurriculum();
       syncCohort();
@@ -4017,10 +3334,10 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         state.timeMap = {};
         state.achievements = {};
         state.cohortOffset = 0;
-        localStorage.removeItem('lex_learned_history');
-        localStorage.removeItem('lex_study_time_map');
-        localStorage.removeItem('lex_achievements');
-        localStorage.removeItem('lex_cohort_offset');
+        SafeStorage.removeItem('lex_learned_history');
+        SafeStorage.removeItem('lex_study_time_map');
+        SafeStorage.removeItem('lex_achievements');
+        SafeStorage.removeItem('lex_cohort_offset');
         buildCurriculum();
         syncCohort();
         renderCard();
@@ -4033,52 +3350,47 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
     }
 
     // =========================================================================
-    // BOTTOM TAB CONTROLLER
+    // BOTTOM TABS CONTROLLER
     // =========================================================================
     function switchTab(view) {
       document.querySelectorAll('.bottom-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-dashboard').style.display = 'none';
-      document.getElementById('tab-cards').style.display = 'none';
-      document.getElementById('tab-flush').style.display = 'none';
-      document.getElementById('tab-review').style.display = 'none';
-      document.getElementById('tab-test').style.display = 'none';
-      document.getElementById('tab-sentences').style.display = 'none';
-      document.getElementById('tab-match').style.display = 'none';
+      const tabs = ['dashboard', 'cards', 'flush', 'review', 'test', 'sentences', 'match'];
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.style.display = 'none';
+      });
+
+      const target = document.getElementById(`tab-${view}`);
+      if (target) target.style.display = 'block';
 
       if (view === 'dashboard') {
-        document.getElementById('tab-dashboard').style.display = 'block';
         updateDashboard();
       } else if (view === 'cards') {
-        document.getElementById('tab-cards').style.display = 'block';
         renderCard();
       } else if (view === 'flush') {
-        document.getElementById('tab-flush').style.display = 'block';
         updateFlushBatchDisplay(flushState.batchSize);
         updateFlushTimerDisplay(flushState.timerSeconds);
         switchFlushView('config');
       } else if (view === 'review') {
-        document.getElementById('tab-review').style.display = 'block';
         renderReviewList();
       } else if (view === 'test') {
-        document.getElementById('tab-test').style.display = 'block';
-        if (!isCohortValidationActive) initYesterdayTest();
+        if (!isCohortValidationActive) initDueSRSTest();
       } else if (view === 'sentences') {
-        document.getElementById('tab-sentences').style.display = 'block';
         renderSentences();
       } else if (view === 'match') {
-        document.getElementById('tab-match').style.display = 'block';
         dealMatch();
       }
 
-      const activeBtn = Array.from(document.querySelectorAll('.bottom-tab-btn')).find(b => b.getAttribute('onclick').includes(view));
+      const activeBtn = Array.from(document.querySelectorAll('.bottom-tab-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(view));
       if (activeBtn) activeBtn.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     // =========================================================================
-    // BOOTSTRAP INITIALIZATION
+    // APPLICATION BOOTSTRAP (SAFE FOR VS CODE EMBEDDED / SIMPLE BROWSER)
     // =========================================================================
-    window.addEventListener('DOMContentLoaded', () => {
+    function initApp() {
+      buildCurriculum();
       setTheme(state.theme);
       AudioEngine.init();
       BgEngine.init();
@@ -4097,7 +3409,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
         savedMatchBtn.classList.add('active');
       }
       dealMatch();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
+    
